@@ -1,0 +1,51 @@
+{
+  "name": "vimeo_threejs_player",
+  "version": "0.0.1",
+  "description": "A video player for rendering Vimeo videos in three.js",
+  "main": "server.js",
+  "engines": {
+    "node": ">=0.12"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "concurrently \"nodemon server.js\" \"watchify src/index.js -o dist/vimeo.threejs-player.js -v\"",
+    "build": "browserify src/index.js | uglifyjs --source-map --output dist/vimeo.threejs-player.min.js",
+    "standard": "standard src/index.js src/components/*.js --fix",
+    "test": "npm run standard"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "sync-request": "^6.0.0",
+    "three": "^0.89.0",
+    "vimeo": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^15.2.0",
+    "concurrently": "^3.5.1",
+    "dotenv": "^6.0.0",
+    "event-emitter-es6": "^1.1.5",
+    "glslify": "^6.1.0",
+    "nodemon": "^1.14.12",
+    "uglify-js": "^3.3.9",
+    "watchify": "^3.10.0",
+    "standard": "*"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "env"
+          ]
+        }
+      ],
+      "glslify"
+    ]
+  }
+}

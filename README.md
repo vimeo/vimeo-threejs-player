@@ -1,1 +1,1 @@
-# vimeo-webgl-player
+# vimeo-threejs-player
