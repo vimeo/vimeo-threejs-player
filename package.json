@@ -17,6 +17,7 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.2",
+    "host-validation": "^2.0.1",
     "sync-request": "^6.0.0",
     "three": "^0.89.0",
     "vimeo": "^2.0.2"

@@ -1,0 +1,112 @@
+body {
+  background: #fff;
+  color: #000;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Video feed */
+
+#vimeo-video {
+	position: absolute;
+	position: absolute;
+	top: 75px; left: 30px;
+	width: 200px;
+}
+
+/* Vimeo branding */
+.VimeoBrand_ColorRibbon{
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%;
+	height: .1875rem;
+	background-image: linear-gradient(to right,#73D2F6,#08C 22%,#7FC400 36%,#FFD583 48%,#FFB21E 63%,#FF4D4D 76%,#503873);
+}
+
+.header{
+	position: absolute;
+	top: .1875rem;
+	left: 0;
+	width: 100%;
+	height: 55px;
+	background-color: transparent;
+}
+
+#logo{
+	position: absolute;
+	left: 30px;
+	top: 10px;
+}
+
+
+/* Animation keyframes - you need to add prefixes */
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* Loading animation container */
+.loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 28px;
+	height: 28px;
+	margin: -14px 0 0 -14px;
+}
+
+/* Spinning circle (inner circle) */
+.loading .maskedCircle {
+	width: 20px;
+	height: 20px;
+	border-radius: 12px;
+	border: 3px solid #1ab7ea;
+}
+
+/* Spinning circle mask */
+.loading .mask {
+	width: 12px;
+	height: 12px;
+	overflow: hidden;
+}
+
+/* Spinner */
+.loading .spinner {
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: 26px;
+	height: 26px;
+	animation: spin 1s infinite linear;
+}
+
+.play-button {
+		display: none;
+    height: 40px;
+    width: 65px;
+    background-color: #162221;
+    border-radius: 5px;
+    position: absolute;
+		bottom: 50%;
+		left: 50%;
+		margin: -32.5px 0 0 -20px;
+}
+
+.play-button:hover {
+    background-color: rgba(0, 173, 239, 0.9);
+}
+
+.play-button:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10.5px;
+  left: 24px;
+  margin: 0 auto;
+  border-style: solid;
+  border-width: 9.5px 0 9.5px 17px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 1);
+}
+

@@ -1,11 +1,15 @@
-import VimeoVideo from './components/vimeo-video'
+import Video from './components/video'
+import Player from './components/player'
+import API from './components/api'
 
 /*
  * Everything lives in the Vimeo namespace and is only
  * Attached to the window if THREE (three.js) exists
  */
 const Vimeo = {
-  Video: VimeoVideo
+  Video: Video,
+  Player: Player,
+  API: API
 }
 
 if (window.THREE) {

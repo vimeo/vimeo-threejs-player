@@ -1,5 +1,6 @@
 const Vimeo = require('vimeo').Vimeo;
 const express = require('express');
+const hostValidation = require('host-validation')
 const ejs = require('ejs');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(function(req, res, next) {
 */
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
+
   if (process.env.VIMEO_TOKEN) {
     console.log('[Server] Enviorment variables loaded from .env 💪🏻');
   } else {
@@ -33,51 +35,39 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
+app.use(hostValidation({ hosts: [`127.0.0.1:${process.env.PORT}`,
+                                 `localhost:${process.env.PORT}`,
+                                 process.env.DOMAIN] }))
+
+
+app.get('/', (request, response) => {
+  response.render('demo.html');
+});
+
 app.get('/demo', (request, response) => {
   response.render('demo.html');
 });
 
 // The route for getting videos from the vimeo API
 // TODO: restrict requests to the server's domain
-app.get('/video/:id', (request, response) => {
-  // Create an API instance using your VIMEO_TOKEN from your .env file
+app.get('/vimeo/api', (request, response) => {
   let api = new Vimeo(null, null, process.env.VIMEO_TOKEN);
-
+  console.log(request.headers.referer)
   api.request({
-    method: 'GET',
-    path: `/videos/${request.params.id}`,
-    headers: { Accept: 'application/vnd.vimeo.*+json;version=3.4' },
-  },
-
-  function(error, body, status_code, headers) {
-    if (error) {
-      response.status(500).send(error);
-      console.log('[Server] ' + error);
-    } else {
-      if (body['play'] == null) {
-        response.status(401).send({ error: "You don't have access to this video's files." });
-        return;
+      method: 'GET',
+      path: request.query.path,
+      headers: { Accept: 'application/vnd.vimeo.*+json;version=3.4' },
+    },
+    function(error, body, status_code, headers) {
+      if (error) {
+        response.status(500).send(error);
+        console.log('[Server] ' + error);
+      } else {
+        // Just pass through the whole JSON response
+        response.status(200).send(body);
       }
-
-      // Sort the resolutions from highest to lowest
-      if (body['play']['progressive']) {
-        body['play']['progressive'] = body['play']['progressive'].sort(function(a, b) {
-          if (parseInt(a['height'], 10) > parseInt(b['height'], 10)) return -1;
-          return 1;
-        });
-      }
-
-      // Unfurl the Live links to hack around CORS issues
-      if (body.live && body.live.status === 'streaming') {
-        var sync_req = require('sync-request');
-
-        body.play.dash.link = sync_req('GET', body.play.dash.link).url;
-        body.play.hls.link = sync_req('GET', body.play.hls.link).url;
-      }
-
-      response.status(200).send(body);
     }
-  });
+  );
 
 });
 
