@@ -2,6 +2,8 @@ import VideoQuality from './video-quality';
 import Util from './util';
 import API from './api';
 
+const dashjs = require('dashjs')
+
 const EventEmitter = require('event-emitter-es6');
 
 export default class Video extends EventEmitter {
@@ -110,7 +112,17 @@ export default class Video extends EventEmitter {
     this.texture.minFilter = THREE.NearestFilter
     this.texture.magFilter = THREE.LinearFilter
     this.texture.format = THREE.RGBFormat
-    this.texture.generateMipmaps = false
+    this.texture.generateMipmaps = true
+  }
+
+  getWidth ()
+  {
+    return this.data.width
+  }
+
+  getHeight ()
+  {
+    return this.data.height
   }
 
   getFileURL ()

@@ -39,6 +39,14 @@ export default class Player extends EventEmitter {
     this.video.load();
   }
 
+  getWidth() {
+    return this.video.getWidth()
+  }
+
+  getHeight() {
+    return this.video.getHeight()
+  }
+
   play () {
     if (this.video) {
       this.video.play();

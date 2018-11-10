@@ -48,6 +48,10 @@ app.get('/demo', (request, response) => {
   response.render('demo.html');
 });
 
+app.get('/depthkit', (request, response) => {
+  response.render('depthkit.html');
+});
+
 // The route for getting videos from the vimeo API
 // TODO: restrict requests to the server's domain
 app.get('/vimeo/api', (request, response) => {
