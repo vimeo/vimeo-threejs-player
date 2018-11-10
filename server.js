@@ -48,6 +48,10 @@ app.get('/demo', (request, response) => {
   response.render('demo.html');
 });
 
+app.get('/album', (request, response) => {
+  response.render('album.html');
+});
+
 app.get('/depthkit', (request, response) => {
   response.render('depthkit.html');
 });

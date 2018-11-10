@@ -10,8 +10,8 @@
     "start": "node server.js",
     "dev": "concurrently \"nodemon server.js\" \"watchify src/index.js -o dist/vimeo.threejs-player.js -v\"",
     "build": "browserify src/index.js | uglifyjs --source-map --output dist/vimeo.threejs-player.min.js",
-    "standard": "standard src/index.js src/components/*.js --fix",
-    "test": "npm run standard"
+    "standard": "standard src/**/*.js spec/*.js --fix",
+    "test": "jasmine"
   },
   "license": "MIT",
   "dependencies": {
@@ -19,6 +19,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.2",
     "host-validation": "^2.0.1",
+    "jasmine-es6": "^0.4.3",
     "sync-request": "^6.0.0",
     "three": "^0.89.0",
     "vimeo": "^2.0.2"
@@ -33,9 +34,9 @@
     "event-emitter-es6": "^1.1.5",
     "glslify": "^6.1.0",
     "nodemon": "^1.14.12",
+    "standard": "*",
     "uglify-js": "^3.3.9",
-    "watchify": "^3.10.0",
-    "standard": "*"
+    "watchify": "^3.10.0"
   },
   "browserify": {
     "transform": [

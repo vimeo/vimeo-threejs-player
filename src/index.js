@@ -1,4 +1,5 @@
 import Player from './components/player'
+import VideoQuality from './components/video-quality'
 
 /*
  * Everything lives in the Vimeo namespace and is only
@@ -6,6 +7,7 @@ import Player from './components/player'
  */
 const Vimeo = {
   Player: Player,
+  VideoQuality: VideoQuality
 }
 
 if (window.THREE) {

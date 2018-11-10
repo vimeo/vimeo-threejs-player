@@ -1,0 +1,91 @@
+<%- include('header.html'); -%>
+<script type="text/javascript" src="/js/sky.js"></script>
+
+<script type="text/javascript">
+
+  var renderer,
+      scene,
+      camera,
+      controls;
+
+  init();
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  function init() {
+    scene = new THREE.Scene();
+
+    // Setup camera
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 1000);
+    camera.position.set(0, 1, 30);
+
+    // Setup light
+    var light = new THREE.PointLight(0xffffff, 1, 200);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+
+    // Setup renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.LinearToneMapping;
+    
+    document.body.appendChild(renderer.domElement);
+
+    controls = new THREE.OrbitControls(camera);
+    controls.target.set(0, 0.9, -1.0);
+    controls.update();
+
+    // Add Sky
+    sky = new THREE.Sky();
+    sky.scale.setScalar( 450000 );
+    scene.add( sky );
+    
+    // Add ground
+    var floorGeo = new THREE.PlaneGeometry( 2000, 2000, 1 );
+    var floorMaterial = new THREE.MeshPhongMaterial({ color: 0x159815, side: THREE.DoubleSide });
+    var plane = new THREE.Mesh( floorGeo, floorMaterial );
+    plane.rotation.x = -Math.PI / 2;
+    scene.add(plane);
+
+    // Create a new Vimeo Player and set the video
+    Vimeo.Player.loadPlayersByAlbum(5188897).then(players => {
+      for (var i = 0; i < players.length; i++) {
+        players[i].setQuality(Vimeo.VideoQuality.x360);
+        
+        players[i].on('videoLoad', function(i) {
+          var geometry = new THREE.BoxGeometry(10, 10, 10);
+          var material = new THREE.MeshBasicMaterial( { map: this.texture } );
+          var cube = new THREE.Mesh( geometry, material );
+          cube.position.set(i * 10, 5, (i % 3) * 10);
+          scene.add( cube );
+        }.bind(players[i], i))
+
+        players[i].load()
+      }
+    });
+
+    animate();
+  }
+
+  function animate() 
+  {
+    window.addEventListener('resize', onWindowResize, false);
+    renderer.setAnimationLoop(render);
+  }
+
+  function render() 
+  {
+    renderer.render(scene, camera);
+  }
+
+  function onWindowResize() 
+  {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+</script>
+<%- include('footer.html'); -%>

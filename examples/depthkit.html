@@ -32,7 +32,7 @@
     controls.update();
 
 
-    vimeoPlayer = new Vimeo.Player('244123293');
+    vimeoPlayer = new Vimeo.Player(244123293);
     vimeoPlayer.on('videoLoad', function() {
       var character = new DepthKit("mesh", "meta.txt", "take.mp4");
       scene.add(character);      

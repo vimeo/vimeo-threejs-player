@@ -24624,7 +24624,7 @@ function functionBindPolyfill(context) {
 }
 
 },{}],242:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24634,49 +24634,51 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ApiPath = '/vimeo/api';
+
 var API = function () {
   function API() {
     _classCallCheck(this, API);
   }
 
   _createClass(API, null, [{
-    key: "getVideo",
-    value: function getVideo(video_id) {
+    key: 'getVideo',
+    value: function getVideo(videoId) {
       return new Promise(function (resolve, reject) {
-        fetch("/vimeo/api?path=/videos/" + video_id).then(function (res) {
+        fetch(ApiPath + '?path=/videos/' + videoId + '?fields=play').then(function (res) {
           API.sendResponse(res, resolve, reject);
         });
       });
     }
+
+    // static getChannelVideos (channelId) {
+    //   return new Promise((resolve, reject) => {
+    //     fetch(`/vimeo/api?path=/videos/${id}`).then(res => {
+    //       API.sendResponse(res, resolve, reject)
+    //     })
+    //   })
+    // }
+
   }, {
-    key: "getChannelVideos",
-    value: function getChannelVideos(channel_id) {
+    key: 'getAlbumVideos',
+    value: function getAlbumVideos(albumId) {
       return new Promise(function (resolve, reject) {
-        fetch("/vimeo/api?path=/videos/" + id).then(function (res) {
+        fetch(ApiPath + '?path=/albums/' + albumId + '/videos?fields=uri,play,width,height,live').then(function (res) {
           API.sendResponse(res, resolve, reject);
         });
       });
     }
+
+    // static getFolderVideos (folder_id) {
+    //   return new Promise((resolve, reject) => {
+    //     fetch(`/vimeo/api?path=/videos/${id}`).then(res => {
+    //       API.sendResponse(res, resolve, reject)
+    //     })
+    //   })
+    // }
+
   }, {
-    key: "getAlbumVideos",
-    value: function getAlbumVideos(album_id) {
-      return new Promise(function (resolve, reject) {
-        fetch("/vimeo/api?path=/videos/" + id).then(function (res) {
-          API.sendResponse(res, resolve, reject);
-        });
-      });
-    }
-  }, {
-    key: "getFolderVideos",
-    value: function getFolderVideos(folder_id) {
-      return new Promise(function (resolve, reject) {
-        fetch("/vimeo/api?path=/videos/" + id).then(function (res) {
-          API.sendResponse(res, resolve, reject);
-        });
-      });
-    }
-  }, {
-    key: "sendResponse",
+    key: 'sendResponse',
     value: function sendResponse(res, resolve, reject) {
       res.json().then(function (json) {
         if (res.status === 200) {
@@ -24727,7 +24729,26 @@ var EventEmitter = require('event-emitter-es6');
 var Player = function (_EventEmitter) {
   _inherits(Player, _EventEmitter);
 
-  function Player(videoIDs) {
+  _createClass(Player, null, [{
+    key: 'loadPlayersByAlbum',
+    value: function loadPlayersByAlbum(albumId) {
+      var players = [];
+
+      return new Promise(function (resolve, reject) {
+        _api2.default.getAlbumVideos(albumId).then(function (resp) {
+          for (var i = 0; i < resp.data.length; i++) {
+            var player = new Player(resp.data[i].uri);
+            player.video.data = resp.data[i];
+            players.push(player);
+          }
+
+          resolve(players);
+        });
+      });
+    }
+  }]);
+
+  function Player(videoId) {
     var quality = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _videoQuality2.default.auto;
     var autoplay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -24735,20 +24756,24 @@ var Player = function (_EventEmitter) {
 
     var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this));
 
-    _this.id = videoIDs;
-    _this.quality = quality;
+    if (!videoId) {
+      throw new Error('[Vimeo] Video ID is required');
+    }
+
+    _this.id = _this.parseVideoId(videoId);
     _this.autoplay = _this.autoplay;
     _this.muted = false;
-    _this.video;
     _this.texture;
+
+    _this.video = new _video2.default(_this.id, quality, _this.autoplay);
+
+    _this.bindEvents();
     return _this;
   }
 
   _createClass(Player, [{
-    key: 'load',
-    value: function load() {
-      this.video = new _video2.default(this.id, this.quality, this.autoplay);
-
+    key: 'bindEvents',
+    value: function bindEvents() {
       this.video.on('metadataLoad', function () {
         this.emit('metadataLoad');
       }.bind(this));
@@ -24761,8 +24786,21 @@ var Player = function (_EventEmitter) {
       this.video.on('play', function () {
         this.emit('play');
       }.bind(this));
-
+    }
+  }, {
+    key: 'parseVideoId',
+    value: function parseVideoId(id) {
+      return parseInt(id.match(/([0-9]+)/)[1]);
+    }
+  }, {
+    key: 'load',
+    value: function load() {
       this.video.load();
+    }
+  }, {
+    key: 'setQuality',
+    value: function setQuality(quality) {
+      this.video.selectedQuality = quality;
     }
   }, {
     key: 'getWidth',
@@ -24788,9 +24826,6 @@ var Player = function (_EventEmitter) {
         this.video.pause();
       }
     }
-  }], [{
-    key: 'getPlayersByFolder',
-    value: function getPlayersByFolder(folder_id) {}
   }]);
 
   return Player;
@@ -24866,14 +24901,14 @@ var Util = function () {
 exports.default = Util;
 
 },{}],245:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var VideoQuality = {
-  auto: "auto", // auto will default to adaptive an fallback to highest progressive file
-  adaptive: "adaptive",
+  auto: 'auto', // auto will default to adaptive an fallback to highest progressive file
+  adaptive: 'adaptive',
   x4K: 2160,
   x2K: 1440,
   x1080: 1080,
@@ -24920,7 +24955,7 @@ var EventEmitter = require('event-emitter-es6');
 var Video = function (_EventEmitter) {
   _inherits(Video, _EventEmitter);
 
-  function Video(videoID) {
+  function Video(videoId) {
     var quality = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _videoQuality2.default.auto;
     var autoplay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -24928,7 +24963,7 @@ var Video = function (_EventEmitter) {
 
     var _this = _possibleConstructorReturn(this, (Video.__proto__ || Object.getPrototypeOf(Video)).call(this));
 
-    _this.id = videoID;
+    _this.id = videoId;
     _this.selectedQuality = quality;
 
     _this.data;
@@ -24959,9 +24994,13 @@ var Video = function (_EventEmitter) {
         return;
       }
 
-      _api2.default.getVideo(this.id).then(function (response) {
-        _this2.setMetadata(response);
-      });
+      if (!this.data) {
+        _api2.default.getVideo(this.id).then(function (response) {
+          _this2.setMetadata(response);
+        });
+      } else {
+        this.setMetadata(this.data);
+      }
     }
   }, {
     key: 'setMetadata',
@@ -25073,20 +25112,42 @@ var Video = function (_EventEmitter) {
     }
   }, {
     key: 'getProgressiveFileURL',
-    value: function getProgressiveFileURL() {
+    value: function getProgressiveFileURL(quality) {
       if (this.isLive()) {
-        console.warn("[Vimeo] This is a live video! There are no progressive video files availale.");
+        console.warn('[Vimeo] This is a live video! There are no progressive video files availale.');
+      } else {
+        this.data.play.progressive.sort(function (a, b) {
+          return a.height < b.height ? 1 : -1;
+        });
+
+        var preferred_qualities = [];
+        for (var i = 0; i < this.data.play.progressive.length; i++) {
+          if (quality > this.data.play.progressive[i].height) {
+            preferred_qualities.add(this.data.play.progressive[i]);
+          } else if (quality == this.data.play.progressive[i].height) {
+            return this.data.play.progressive[i].link;
+          }
+        }
+
+        if (preferred_qualities.Count == 0) {
+          var file = this.data.play.progressive[this.data.play.progressive.length - 1];
+          console.log("[Vimeo] This video does not have a " + quality + "p resolution. Defaulting to " + file.height + "p.");
+          return file.link;
+        } else {
+          console.log("[Vimeo] This video does not have a " + quality + " resolution. Defaulting to " + preferred_qualities[0].height + "p.");
+          return preferred_qualities[0].link;
+        }
       }
     }
   }, {
     key: 'isLive',
     value: function isLive() {
-      return this.data.live.status === 'streaming';
+      return this.data.live && this.data.live.status === 'streaming';
     }
   }, {
     key: 'isAdaptivePlayback',
     value: function isAdaptivePlayback() {
-      return this.selectedQuality == _videoQuality2.default.auto || this.selectedQuality == _videoQuality2.default.adaptive;
+      return this.selectedQuality === _videoQuality2.default.auto || this.selectedQuality === _videoQuality2.default.adaptive;
     }
   }, {
     key: 'isDashPlayback',
@@ -25107,6 +25168,10 @@ var _player = require('./components/player');
 
 var _player2 = _interopRequireDefault(_player);
 
+var _videoQuality = require('./components/video-quality');
+
+var _videoQuality2 = _interopRequireDefault(_videoQuality);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
@@ -25114,7 +25179,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Attached to the window if THREE (three.js) exists
  */
 var Vimeo = {
-  Player: _player2.default
+  Player: _player2.default,
+  VideoQuality: _videoQuality2.default
 };
 
 if (window.THREE) {
@@ -25123,4 +25189,4 @@ if (window.THREE) {
   console.warn('[Depth Player] three.js was not found, did you forget to include it?');
 }
 
-},{"./components/player":243}]},{},[247]);
+},{"./components/player":243,"./components/video-quality":245}]},{},[247]);
