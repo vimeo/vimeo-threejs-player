@@ -17,8 +17,10 @@
   function init() {
     scene = new THREE.Scene();
 
+    var container = document.getElementById('container')
+
     // Setup camera
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 1000);
+    camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, .01, 1000);
     camera.position.set(0, 1, 30);
 
     // Setup light
@@ -29,14 +31,14 @@
     // Setup renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.toneMapping = THREE.LinearToneMapping;
     
-    document.body.appendChild(renderer.domElement);
-
     controls = new THREE.OrbitControls(camera);
     controls.target.set(0, 0.9, -1.0);
     controls.update();
+
+    container.appendChild(renderer.domElement);
 
     // Add Sky
     sky = new THREE.Sky();
@@ -51,17 +53,26 @@
     scene.add(plane);
 
     // Create a new Vimeo Player and set the video
-    Vimeo.Player.loadPlayersByAlbum(5188897).then(players => {
+    Vimeo.Player.loadPlayersByAlbum(5188897, { 
+      quality: Vimeo.VideoQuality.x360, 
+      autoplay: true,
+      muted: true
+    }).then(players => {
+
+      var row = 0
       for (var i = 0; i < players.length; i++) {
-        players[i].setQuality(Vimeo.VideoQuality.x360);
-        
-        players[i].on('videoLoad', function(i) {
+
+        players[i].on('videoLoad', function(i, row) {
           var geometry = new THREE.BoxGeometry(10, 10, 10);
           var material = new THREE.MeshBasicMaterial( { map: this.texture } );
           var cube = new THREE.Mesh( geometry, material );
-          cube.position.set(i * 10, 5, (i % 3) * 10);
+          cube.position.set((i % 3) * 10, 5, row * 10);
           scene.add( cube );
-        }.bind(players[i], i))
+        }.bind(players[i], i, row))
+
+        if (i % 3 == 0) {
+          row++
+        }
 
         players[i].load()
       }
@@ -83,9 +94,11 @@
 
   function onWindowResize() 
   {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    var container = document.getElementById('container')
+    camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
   }
 </script>
+
 <%- include('footer.html'); -%>

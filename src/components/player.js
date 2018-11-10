@@ -1,20 +1,19 @@
 import VideoQuality from './video-quality'
 import Video from './video'
-import API from './api';
+import API from './api'
 
 const EventEmitter = require('event-emitter-es6')
 
 export default class Player extends EventEmitter {
-
-  static loadPlayersByAlbum (albumId) {
-    var players = [];
+  static loadPlayersByAlbum (albumId, args = {}) {
+    var players = []
 
     return new Promise((resolve, reject) => {
       API.getAlbumVideos(albumId).then(resp => {
         for (var i = 0; i < resp.data.length; i++) {
-          var player = new Player(resp.data[i].uri)
+          var player = new Player(resp.data[i].uri, args)
           player.video.data = resp.data[i]
-          players.push(player)          
+          players.push(player)
         }
 
         resolve(players)
@@ -22,7 +21,7 @@ export default class Player extends EventEmitter {
     })
   }
 
-  constructor (videoId, quality = VideoQuality.auto, autoplay = true) {
+  constructor (videoId, args = {}) {
     super()
 
     if (!videoId) {
@@ -30,13 +29,15 @@ export default class Player extends EventEmitter {
     }
 
     this.id = this.parseVideoId(videoId)
-    this.autoplay = this.autoplay
-    this.muted = false
     this.texture
 
-    this.video = new Video(this.id, quality, this.autoplay)
+    this.video = new Video(this.id, args)
 
     this.bindEvents()
+
+    if (args.autoload) {
+      this.load()
+    }
   }
 
   bindEvents () {
@@ -55,7 +56,15 @@ export default class Player extends EventEmitter {
   }
 
   parseVideoId (id) {
-    return parseInt(id.match(/([0-9]+)/)[1])
+    return parseInt(id.toString().match(/([0-9]+)/)[1])
+  }
+
+  mute () {
+    this.video.mute()
+  }
+
+  unmute () {
+    this.video.unmute()
   }
 
   load () {

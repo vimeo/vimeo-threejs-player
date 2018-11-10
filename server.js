@@ -36,24 +36,25 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(hostValidation({ hosts: [`127.0.0.1:${process.env.PORT}`,
+                                 `192.168.1.99:${process.env.PORT}`,
                                  `localhost:${process.env.PORT}`,
                                  process.env.DOMAIN] }))
 
 
 app.get('/', (request, response) => {
-  response.render('demo.html');
+  response.render('basic.html');
 });
 
-app.get('/demo', (request, response) => {
-  response.render('demo.html');
+app.get('/basic', (request, response) => {
+  response.render('basic.html');
 });
 
 app.get('/album', (request, response) => {
   response.render('album.html');
 });
 
-app.get('/depthkit', (request, response) => {
-  response.render('depthkit.html');
+app.get('/looking-glass', (request, response) => {
+  response.render('looking-glass.html');
 });
 
 // The route for getting videos from the vimeo API

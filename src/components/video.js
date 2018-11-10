@@ -1,18 +1,23 @@
 import VideoQuality from './video-quality'
 import Util from './util'
 import API from './api'
+import canAutoPlay from 'can-autoplay'
 
 const dashjs = require('dashjs')
 
 const EventEmitter = require('event-emitter-es6')
 
 export default class Video extends EventEmitter {
-  constructor (videoId, quality = VideoQuality.auto, autoplay = true) {
+  constructor (videoId, args = {}) {
     super()
 
     this.id = videoId
-    this.selectedQuality = quality
+    this.selectedQuality = args.quality || VideoQuality.auto
+    this.muted = typeof args.muted !== 'undefined' ? args.muted : false
+    this.autoplay = typeof args.autoplay !== 'undefined' ? args.autoplay : true
+    this.loop = typeof args.loop !== 'undefined' ? args.loop : true
 
+    this.config = {}
     this.data
     this.loaded
     this.videoElement
@@ -20,9 +25,14 @@ export default class Video extends EventEmitter {
     this.videoPlayer
     this.texture
 
-    this.autoplay = autoplay
-    this.muted = false
-    this.loop = false
+    if (this.autoplay === true) {
+      canAutoPlay.video({ muted: this.muted }).then(({ result, error }) => {
+        if (result === false) {
+          console.warn('Autoplay not available on this browser')
+          this.autoplay = false
+        }
+      })
+    }
   }
 
   load () {
@@ -39,18 +49,26 @@ export default class Video extends EventEmitter {
       API.getVideo(this.id).then(response => {
         this.setMetadata(response)
       })
-    }
-    else {
+    } else {
       this.setMetadata(this.data)
     }
   }
 
   setMetadata (metadata) {
     this.data = metadata
+    this.setupConfig()
     this.emit('metadataLoad')
 
-    if (this.autoplay) {
-      this.setupVideoElement()
+    this.setupVideoElement()
+  }
+
+  setupConfig () {
+    if (this.data.description) {
+      var desc = "asdfasfds" + this.data.description
+      var match = desc.match(/(\{.*\})/g)
+      if (match) {
+        this.config = JSON.parse(match[0])
+      }
     }
   }
 
@@ -78,6 +96,22 @@ export default class Video extends EventEmitter {
     this.emit('pause')
   }
 
+  mute () {
+    this.muted = true
+
+    if (this.videoElement) {
+      this.videoElement.muted = true
+    }
+  }
+
+  unmute () {
+    this.muted = false
+
+    if (this.videoElement) {
+      this.videoElement.muted = false
+    }
+  }
+
   setupVideoElement () {
     this.videoElement = document.createElement('video')
     this.videoElement.id = 'vimeo-webgl-player-' + this.id
@@ -90,14 +124,13 @@ export default class Video extends EventEmitter {
     // When the video is done loading, trigger the load event
     this.videoElement.addEventListener('loadeddata', function () {
       if (this.videoElement.readyState >= 2) {
-        this.setupTexture()
         this.emit('videoLoad')
       }
     }.bind(this))
 
     if (this.isDashPlayback()) {
       this.videoPlayer = dashjs.MediaPlayer().create()
-      this.videoPlayer.initialize(this.videoElement, this.getAdaptiveURL(), false)
+      this.videoPlayer.initialize(this.videoElement, this.getAdaptiveURL(), this.autoplay)
     } else {
       this.videoPlayer = this.videoElement
 
@@ -109,6 +142,8 @@ export default class Video extends EventEmitter {
       this.videoPlayer.src = this.getFileURL()
       this.videoPlayer.load()
     }
+
+    this.setupTexture()
   }
 
   setupTexture () {
@@ -146,29 +181,26 @@ export default class Video extends EventEmitter {
   getProgressiveFileURL (quality) {
     if (this.isLive()) {
       console.warn('[Vimeo] This is a live video! There are no progressive video files availale.')
-    }
-    else {
-      this.data.play.progressive.sort(function(a, b) {
+    } else {
+      this.data.play.progressive.sort(function (a, b) {
         return a.height < b.height ? 1 : -1
       })
-      
+
       var preferred_qualities = []
       for (var i = 0; i < this.data.play.progressive.length; i++) {
         if (quality > this.data.play.progressive[i].height) {
-          preferred_qualities.add(this.data.play.progressive[i])
-        }
-        else if (quality == this.data.play.progressive[i].height) {
+          preferred_qualities.push(this.data.play.progressive[i])
+        } else if (quality == this.data.play.progressive[i].height) {
           return this.data.play.progressive[i].link
         }
       }
 
-      if (preferred_qualities.Count == 0) {
+      if (preferred_qualities.length == 0) {
         var file = this.data.play.progressive[this.data.play.progressive.length - 1]
-        console.log("[Vimeo] This video does not have a " + quality + "p resolution. Defaulting to " + file.height + "p.");
-        return file.link;
-      }
-      else {
-        console.log("[Vimeo] This video does not have a " + quality + " resolution. Defaulting to " + preferred_qualities[0].height + "p.");
+        console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
+        return file.link
+      } else {
+        console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferred_qualities[0].height + 'p.')
         return preferred_qualities[0].link
       }
     }

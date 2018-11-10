@@ -1,0 +1,96 @@
+<%- include('header.html'); -%>
+
+<script type="text/javascript">
+
+  var renderer,
+      scene,
+      camera,
+      controls,
+      player;
+
+  var quilt = { x: 5, y: 9 }
+
+  init();
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  function init() {
+    scene = new THREE.Scene();
+
+    var container = document.getElementById('container')
+
+    // Setup camera
+    camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, .01, 1000);
+    camera.position.set(0, 1, 30);
+
+    // Setup renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
+    renderer.toneMapping = THREE.LinearToneMapping;
+    
+    container.appendChild(renderer.domElement);
+
+    controls = new THREE.OrbitControls(camera);
+    controls.target.set(0, 0.9, 2.0);
+    controls.update();
+
+    player = new Vimeo.Player(295913909, { quality: Vimeo.VideoQuality.x4K })
+    player.on('videoLoad', function() {
+      if (player.video.config && player.video.config.quilt) {
+        quilt.x = player.video.config.quilt.tilesX;
+        quilt.y = player.video.config.quilt.tilesY;
+      }
+
+      var height = 30 * (9 / 16)
+      var geometry = new THREE.PlaneGeometry(30, height, 32);
+      player.texture.repeat.set(1 / quilt.x, 1 / quilt.y)
+      var material = new THREE.MeshBasicMaterial( { map: player.texture, side: THREE.DoubleSide} );
+      var plane = new THREE.Mesh( geometry, material );
+      scene.add( plane );
+
+      // camera.lookAt(plane)
+    })
+    player.load()    
+
+    animate();
+
+    container.addEventListener("mousemove", function(e) {
+      if (player.texture) {
+        var left = window.innerWidth - container.offsetWidth;
+        var mouseX = e.clientX - left;
+        var pos = mouseX / container.offsetWidth;    
+        var interval = container.offsetWidth / ((quilt.x * quilt.y) );
+        var quiltIndex = Math.floor(mouseX / interval)
+
+        var quiltPosX = quiltIndex % quilt.x
+        var quiltPosY = Math.floor(quiltIndex / quilt.x)
+        
+        player.texture.offset.set(quiltPosX / quilt.x, quiltPosY / quilt.y)
+      }
+    });
+  }
+
+  function animate() 
+  {
+    window.addEventListener('resize', onWindowResize, false);
+    renderer.setAnimationLoop(render);
+  }
+
+  function render() 
+  {
+    renderer.render(scene, camera);
+  }
+
+  function onWindowResize() 
+  {
+    var container = document.getElementById('container')
+    camera.aspect = container.offsetWidth / container.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
+  }
+</script>
+
+<%- include('footer.html'); -%>

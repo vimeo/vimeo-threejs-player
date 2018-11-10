@@ -1,4 +1,15 @@
 <%- include('header.html'); -%>
+
+<div id="loader" class="loading">
+  <div class="spinner">
+    <div class="mask">
+      <div class="maskedCircle"></div>
+    </div>
+  </div>
+</div>
+
+<div id="play" class="play-button"></div>
+
 <script type="text/javascript">
   var renderer,
     scene,
@@ -12,13 +23,13 @@
     scene = new THREE.Scene();
 
     // Setup camera
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 100);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 1000);
     camera.position.set(0, 1, 30);
 
     // Setup light
     var light = new THREE.PointLight();
-    light.position.set(0, 2.5, 0);
-    // scene.add(light);
+    light.position.set(0, 15, 0);
+    scene.add(light);
 
     // Setup renderer
     renderer = new THREE.WebGLRenderer();
@@ -26,14 +37,14 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.LinearToneMapping;
     
-    document.body.appendChild(renderer.domElement);
+    document.getElementById('container').appendChild(renderer.domElement);
 
     controls = new THREE.OrbitControls(camera);
     controls.target.set(0, 0.9, -1.0);
     controls.update();
 
     // Create a new Vimeo Player and set the video
-    vimeoPlayer = new Vimeo.Player('244123293');
+    vimeoPlayer = new Vimeo.Player(244123293, { autoplay: false });
 
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function() {
@@ -46,20 +57,20 @@
       plane.position.y = height / 2;
       scene.add( plane );
 
-
       videoScreenLight = new THREE.RectAreaLight(0xffffff, 5.0,  30, height);
-      // videoScreenLight.position.set(0, -5, 3)
       scene.add(videoScreenLight)
       
     });
 
-    var floorGeo = new THREE.PlaneGeometry( 100, 100, 1 );
+    vimeoPlayer.load();
+
+    var floorGeo = new THREE.PlaneGeometry( 1000, 1000, 1 );
     var floorMaterial = new THREE.MeshPhysicalMaterial({ color: 0x333333, side: THREE.DoubleSide });
     var plane = new THREE.Mesh( floorGeo, floorMaterial );
     plane.rotation.x = -Math.PI / 2;
     scene.add(plane);
 
-    vimeoPlayer.load();
+    
     
     setupEvents();
     animate();
