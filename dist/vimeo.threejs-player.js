@@ -24745,10 +24745,15 @@ var API = function () {
   }
 
   _createClass(API, null, [{
+    key: 'path',
+    value: function path(endpoint) {
+      return ApiApath + '?path=' + endpoint + '?fields=uri,play,width,height,live,description,title';
+    }
+  }, {
     key: 'getVideo',
     value: function getVideo(videoId) {
       return new Promise(function (resolve, reject) {
-        fetch(ApiPath + '?path=/videos/' + videoId + '?fields=uri,play,width,height,live,description,title').then(function (res) {
+        fetch(API.path('/videos/' + videoId)).then(function (res) {
           API.sendResponse(res, resolve, reject);
         });
       });
@@ -24757,7 +24762,7 @@ var API = function () {
     key: 'getAlbumVideos',
     value: function getAlbumVideos(albumId) {
       return new Promise(function (resolve, reject) {
-        fetch(ApiPath + '?path=/albums/' + albumId + '/videos?fields=uri,play,width,height,live,description,title').then(function (res) {
+        fetch(API.path('/albums/' + albumId + '/videos')).then(function (res) {
           API.sendResponse(res, resolve, reject);
         });
       });
