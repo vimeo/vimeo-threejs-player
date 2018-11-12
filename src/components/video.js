@@ -26,13 +26,20 @@ export default class Video extends EventEmitter {
     this.texture
 
     if (this.autoplay === true) {
-      canAutoPlay.video({ muted: this.muted }).then(({ result, error }) => {
+      canAutoPlay.video({ muted: this.muted, timeout: 1000 }).then(({ result, error }) => {
         if (result === false) {
-          console.warn('Autoplay not available on this browser')
+          console.warn('[Vimeo] Autoplay not available on this browser', error)
           this.autoplay = false
+
+          window.addEventListener('click', this.onClickAutoplayFix.bind(this));
         }
       })
     }
+  }
+
+  onClickAutoplayFix () {
+    this.play()
+    window.removeEventListener('click', this.onClickAutoplayFix.bind(this));
   }
 
   load () {
@@ -124,6 +131,10 @@ export default class Video extends EventEmitter {
     // When the video is done loading, trigger the load event
     this.videoElement.addEventListener('loadeddata', function () {
       if (this.videoElement.readyState >= 2) {
+        if (this.autoplay) {
+          this.play()
+        }
+
         this.emit('videoLoad')
       }
     }.bind(this))

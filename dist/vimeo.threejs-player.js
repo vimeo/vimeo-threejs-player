@@ -24747,7 +24747,7 @@ var API = function () {
   _createClass(API, null, [{
     key: 'path',
     value: function path(endpoint) {
-      return ApiApath + '?path=' + endpoint + '?fields=uri,play,width,height,live,description,title';
+      return ApiPath + '?path=' + endpoint + '?fields=uri,play,width,height,live,description,title';
     }
   }, {
     key: 'getVideo',
@@ -25084,13 +25084,15 @@ var Video = function (_EventEmitter) {
     _this.texture;
 
     if (_this.autoplay === true) {
-      _canAutoplay2.default.video({ muted: _this.muted }).then(function (_ref) {
+      _canAutoplay2.default.video({ muted: _this.muted, timeout: 1000 }).then(function (_ref) {
         var result = _ref.result,
             error = _ref.error;
 
         if (result === false) {
-          console.warn('Autoplay not available on this browser');
+          console.warn('[Vimeo] Autoplay not available on this browser', error);
           _this.autoplay = false;
+
+          window.addEventListener('click', _this.onClickAutoplayFix.bind(_this));
         }
       });
     }
@@ -25098,6 +25100,12 @@ var Video = function (_EventEmitter) {
   }
 
   _createClass(Video, [{
+    key: 'onClickAutoplayFix',
+    value: function onClickAutoplayFix() {
+      this.play();
+      window.removeEventListener('click', this.onClickAutoplayFix.bind(this));
+    }
+  }, {
     key: 'load',
     value: function load() {
       this.loadMetadata();
@@ -25199,6 +25207,10 @@ var Video = function (_EventEmitter) {
       // When the video is done loading, trigger the load event
       this.videoElement.addEventListener('loadeddata', function () {
         if (this.videoElement.readyState >= 2) {
+          if (this.autoplay) {
+            this.play();
+          }
+
           this.emit('videoLoad');
         }
       }.bind(this));
@@ -25333,7 +25345,7 @@ var Vimeo = {
 if (window.THREE) {
   window.Vimeo = Vimeo;
 } else {
-  console.warn('[Depth Player] three.js was not found, did you forget to include it?');
+  console.warn('[Vimeo] three.js was not found, did you forget to include it?');
 }
 
 },{"./components/player":244,"./components/video-quality":246}]},{},[248]);

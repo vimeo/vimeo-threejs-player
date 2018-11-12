@@ -23,7 +23,7 @@
     "jasmine-es6": "^0.4.3",
     "sync-request": "^6.0.0",
     "three": "^0.89.0",
-    "vimeo": "^2.0.2"
+    "vimeo": "^2.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -34,7 +34,7 @@
     "dotenv": "^6.0.0",
     "event-emitter-es6": "^1.1.5",
     "glslify": "^6.1.0",
-    "nodemon": "^1.14.12",
+    "nodemon": "^1.18.6",
     "standard": "*",
     "uglify-js": "^3.3.9",
     "watchify": "^3.10.0"

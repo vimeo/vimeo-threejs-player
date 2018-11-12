@@ -2,7 +2,7 @@ const ApiPath = '/vimeo/api'
 
 export default class API {
   static path(endpoint) {
-    return `${ApiApath}?path=${endpoint}?fields=uri,play,width,height,live,description,title`
+    return `${ApiPath}?path=${endpoint}?fields=uri,play,width,height,live,description,title`
   }
 
   static getVideo (videoId) {

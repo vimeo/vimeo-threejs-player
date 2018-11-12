@@ -13,5 +13,5 @@ const Vimeo = {
 if (window.THREE) {
   window.Vimeo = Vimeo
 } else {
-  console.warn('[Depth Player] three.js was not found, did you forget to include it?')
+  console.warn('[Vimeo] three.js was not found, did you forget to include it?')
 }

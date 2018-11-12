@@ -58,10 +58,9 @@ app.get('/looking-glass', (request, response) => {
 });
 
 // The route for getting videos from the vimeo API
-// TODO: restrict requests to the server's domain
 app.get('/vimeo/api', (request, response) => {
   let api = new Vimeo(null, null, process.env.VIMEO_TOKEN);
-  console.log(request.headers.referer)
+
   api.request({
       method: 'GET',
       path: request.query.path,
@@ -72,12 +71,11 @@ app.get('/vimeo/api', (request, response) => {
         response.status(500).send(error);
         console.log('[Server] ' + error);
       } else {
-        // Just pass through the whole JSON response
+        // Pass through the whole JSON response
         response.status(200).send(body);
       }
     }
   );
-
 });
 
 const listener = app.listen(process.env.PORT, () => {
