@@ -31,10 +31,10 @@
     "babelify": "^8.0.0",
     "browserify": "^15.2.0",
     "concurrently": "^3.5.1",
-    "dotenv": "^6.0.0",
+    "dotenv": "^6.2.0",
     "event-emitter-es6": "^1.1.5",
     "glslify": "^6.1.0",
-    "nodemon": "^1.18.6",
+    "nodemon": "^1.18.9",
     "standard": "*",
     "uglify-js": "^3.3.9",
     "watchify": "^3.10.0"
