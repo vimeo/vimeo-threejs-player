@@ -1,0 +1,5 @@
+examples/*
+src/
+spec/
+docs/
+.DS_Store
