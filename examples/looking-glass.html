@@ -33,7 +33,7 @@
     
     container.appendChild(renderer.domElement);
 
-    controls = new THREE.OrbitControls(camera);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 0.9, 2.0);
     controls.update();
 
