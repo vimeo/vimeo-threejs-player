@@ -10,8 +10,9 @@
     "start": "node server.js",
     "dev": "concurrently \"nodemon server.js\" \"watchify src/index.js -o dist/vimeo.threejs-player.js -v\"",
     "build": "browserify src/index.js | uglifyjs --source-map --output dist/vimeo.threejs-player.min.js",
-    "standard": "standard src/**/*.js spec/*.js --fix",
-    "test": "jasmine"
+    "format": "standard src/**/*.js spec/*.js --fix",
+    "unit": "karma start karma.conf.js ",
+    "test": "npm run unit"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,24 +21,32 @@
     "ejs": "^2.6.1",
     "express": "^4.16.2",
     "host-validation": "^2.0.1",
-    "jasmine-es6": "^0.4.3",
     "sync-request": "^6.0.0",
     "three": "^0.89.0",
     "vimeo": "^2.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-loader": "^5.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "babelify": "^8.0.0",
     "browserify": "^15.2.0",
     "concurrently": "^3.5.1",
     "dotenv": "^6.2.0",
     "event-emitter-es6": "^1.1.5",
-    "glslify": "^6.1.0",
     "nodemon": "^1.18.9",
     "standard": "*",
     "uglify-js": "^3.3.9",
-    "watchify": "^3.10.0"
+    "watchify": "^3.10.0",
+    "jasmine-core": "^3.2.1",
+    "karma": "^3.0.0",
+    "karma-browserify": "^5.3.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-commonjs": "^1.0.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-phantomjs-launcher": "^1.0.4"
   },
   "browserify": {
     "transform": [
@@ -48,8 +57,7 @@
             "env"
           ]
         }
-      ],
-      "glslify"
+      ]
     ]
   }
 }

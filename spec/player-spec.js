@@ -1,30 +1,30 @@
 import Player from '../src/components/player'
 import VideoQuality from '../src/components/video-quality'
 
-describe('Player', function () {
-  var player
+describe('Player', ()=>{
+  let player
 
-  beforeEach(function () {
-    player = new Player(123)
+  beforeEach(()=>{
+      player = new Player(123)
   })
 
-  describe('constructor', function () {
-    it('throws error without parameter', function () {
-      expect(function () {
+  describe('constructor', ()=>{
+    it('throws error without parameter', ()=>{
+      expect(()=>{
         new Player()
       }).toThrow(new Error('[Vimeo] Video ID is required'))
     })
 
-    it('sets default quality to auto', function () {
+    it('sets default quality to auto', ()=>{
       expect(player.quality).toBe(VideoQuality.auto)
     })
 
-    it('sets default quality to auto', function () {
+    it('sets default quality to auto', ()=>{
       expect(new Player(155, VideoQuality.x1080).quality).toBe(VideoQuality.x1080)
     })
 
-    it('sets id', function () {
+    it('sets id', ()=>{
       expect(new Player(155).id).toBe(155)
     })
-  })
+  }) 
 })
