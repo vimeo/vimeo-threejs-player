@@ -1,7 +1,7 @@
 const ApiPath = '/vimeo/api'
 
 export default class API {
-  static path(endpoint) {
+  static path (endpoint) {
     return `${ApiPath}?path=${endpoint}?fields=uri,play,width,height,live,description,title`
   }
 

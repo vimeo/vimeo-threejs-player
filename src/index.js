@@ -1,5 +1,6 @@
 import Player from './components/player'
 import VideoQuality from './components/video-quality'
+import { version } from '../package.json'
 
 /*
  * Everything lives in the Vimeo namespace and is only
@@ -7,11 +8,8 @@ import VideoQuality from './components/video-quality'
  */
 const Vimeo = {
   Player: Player,
-  VideoQuality: VideoQuality
+  VideoQuality: VideoQuality,
+  Version: version
 }
 
-if (window.THREE) {
-  window.Vimeo = Vimeo
-} else {
-  console.warn('[Vimeo] three.js was not found, did you forget to include it?')
-}
+window.Vimeo = Vimeo

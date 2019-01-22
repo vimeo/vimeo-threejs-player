@@ -1,5 +1,5 @@
 import VideoQuality from './video-quality'
-import Video from './video'
+import VimeoVideo from './vimeo-video'
 import API from './api'
 
 const EventEmitter = require('event-emitter-es6')
@@ -31,7 +31,7 @@ export default class Player extends EventEmitter {
     this.id = this.parseVideoId(videoId)
     this.texture
 
-    this.video = new Video(this.id, args)
+    this.video = new VimeoVideo(this.id, args)
 
     this.bindEvents()
 
@@ -59,6 +59,10 @@ export default class Player extends EventEmitter {
     return parseInt(id.toString().match(/([0-9]+)/)[1])
   }
 
+  getVideoId () {
+    return this.id
+  }
+
   mute () {
     this.video.mute()
   }
@@ -75,6 +79,10 @@ export default class Player extends EventEmitter {
     this.video.selectedQuality = quality
   }
 
+  getQuality () {
+    return this.video.selectedQuality
+  }
+
   getWidth () {
     return this.video.getWidth()
   }
@@ -86,6 +94,8 @@ export default class Player extends EventEmitter {
   play () {
     if (this.video) {
       this.video.play()
+    } else {
+      console.warn('[Vimeo Player] Video has not been loaded yet, try calling player.load()')
     }
   }
 

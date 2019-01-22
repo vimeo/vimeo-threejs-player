@@ -12745,7 +12745,7 @@ if(p1 * 256 + p2 !== tag.tag){found = false;}bytesConsumed = 3;}else if(tag.tag 
      */function areEqual(obj1,obj2){return (0,_fastDeepEqual2['default'])(obj1,obj2);}instance = {areEqual:areEqual};return instance;}ObjectUtils.__dashjs_factory_name = 'ObjectUtils';exports['default'] = _coreFactoryMaker2['default'].getSingletonFactory(ObjectUtils);module.exports = exports['default'];
 
 
-},{"../../core/FactoryMaker":14,"fast-deep-equal":208}],173:[function(require,module,exports){
+},{"../../core/FactoryMaker":14,"fast-deep-equal":209}],173:[function(require,module,exports){
 /**
  * The copyright in this software is being made available under the BSD License,
  * included below. This software may be subject to other third party and contributor
@@ -14437,63 +14437,6 @@ function DataChunk(){_classCallCheck(this,DataChunk);this.streamId = null;this.m
 },{}],208:[function(require,module,exports){
 'use strict';
 
-var isArray = Array.isArray;
-var keyList = Object.keys;
-var hasProp = Object.prototype.hasOwnProperty;
-
-module.exports = function equal(a, b) {
-  if (a === b) return true;
-
-  var arrA = isArray(a)
-    , arrB = isArray(b)
-    , i
-    , length
-    , key;
-
-  if (arrA && arrB) {
-    length = a.length;
-    if (length != b.length) return false;
-    for (i = 0; i < length; i++)
-      if (!equal(a[i], b[i])) return false;
-    return true;
-  }
-
-  if (arrA != arrB) return false;
-
-  var dateA = a instanceof Date
-    , dateB = b instanceof Date;
-  if (dateA != dateB) return false;
-  if (dateA && dateB) return a.getTime() == b.getTime();
-
-  var regexpA = a instanceof RegExp
-    , regexpB = b instanceof RegExp;
-  if (regexpA != regexpB) return false;
-  if (regexpA && regexpB) return a.toString() == b.toString();
-
-  if (a instanceof Object && b instanceof Object) {
-    var keys = keyList(a);
-    length = keys.length;
-
-    if (length !== keyList(b).length)
-      return false;
-
-    for (i = 0; i < length; i++)
-      if (!hasProp.call(b, keys[i])) return false;
-
-    for (i = 0; i < length; i++) {
-      key = keys[i];
-      if (!equal(a[key], b[key])) return false;
-    }
-
-    return true;
-  }
-
-  return false;
-};
-
-},{}],209:[function(require,module,exports){
-'use strict';
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14741,6 +14684,63 @@ var EventEmitter = function () {
 }();
 
 module.exports = EventEmitter;
+
+},{}],209:[function(require,module,exports){
+'use strict';
+
+var isArray = Array.isArray;
+var keyList = Object.keys;
+var hasProp = Object.prototype.hasOwnProperty;
+
+module.exports = function equal(a, b) {
+  if (a === b) return true;
+
+  var arrA = isArray(a)
+    , arrB = isArray(b)
+    , i
+    , length
+    , key;
+
+  if (arrA && arrB) {
+    length = a.length;
+    if (length != b.length) return false;
+    for (i = 0; i < length; i++)
+      if (!equal(a[i], b[i])) return false;
+    return true;
+  }
+
+  if (arrA != arrB) return false;
+
+  var dateA = a instanceof Date
+    , dateB = b instanceof Date;
+  if (dateA != dateB) return false;
+  if (dateA && dateB) return a.getTime() == b.getTime();
+
+  var regexpA = a instanceof RegExp
+    , regexpB = b instanceof RegExp;
+  if (regexpA != regexpB) return false;
+  if (regexpA && regexpB) return a.toString() == b.toString();
+
+  if (a instanceof Object && b instanceof Object) {
+    var keys = keyList(a);
+    length = keys.length;
+
+    if (length !== keyList(b).length)
+      return false;
+
+    for (i = 0; i < length; i++)
+      if (!hasProp.call(b, keys[i])) return false;
+
+    for (i = 0; i < length; i++) {
+      key = keys[i];
+      if (!equal(a[key], b[key])) return false;
+    }
+
+    return true;
+  }
+
+  return false;
+};
 
 },{}],210:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -16495,7 +16495,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
         typeof imscStyles === 'undefined' ? require("./styles") : imscStyles,
         typeof imscUtils === 'undefined' ? require("./utils") : imscUtils);
 
-},{"./names":215,"./styles":216,"./utils":217,"sax":237}],212:[function(require,module,exports){
+},{"./names":215,"./styles":216,"./utils":217,"sax":238}],212:[function(require,module,exports){
 /* 
  * Copyright (c) 2016, Pierre-Anthony Lemieux <pal@sandflow.com>
  * All rights reserved.
@@ -16745,15 +16745,17 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
             /* apply padding to the <p> so that line padding does not cause line wraps */
 
+            var padmeasure = Math.ceil(lp * context.h) + "px";
+
             if (context.bpd === "tb") {
 
-                proc_e.style.paddingLeft = lp * context.h + "px";
-                proc_e.style.paddingRight = lp * context.h + "px";
+                proc_e.style.paddingLeft = padmeasure;
+                proc_e.style.paddingRight = padmeasure;
 
             } else {
 
-                proc_e.style.paddingTop = lp * context.h + "px";
-                proc_e.style.paddingBottom = lp * context.h + "px";
+                proc_e.style.paddingTop = padmeasure;
+                proc_e.style.paddingBottom = padmeasure;
 
             }
 
@@ -16795,13 +16797,27 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
                 // wrap characters in spans to find the line wrap locations
 
+                var cbuf = '';
+
                 for (var j = 0; j < isd_element.text.length; j++) {
 
-                    var span = document.createElement("span");
+                    cbuf += isd_element.text.charAt(j);
 
-                    span.textContent = isd_element.text.charAt(j);
+                    var cc = isd_element.text.charCodeAt(j);
 
-                    e.appendChild(span);
+                    if (cc < 0xD800 || cc > 0xDBFF || j === isd_element.text.length) {
+
+                        /* wrap the character(s) in a span unless it is a high surrogate */
+
+                        var span = document.createElement("span");
+
+                        span.textContent = cbuf;
+    
+                        e.appendChild(span);
+
+                        cbuf = '';
+
+                    }
 
                 }
 
@@ -16927,45 +16943,57 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
             var ee = lineList[i].elements[lineList[i].end_elem];
 
+            var pospadpxlen = Math.ceil(lp) + "px";
+
+            var negpadpxlen = "-" + Math.ceil(lp) + "px";
+
             if (l !== 0) {
 
                 if (context.ipd === "lr") {
 
-                    se.node.style.paddingLeft = lp + "px";
-                    se.node.style.marginLeft = "-" + lp + "px";
+                    se.node.style.borderLeftColor = se.bgcolor || "#00000000";
+                    se.node.style.borderLeftStyle = "solid";
+                    se.node.style.borderLeftWidth = pospadpxlen;
+                    se.node.style.marginLeft = negpadpxlen;
 
                 } else if (context.ipd === "rl") {
 
-                    se.node.style.paddingRight = lp + "px";
-                    se.node.style.marginRight = "-" + lp + "px";
+                    se.node.style.borderRightColor = se.bgcolor || "#00000000";
+                    se.node.style.borderRightStyle = "solid";
+                    se.node.style.borderRightWidth = pospadpxlen;
+                    se.node.style.marginRight = negpadpxlen;
 
                 } else if (context.ipd === "tb") {
 
-                    se.node.style.paddingTop = lp + "px";
-                    se.node.style.marginTop = "-" + lp + "px";
+                    se.node.style.borderTopColor = se.bgcolor || "#00000000";
+                    se.node.style.borderTopStyle = "solid";
+                    se.node.style.borderTopWidth = pospadpxlen;
+                    se.node.style.marginTop = negpadpxlen;
 
                 }
-
-                se.node.style.backgroundColor = se.bgcolor;
 
                 if (context.ipd === "lr") {
 
-                    ee.node.style.paddingRight = lp + "px";
-                    ee.node.style.marginRight = "-" + lp + "px";
+                    ee.node.style.borderRightColor = ee.bgcolor  || "#00000000";
+                    ee.node.style.borderRightStyle = "solid";
+                    ee.node.style.borderRightWidth = pospadpxlen;
+                    ee.node.style.marginRight = negpadpxlen;
 
                 } else if (context.ipd === "rl") {
 
-                    ee.node.style.paddingLeft = lp + "px";
-                    ee.node.style.marginLeft = "-" + lp + "px";
+                    ee.node.style.borderLeftColor = ee.bgcolor || "#00000000";
+                    ee.node.style.borderLeftStyle = "solid";
+                    ee.node.style.borderLeftWidth = pospadpxlen;
+                    ee.node.style.marginLeft = negpadpxlen;
 
                 } else if (context.ipd === "tb") {
 
-                    ee.node.style.paddingBottom = lp + "px";
-                    ee.node.style.marginBottom = "-" + lp + "px";
+                    ee.node.style.borderBottomColor = ee.bgcolor || "#00000000";
+                    ee.node.style.borderBottomStyle = "solid";
+                    ee.node.style.borderBottomWidth = pospadpxlen;
+                    ee.node.style.marginBottom = negpadpxlen;
 
                 }
-
-                ee.node.style.backgroundColor = ee.bgcolor;
 
             }
 
@@ -19360,10 +19388,14 @@ exports.renderHTML = require('./html').render;
     imscUtils.parseColor = function (str) {
 
         var m;
+        
         var r = null;
-        if (str in NAMED_COLOR) {
+        
+        var nc = NAMED_COLOR[str.toLowerCase()];
+        
+        if (nc !== undefined) {
 
-            r = NAMED_COLOR[str];
+            r = nc;
 
         } else if ((m = HEX_COLOR_RE.exec(str)) !== null) {
 
@@ -19371,18 +19403,21 @@ exports.renderHTML = require('./html').render;
                 parseInt(m[2], 16),
                 parseInt(m[3], 16),
                 (m[4] !== undefined ? parseInt(m[4], 16) : 255)];
+            
         } else if ((m = DEC_COLOR_RE.exec(str)) !== null) {
 
             r = [parseInt(m[1]),
                 parseInt(m[2]),
                 parseInt(m[3]),
                 255];
+            
         } else if ((m = DEC_COLORA_RE.exec(str)) !== null) {
 
             r = [parseInt(m[1]),
                 parseInt(m[2]),
                 parseInt(m[3]),
                 parseInt(m[4])];
+            
         }
 
         return r;
@@ -20900,7 +20935,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":224,"./internal/streams/BufferList":229,"./internal/streams/destroy":230,"./internal/streams/stream":231,"_process":222,"core-util-is":6,"events":242,"inherits":218,"isarray":220,"process-nextick-args":221,"safe-buffer":236,"string_decoder/":239,"util":2}],227:[function(require,module,exports){
+},{"./_stream_duplex":224,"./internal/streams/BufferList":229,"./internal/streams/destroy":230,"./internal/streams/stream":231,"_process":222,"core-util-is":6,"events":242,"inherits":218,"isarray":220,"process-nextick-args":221,"safe-buffer":237,"string_decoder/":232,"util":2}],227:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21805,7 +21840,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"./_stream_duplex":224,"./internal/streams/destroy":230,"./internal/streams/stream":231,"_process":222,"core-util-is":6,"inherits":218,"process-nextick-args":221,"safe-buffer":236,"timers":240,"util-deprecate":241}],229:[function(require,module,exports){
+},{"./_stream_duplex":224,"./internal/streams/destroy":230,"./internal/streams/stream":231,"_process":222,"core-util-is":6,"inherits":218,"process-nextick-args":221,"safe-buffer":237,"timers":240,"util-deprecate":241}],229:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21885,7 +21920,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":236,"util":2}],230:[function(require,module,exports){
+},{"safe-buffer":237,"util":2}],230:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -21964,9 +21999,306 @@ module.exports = {
 module.exports = require('events').EventEmitter;
 
 },{"events":242}],232:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+/*<replacement>*/
+
+var Buffer = require('safe-buffer').Buffer;
+/*</replacement>*/
+
+var isEncoding = Buffer.isEncoding || function (encoding) {
+  encoding = '' + encoding;
+  switch (encoding && encoding.toLowerCase()) {
+    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
+      return true;
+    default:
+      return false;
+  }
+};
+
+function _normalizeEncoding(enc) {
+  if (!enc) return 'utf8';
+  var retried;
+  while (true) {
+    switch (enc) {
+      case 'utf8':
+      case 'utf-8':
+        return 'utf8';
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return 'utf16le';
+      case 'latin1':
+      case 'binary':
+        return 'latin1';
+      case 'base64':
+      case 'ascii':
+      case 'hex':
+        return enc;
+      default:
+        if (retried) return; // undefined
+        enc = ('' + enc).toLowerCase();
+        retried = true;
+    }
+  }
+};
+
+// Do not cache `Buffer.isEncoding` when checking encoding names as some
+// modules monkey-patch it to support additional encodings
+function normalizeEncoding(enc) {
+  var nenc = _normalizeEncoding(enc);
+  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
+  return nenc || enc;
+}
+
+// StringDecoder provides an interface for efficiently splitting a series of
+// buffers into a series of JS strings without breaking apart multi-byte
+// characters.
+exports.StringDecoder = StringDecoder;
+function StringDecoder(encoding) {
+  this.encoding = normalizeEncoding(encoding);
+  var nb;
+  switch (this.encoding) {
+    case 'utf16le':
+      this.text = utf16Text;
+      this.end = utf16End;
+      nb = 4;
+      break;
+    case 'utf8':
+      this.fillLast = utf8FillLast;
+      nb = 4;
+      break;
+    case 'base64':
+      this.text = base64Text;
+      this.end = base64End;
+      nb = 3;
+      break;
+    default:
+      this.write = simpleWrite;
+      this.end = simpleEnd;
+      return;
+  }
+  this.lastNeed = 0;
+  this.lastTotal = 0;
+  this.lastChar = Buffer.allocUnsafe(nb);
+}
+
+StringDecoder.prototype.write = function (buf) {
+  if (buf.length === 0) return '';
+  var r;
+  var i;
+  if (this.lastNeed) {
+    r = this.fillLast(buf);
+    if (r === undefined) return '';
+    i = this.lastNeed;
+    this.lastNeed = 0;
+  } else {
+    i = 0;
+  }
+  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
+  return r || '';
+};
+
+StringDecoder.prototype.end = utf8End;
+
+// Returns only complete characters in a Buffer
+StringDecoder.prototype.text = utf8Text;
+
+// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
+StringDecoder.prototype.fillLast = function (buf) {
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+  this.lastNeed -= buf.length;
+};
+
+// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
+// continuation byte. If an invalid byte is detected, -2 is returned.
+function utf8CheckByte(byte) {
+  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
+  return byte >> 6 === 0x02 ? -1 : -2;
+}
+
+// Checks at most 3 bytes at the end of a Buffer in order to detect an
+// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
+// needed to complete the UTF-8 character (if applicable) are returned.
+function utf8CheckIncomplete(self, buf, i) {
+  var j = buf.length - 1;
+  if (j < i) return 0;
+  var nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 1;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 2;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) {
+      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
+    }
+    return nb;
+  }
+  return 0;
+}
+
+// Validates as many continuation bytes for a multi-byte UTF-8 character as
+// needed or are available. If we see a non-continuation byte where we expect
+// one, we "replace" the validated continuation bytes we've seen so far with
+// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
+// behavior. The continuation byte check is included three times in the case
+// where all of the continuation bytes for a character exist in the same buffer.
+// It is also done this way as a slight performance increase instead of using a
+// loop.
+function utf8CheckExtraBytes(self, buf, p) {
+  if ((buf[0] & 0xC0) !== 0x80) {
+    self.lastNeed = 0;
+    return '\ufffd';
+  }
+  if (self.lastNeed > 1 && buf.length > 1) {
+    if ((buf[1] & 0xC0) !== 0x80) {
+      self.lastNeed = 1;
+      return '\ufffd';
+    }
+    if (self.lastNeed > 2 && buf.length > 2) {
+      if ((buf[2] & 0xC0) !== 0x80) {
+        self.lastNeed = 2;
+        return '\ufffd';
+      }
+    }
+  }
+}
+
+// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
+function utf8FillLast(buf) {
+  var p = this.lastTotal - this.lastNeed;
+  var r = utf8CheckExtraBytes(this, buf, p);
+  if (r !== undefined) return r;
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, p, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, p, 0, buf.length);
+  this.lastNeed -= buf.length;
+}
+
+// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
+// partial character, the character's bytes are buffered until the required
+// number of bytes are available.
+function utf8Text(buf, i) {
+  var total = utf8CheckIncomplete(this, buf, i);
+  if (!this.lastNeed) return buf.toString('utf8', i);
+  this.lastTotal = total;
+  var end = buf.length - (total - this.lastNeed);
+  buf.copy(this.lastChar, 0, end);
+  return buf.toString('utf8', i, end);
+}
+
+// For UTF-8, a replacement character is added when ending on a partial
+// character.
+function utf8End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + '\ufffd';
+  return r;
+}
+
+// UTF-16LE typically needs two bytes per character, but even if we have an even
+// number of bytes available, we need to check if we end on a leading/high
+// surrogate. In that case, we need to wait for the next two bytes in order to
+// decode the last character properly.
+function utf16Text(buf, i) {
+  if ((buf.length - i) % 2 === 0) {
+    var r = buf.toString('utf16le', i);
+    if (r) {
+      var c = r.charCodeAt(r.length - 1);
+      if (c >= 0xD800 && c <= 0xDBFF) {
+        this.lastNeed = 2;
+        this.lastTotal = 4;
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+        return r.slice(0, -1);
+      }
+    }
+    return r;
+  }
+  this.lastNeed = 1;
+  this.lastTotal = 2;
+  this.lastChar[0] = buf[buf.length - 1];
+  return buf.toString('utf16le', i, buf.length - 1);
+}
+
+// For UTF-16LE we do not explicitly append special replacement characters if we
+// end on a partial character, we simply let v8 handle that.
+function utf16End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) {
+    var end = this.lastTotal - this.lastNeed;
+    return r + this.lastChar.toString('utf16le', 0, end);
+  }
+  return r;
+}
+
+function base64Text(buf, i) {
+  var n = (buf.length - i) % 3;
+  if (n === 0) return buf.toString('base64', i);
+  this.lastNeed = 3 - n;
+  this.lastTotal = 3;
+  if (n === 1) {
+    this.lastChar[0] = buf[buf.length - 1];
+  } else {
+    this.lastChar[0] = buf[buf.length - 2];
+    this.lastChar[1] = buf[buf.length - 1];
+  }
+  return buf.toString('base64', i, buf.length - n);
+}
+
+function base64End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
+  return r;
+}
+
+// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
+function simpleWrite(buf) {
+  return buf.toString(this.encoding);
+}
+
+function simpleEnd(buf) {
+  return buf && buf.length ? this.write(buf) : '';
+}
+},{"safe-buffer":237}],233:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":233}],233:[function(require,module,exports){
+},{"./readable":234}],234:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -21975,13 +22307,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":224,"./lib/_stream_passthrough.js":225,"./lib/_stream_readable.js":226,"./lib/_stream_transform.js":227,"./lib/_stream_writable.js":228}],234:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":224,"./lib/_stream_passthrough.js":225,"./lib/_stream_readable.js":226,"./lib/_stream_transform.js":227,"./lib/_stream_writable.js":228}],235:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":233}],235:[function(require,module,exports){
+},{"./readable":234}],236:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":228}],236:[function(require,module,exports){
+},{"./lib/_stream_writable.js":228}],237:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -22045,7 +22377,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":3}],237:[function(require,module,exports){
+},{"buffer":3}],238:[function(require,module,exports){
 (function (Buffer){
 ;(function (sax) { // wrapper for non-node envs
   sax.parser = function (strict, opt) { return new SAXParser(strict, opt) }
@@ -23625,7 +23957,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 })(typeof exports === 'undefined' ? this.sax = {} : exports)
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":3,"stream":238,"string_decoder":239}],238:[function(require,module,exports){
+},{"buffer":3,"stream":239,"string_decoder":243}],239:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -23754,304 +24086,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":242,"inherits":218,"readable-stream/duplex.js":223,"readable-stream/passthrough.js":232,"readable-stream/readable.js":233,"readable-stream/transform.js":234,"readable-stream/writable.js":235}],239:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-/*<replacement>*/
-
-var Buffer = require('safe-buffer').Buffer;
-/*</replacement>*/
-
-var isEncoding = Buffer.isEncoding || function (encoding) {
-  encoding = '' + encoding;
-  switch (encoding && encoding.toLowerCase()) {
-    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
-      return true;
-    default:
-      return false;
-  }
-};
-
-function _normalizeEncoding(enc) {
-  if (!enc) return 'utf8';
-  var retried;
-  while (true) {
-    switch (enc) {
-      case 'utf8':
-      case 'utf-8':
-        return 'utf8';
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return 'utf16le';
-      case 'latin1':
-      case 'binary':
-        return 'latin1';
-      case 'base64':
-      case 'ascii':
-      case 'hex':
-        return enc;
-      default:
-        if (retried) return; // undefined
-        enc = ('' + enc).toLowerCase();
-        retried = true;
-    }
-  }
-};
-
-// Do not cache `Buffer.isEncoding` when checking encoding names as some
-// modules monkey-patch it to support additional encodings
-function normalizeEncoding(enc) {
-  var nenc = _normalizeEncoding(enc);
-  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
-  return nenc || enc;
-}
-
-// StringDecoder provides an interface for efficiently splitting a series of
-// buffers into a series of JS strings without breaking apart multi-byte
-// characters.
-exports.StringDecoder = StringDecoder;
-function StringDecoder(encoding) {
-  this.encoding = normalizeEncoding(encoding);
-  var nb;
-  switch (this.encoding) {
-    case 'utf16le':
-      this.text = utf16Text;
-      this.end = utf16End;
-      nb = 4;
-      break;
-    case 'utf8':
-      this.fillLast = utf8FillLast;
-      nb = 4;
-      break;
-    case 'base64':
-      this.text = base64Text;
-      this.end = base64End;
-      nb = 3;
-      break;
-    default:
-      this.write = simpleWrite;
-      this.end = simpleEnd;
-      return;
-  }
-  this.lastNeed = 0;
-  this.lastTotal = 0;
-  this.lastChar = Buffer.allocUnsafe(nb);
-}
-
-StringDecoder.prototype.write = function (buf) {
-  if (buf.length === 0) return '';
-  var r;
-  var i;
-  if (this.lastNeed) {
-    r = this.fillLast(buf);
-    if (r === undefined) return '';
-    i = this.lastNeed;
-    this.lastNeed = 0;
-  } else {
-    i = 0;
-  }
-  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
-  return r || '';
-};
-
-StringDecoder.prototype.end = utf8End;
-
-// Returns only complete characters in a Buffer
-StringDecoder.prototype.text = utf8Text;
-
-// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
-StringDecoder.prototype.fillLast = function (buf) {
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
-  this.lastNeed -= buf.length;
-};
-
-// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
-// continuation byte. If an invalid byte is detected, -2 is returned.
-function utf8CheckByte(byte) {
-  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
-  return byte >> 6 === 0x02 ? -1 : -2;
-}
-
-// Checks at most 3 bytes at the end of a Buffer in order to detect an
-// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
-// needed to complete the UTF-8 character (if applicable) are returned.
-function utf8CheckIncomplete(self, buf, i) {
-  var j = buf.length - 1;
-  if (j < i) return 0;
-  var nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 1;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 2;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) {
-      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
-    }
-    return nb;
-  }
-  return 0;
-}
-
-// Validates as many continuation bytes for a multi-byte UTF-8 character as
-// needed or are available. If we see a non-continuation byte where we expect
-// one, we "replace" the validated continuation bytes we've seen so far with
-// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
-// behavior. The continuation byte check is included three times in the case
-// where all of the continuation bytes for a character exist in the same buffer.
-// It is also done this way as a slight performance increase instead of using a
-// loop.
-function utf8CheckExtraBytes(self, buf, p) {
-  if ((buf[0] & 0xC0) !== 0x80) {
-    self.lastNeed = 0;
-    return '\ufffd';
-  }
-  if (self.lastNeed > 1 && buf.length > 1) {
-    if ((buf[1] & 0xC0) !== 0x80) {
-      self.lastNeed = 1;
-      return '\ufffd';
-    }
-    if (self.lastNeed > 2 && buf.length > 2) {
-      if ((buf[2] & 0xC0) !== 0x80) {
-        self.lastNeed = 2;
-        return '\ufffd';
-      }
-    }
-  }
-}
-
-// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
-function utf8FillLast(buf) {
-  var p = this.lastTotal - this.lastNeed;
-  var r = utf8CheckExtraBytes(this, buf, p);
-  if (r !== undefined) return r;
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, p, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, p, 0, buf.length);
-  this.lastNeed -= buf.length;
-}
-
-// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
-// partial character, the character's bytes are buffered until the required
-// number of bytes are available.
-function utf8Text(buf, i) {
-  var total = utf8CheckIncomplete(this, buf, i);
-  if (!this.lastNeed) return buf.toString('utf8', i);
-  this.lastTotal = total;
-  var end = buf.length - (total - this.lastNeed);
-  buf.copy(this.lastChar, 0, end);
-  return buf.toString('utf8', i, end);
-}
-
-// For UTF-8, a replacement character is added when ending on a partial
-// character.
-function utf8End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + '\ufffd';
-  return r;
-}
-
-// UTF-16LE typically needs two bytes per character, but even if we have an even
-// number of bytes available, we need to check if we end on a leading/high
-// surrogate. In that case, we need to wait for the next two bytes in order to
-// decode the last character properly.
-function utf16Text(buf, i) {
-  if ((buf.length - i) % 2 === 0) {
-    var r = buf.toString('utf16le', i);
-    if (r) {
-      var c = r.charCodeAt(r.length - 1);
-      if (c >= 0xD800 && c <= 0xDBFF) {
-        this.lastNeed = 2;
-        this.lastTotal = 4;
-        this.lastChar[0] = buf[buf.length - 2];
-        this.lastChar[1] = buf[buf.length - 1];
-        return r.slice(0, -1);
-      }
-    }
-    return r;
-  }
-  this.lastNeed = 1;
-  this.lastTotal = 2;
-  this.lastChar[0] = buf[buf.length - 1];
-  return buf.toString('utf16le', i, buf.length - 1);
-}
-
-// For UTF-16LE we do not explicitly append special replacement characters if we
-// end on a partial character, we simply let v8 handle that.
-function utf16End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) {
-    var end = this.lastTotal - this.lastNeed;
-    return r + this.lastChar.toString('utf16le', 0, end);
-  }
-  return r;
-}
-
-function base64Text(buf, i) {
-  var n = (buf.length - i) % 3;
-  if (n === 0) return buf.toString('base64', i);
-  this.lastNeed = 3 - n;
-  this.lastTotal = 3;
-  if (n === 1) {
-    this.lastChar[0] = buf[buf.length - 1];
-  } else {
-    this.lastChar[0] = buf[buf.length - 2];
-    this.lastChar[1] = buf[buf.length - 1];
-  }
-  return buf.toString('base64', i, buf.length - n);
-}
-
-function base64End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
-  return r;
-}
-
-// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
-function simpleWrite(buf) {
-  return buf.toString(this.encoding);
-}
-
-function simpleEnd(buf) {
-  return buf && buf.length ? this.write(buf) : '';
-}
-},{"safe-buffer":236}],240:[function(require,module,exports){
+},{"events":242,"inherits":218,"readable-stream/duplex.js":223,"readable-stream/passthrough.js":233,"readable-stream/readable.js":234,"readable-stream/transform.js":235,"readable-stream/writable.js":236}],240:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -24727,6 +24762,73 @@ function functionBindPolyfill(context) {
 }
 
 },{}],243:[function(require,module,exports){
+arguments[4][232][0].apply(exports,arguments)
+},{"dup":232,"safe-buffer":237}],244:[function(require,module,exports){
+module.exports={
+  "name": "vimeo_threejs_player",
+  "version": "0.0.1",
+  "description": "A video player for rendering Vimeo videos in three.js",
+  "main": "server.js",
+  "engines": {
+    "node": ">=0.12"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "concurrently \"nodemon server.js\" \"watchify src/index.js -o dist/vimeo.threejs-player.js -v\"",
+    "build": "browserify src/index.js | uglifyjs --source-map --output dist/vimeo.threejs-player.min.js",
+    "format": "standard src/**/*.js spec/*.js --fix",
+    "unit": "karma start karma.conf.js ",
+    "test": "npm run unit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "can-autoplay": "^3.0.0",
+    "dashjs": "^2.9.2",
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "host-validation": "^2.0.1",
+    "sync-request": "^6.0.0",
+    "three": "^0.89.0",
+    "vimeo": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^5.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "babelify": "^8.0.0",
+    "browserify": "^15.2.0",
+    "concurrently": "^3.5.1",
+    "dotenv": "^6.2.0",
+    "event-emitter-es6": "^1.1.5",
+    "nodemon": "^1.18.9",
+    "standard": "*",
+    "uglify-js": "^3.3.9",
+    "watchify": "^3.10.0",
+    "jasmine-core": "^3.2.1",
+    "karma": "^3.0.0",
+    "karma-browserify": "^5.3.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-commonjs": "^1.0.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-phantomjs-launcher": "^1.0.4"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "env"
+          ]
+        }
+      ]
+    ]
+  }
+}
+
+},{}],245:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24785,7 +24887,7 @@ var API = function () {
 
 exports.default = API;
 
-},{}],244:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24798,9 +24900,9 @@ var _videoQuality = require('./video-quality');
 
 var _videoQuality2 = _interopRequireDefault(_videoQuality);
 
-var _video = require('./video');
+var _vimeoVideo = require('./vimeo-video');
 
-var _video2 = _interopRequireDefault(_video);
+var _vimeoVideo2 = _interopRequireDefault(_vimeoVideo);
 
 var _api = require('./api');
 
@@ -24854,7 +24956,7 @@ var Player = function (_EventEmitter) {
     _this.id = _this.parseVideoId(videoId);
     _this.texture;
 
-    _this.video = new _video2.default(_this.id, args);
+    _this.video = new _vimeoVideo2.default(_this.id, args);
 
     _this.bindEvents();
 
@@ -24886,6 +24988,11 @@ var Player = function (_EventEmitter) {
       return parseInt(id.toString().match(/([0-9]+)/)[1]);
     }
   }, {
+    key: 'getVideoId',
+    value: function getVideoId() {
+      return this.id;
+    }
+  }, {
     key: 'mute',
     value: function mute() {
       this.video.mute();
@@ -24906,6 +25013,11 @@ var Player = function (_EventEmitter) {
       this.video.selectedQuality = quality;
     }
   }, {
+    key: 'getQuality',
+    value: function getQuality() {
+      return this.video.selectedQuality;
+    }
+  }, {
     key: 'getWidth',
     value: function getWidth() {
       return this.video.getWidth();
@@ -24920,6 +25032,8 @@ var Player = function (_EventEmitter) {
     value: function play() {
       if (this.video) {
         this.video.play();
+      } else {
+        console.warn('[Vimeo Player] Video has not been loaded yet, try calling player.load()');
       }
     }
   }, {
@@ -24936,7 +25050,7 @@ var Player = function (_EventEmitter) {
 
 exports.default = Player;
 
-},{"./api":243,"./video":247,"./video-quality":246,"event-emitter-es6":209}],245:[function(require,module,exports){
+},{"./api":245,"./video-quality":249,"./vimeo-video":250,"event-emitter-es6":208}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25003,7 +25117,202 @@ var Util = function () {
 
 exports.default = Util;
 
-},{}],246:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _vimeoVideo = require('./vimeo-video');
+
+var _vimeoVideo2 = _interopRequireDefault(_vimeoVideo);
+
+var _util = require('./util');
+
+var _util2 = _interopRequireDefault(_util);
+
+var _dashjs = require('dashjs');
+
+var _dashjs2 = _interopRequireDefault(_dashjs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EventEmitter = require('event-emitter-es6');
+
+/** Class representing a DOM video element */
+
+var VideoElement = function (_EventEmitter) {
+  _inherits(VideoElement, _EventEmitter);
+
+  /**
+   * Create a DOM video element instace
+   * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
+   * @returns {VideoElement}
+   */
+  function VideoElement(vimeoVideo) {
+    _classCallCheck(this, VideoElement);
+
+    var _this = _possibleConstructorReturn(this, (VideoElement.__proto__ || Object.getPrototypeOf(VideoElement)).call(this));
+
+    _this.domElement = _this.createElement(vimeoVideo);
+    _this.domElement.addEventListener('loadeddata', function () {
+      if (_this.domElement.readyState >= 2) {
+        if (vimeoVideo.autoplay) {
+          vimeoVideo.play();
+        }
+        _this.emit('videoLoad');
+      }
+    });
+    _this._isDashPlayback = vimeoVideo.isDashPlayback();
+    _this.player = _this.createAdaptivePlayer(vimeoVideo);
+    return _this;
+  }
+
+  /**
+   * Get the <video> element
+   * @returns {HTMLElement}
+   */
+
+
+  _createClass(VideoElement, [{
+    key: 'getElement',
+    value: function getElement() {
+      if (this.domElement) {
+        return this.domElement;
+      }
+    }
+
+    /** Play the video */
+
+  }, {
+    key: 'play',
+    value: function play() {
+      if (this.player) {
+        this.player.play();
+      }
+    }
+
+    /** Pause the video */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      if (this.player) {
+        this.player.pause();
+      }
+    }
+
+    /** Stop the video */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      if (this.player) {
+        this.player.pause();
+        if (this._isDashPlayback) {
+          this.player.seek(0.0);
+        } else {
+          this.player.currentTime = 0.0;
+        }
+      }
+    }
+
+    /**
+     * Set the video volume
+     * @param {number} volume - A number for the new volume you would like to set between 0.0 and 1.0
+     */
+
+  }, {
+    key: 'setVolume',
+    value: function setVolume(volume) {
+      if (this.player) {
+        if (volume >= 0.0 && volume <= 1.0) {
+          if (this._isDashPlayback) {
+            this.player.setVolume(volume);
+          } else {
+            this.player.volume = volume;
+          }
+        }
+      }
+    }
+
+    /**
+     * Create the <video> element based on the properties provided in the VimeoVideo
+     * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
+     * @returns {HTMLElement}
+     */
+
+  }, {
+    key: 'createElement',
+    value: function createElement(vimeoVideo) {
+      var domElement = document.createElement('video');
+      domElement.id = 'vimeo-webgl-player-' + vimeoVideo.id;
+      domElement.crossOrigin = 'anonymous';
+      domElement.setAttribute('crossorigin', 'anonymous');
+      domElement.muted = vimeoVideo.muted;
+      domElement.autoplay = vimeoVideo.autoplay;
+      domElement.loop = vimeoVideo.loop;
+
+      return domElement;
+    }
+
+    /**
+     * Creates a new DOM element with either Dash, HLS or progressive video playback based on the platform support
+     * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
+     * @returns {HTMLElement}
+     */
+
+  }, {
+    key: 'createAdaptivePlayer',
+    value: function createAdaptivePlayer(vimeoVideo) {
+
+      var player = void 0;
+
+      if (vimeoVideo.isDashPlayback()) {
+        player = _dashjs2.default.MediaPlayer().create();
+        player.initialize(this.domElement, vimeoVideo.getAdaptiveURL(), vimeoVideo.autoplay);
+      } else {
+        player = this.domElement;
+
+        if (_util2.default.isiOS()) {
+          this.setiOSPlayerAttributes(player);
+        }
+
+        player.src = vimeoVideo.getFileURL();
+        player.load();
+      }
+
+      return player;
+    }
+
+    /**
+     * Adds iOS attributes to be able to play <video> tag inline
+     * @param {HTMLElement} vimeoVideo - A <video> element that needs to be configured to play on iOS
+     */
+
+  }, {
+    key: 'setiOSPlayerAttributes',
+    value: function setiOSPlayerAttributes(videoElement) {
+      videoElement.setAttribute('webkit-playsinline', 'webkit-playsinline');
+      videoElement.setAttribute('playsinline', 'playsinline');
+    }
+  }]);
+
+  return VideoElement;
+}(EventEmitter);
+
+exports.default = VideoElement;
+
+},{"./util":247,"./vimeo-video":250,"dashjs":10,"event-emitter-es6":208}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25022,7 +25331,7 @@ var VideoQuality = {
 
 exports.default = VideoQuality;
 
-},{}],247:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25034,6 +25343,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _videoQuality = require('./video-quality');
 
 var _videoQuality2 = _interopRequireDefault(_videoQuality);
+
+var _videoDomElement = require('./video-dom-element');
+
+var _videoDomElement2 = _interopRequireDefault(_videoDomElement);
 
 var _util = require('./util');
 
@@ -25055,19 +25368,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var dashjs = require('dashjs');
-
 var EventEmitter = require('event-emitter-es6');
 
-var Video = function (_EventEmitter) {
-  _inherits(Video, _EventEmitter);
+/** Class representing a Vimeo video resource */
 
-  function Video(videoId) {
+var VimeoVideo = function (_EventEmitter) {
+  _inherits(VimeoVideo, _EventEmitter);
+
+  function VimeoVideo(videoId) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    _classCallCheck(this, Video);
+    _classCallCheck(this, VimeoVideo);
 
-    var _this = _possibleConstructorReturn(this, (Video.__proto__ || Object.getPrototypeOf(Video)).call(this));
+    var _this = _possibleConstructorReturn(this, (VimeoVideo.__proto__ || Object.getPrototypeOf(VimeoVideo)).call(this));
 
     _this.id = videoId;
     _this.selectedQuality = args.quality || _videoQuality2.default.auto;
@@ -25079,11 +25392,9 @@ var Video = function (_EventEmitter) {
     _this.data;
     _this.loaded;
     _this.videoElement;
-    _this.dashVideoElement;
-    _this.videoPlayer;
     _this.texture;
 
-    if (_this.autoplay === true) {
+    if (_this.autoplay) {
       _canAutoplay2.default.video({ muted: _this.muted, timeout: 1000 }).then(function (_ref) {
         var result = _ref.result,
             error = _ref.error;
@@ -25099,7 +25410,7 @@ var Video = function (_EventEmitter) {
     return _this;
   }
 
-  _createClass(Video, [{
+  _createClass(VimeoVideo, [{
     key: 'onClickAutoplayFix',
     value: function onClickAutoplayFix() {
       this.play();
@@ -25108,11 +25419,11 @@ var Video = function (_EventEmitter) {
   }, {
     key: 'load',
     value: function load() {
-      this.loadMetadata();
+      this.getVideoFromVimeo();
     }
   }, {
-    key: 'loadMetadata',
-    value: function loadMetadata() {
+    key: 'getVideoFromVimeo',
+    value: function getVideoFromVimeo() {
       var _this2 = this;
 
       if (!this.id) {
@@ -25141,7 +25452,7 @@ var Video = function (_EventEmitter) {
     key: 'setupConfig',
     value: function setupConfig() {
       if (this.data.description) {
-        var desc = "asdfasfds" + this.data.description;
+        var desc = 'asdfasfds' + this.data.description;
         var match = desc.match(/(\{.*\})/g);
         if (match) {
           this.config = JSON.parse(match[0]);
@@ -25151,7 +25462,7 @@ var Video = function (_EventEmitter) {
   }, {
     key: 'isLoaded',
     value: function isLoaded() {
-      return this.data && this.videoPlayer;
+      return this.data && this.videoElement.getElement();
     }
   }, {
     key: 'play',
@@ -25160,7 +25471,7 @@ var Video = function (_EventEmitter) {
         this.setupVideoElement();
       }
 
-      this.videoPlayer.play();
+      this.videoElement.play();
 
       this.emit('play');
     }
@@ -25171,71 +25482,49 @@ var Video = function (_EventEmitter) {
         this.setupVideoElement();
       }
 
-      this.videoPlayer.pause();
+      this.videoElement.pause();
 
       this.emit('pause');
+    }
+  }, {
+    key: 'setVolume',
+    value: function setVolume(volume) {
+      if (volume == 0) {
+        this.muted = true;
+        this.mute();
+      } else if (volume > 0) {
+        this.muted = false;
+        this.videoElement.setVolume(volume);
+      }
     }
   }, {
     key: 'mute',
     value: function mute() {
       this.muted = true;
-
-      if (this.videoElement) {
-        this.videoElement.muted = true;
-      }
+      this.videoElement.setVolume(0.0);
     }
   }, {
     key: 'unmute',
     value: function unmute() {
       this.muted = false;
-
-      if (this.videoElement) {
-        this.videoElement.muted = false;
-      }
+      this.videoElement.setVolume(1.0);
     }
   }, {
     key: 'setupVideoElement',
     value: function setupVideoElement() {
-      this.videoElement = document.createElement('video');
-      this.videoElement.id = 'vimeo-webgl-player-' + this.id;
-      this.videoElement.crossOrigin = 'anonymous';
-      this.videoElement.setAttribute('crossorigin', 'anonymous');
-      this.videoElement.muted = this.muted;
-      this.videoElement.autoplay = this.autoplay;
-      this.videoElement.loop = this.loop;
+      var _this3 = this;
 
-      // When the video is done loading, trigger the load event
-      this.videoElement.addEventListener('loadeddata', function () {
-        if (this.videoElement.readyState >= 2) {
-          if (this.autoplay) {
-            this.play();
-          }
-
-          this.emit('videoLoad');
-        }
-      }.bind(this));
-
-      if (this.isDashPlayback()) {
-        this.videoPlayer = dashjs.MediaPlayer().create();
-        this.videoPlayer.initialize(this.videoElement, this.getAdaptiveURL(), this.autoplay);
-      } else {
-        this.videoPlayer = this.videoElement;
-
-        if (_util2.default.isiOS()) {
-          this.videoPlayer.setAttribute('webkit-playsinline', 'webkit-playsinline');
-          this.videoPlayer.setAttribute('playsinline', 'playsinline');
-        }
-
-        this.videoPlayer.src = this.getFileURL();
-        this.videoPlayer.load();
-      }
+      this.videoElement = new _videoDomElement2.default(this);
+      this.videoElement.on('videoLoad', function () {
+        _this3.emit('videoLoad');
+      });
 
       this.setupTexture();
     }
   }, {
     key: 'setupTexture',
     value: function setupTexture() {
-      this.texture = new THREE.VideoTexture(this.videoElement);
+      this.texture = new THREE.VideoTexture(this.videoElement.getElement());
       this.texture.minFilter = THREE.NearestFilter;
       this.texture.magFilter = THREE.LinearFilter;
       this.texture.format = THREE.RGBFormat;
@@ -25315,12 +25604,12 @@ var Video = function (_EventEmitter) {
     }
   }]);
 
-  return Video;
+  return VimeoVideo;
 }(EventEmitter);
 
-exports.default = Video;
+exports.default = VimeoVideo;
 
-},{"./api":243,"./util":245,"./video-quality":246,"can-autoplay":4,"dashjs":10,"event-emitter-es6":209}],248:[function(require,module,exports){
+},{"./api":245,"./util":247,"./video-dom-element":248,"./video-quality":249,"can-autoplay":4,"event-emitter-es6":208}],251:[function(require,module,exports){
 'use strict';
 
 var _player = require('./components/player');
@@ -25331,6 +25620,8 @@ var _videoQuality = require('./components/video-quality');
 
 var _videoQuality2 = _interopRequireDefault(_videoQuality);
 
+var _package = require('../package.json');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
@@ -25339,13 +25630,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var Vimeo = {
   Player: _player2.default,
-  VideoQuality: _videoQuality2.default
+  VideoQuality: _videoQuality2.default,
+  Version: _package.version
 };
 
-if (window.THREE) {
-  window.Vimeo = Vimeo;
-} else {
-  console.warn('[Vimeo] three.js was not found, did you forget to include it?');
-}
+window.Vimeo = Vimeo;
 
-},{"./components/player":244,"./components/video-quality":246}]},{},[248]);
+},{"../package.json":244,"./components/player":246,"./components/video-quality":249}]},{},[251]);

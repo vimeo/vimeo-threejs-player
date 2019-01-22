@@ -1,13 +1,13 @@
 import VideoQuality from './video-quality'
+import VideoElement from './video-dom-element'
 import Util from './util'
 import API from './api'
 import canAutoPlay from 'can-autoplay'
 
-const dashjs = require('dashjs')
-
 const EventEmitter = require('event-emitter-es6')
 
-export default class Video extends EventEmitter {
+/** Class representing a Vimeo video resource */
+export default class VimeoVideo extends EventEmitter {
   constructor (videoId, args = {}) {
     super()
 
@@ -21,17 +21,15 @@ export default class Video extends EventEmitter {
     this.data
     this.loaded
     this.videoElement
-    this.dashVideoElement
-    this.videoPlayer
     this.texture
 
-    if (this.autoplay === true) {
+    if (this.autoplay) {
       canAutoPlay.video({ muted: this.muted, timeout: 1000 }).then(({ result, error }) => {
         if (result === false) {
           console.warn('[Vimeo] Autoplay not available on this browser', error)
           this.autoplay = false
 
-          window.addEventListener('click', this.onClickAutoplayFix.bind(this));
+          window.addEventListener('click', this.onClickAutoplayFix.bind(this))
         }
       })
     }
@@ -39,14 +37,14 @@ export default class Video extends EventEmitter {
 
   onClickAutoplayFix () {
     this.play()
-    window.removeEventListener('click', this.onClickAutoplayFix.bind(this));
+    window.removeEventListener('click', this.onClickAutoplayFix.bind(this))
   }
 
   load () {
-    this.loadMetadata()
+    this.getVideoFromVimeo()
   }
 
-  loadMetadata () {
+  getVideoFromVimeo () {
     if (!this.id) {
       console.warn('[Vimeo] No video ID was specified')
       return
@@ -71,7 +69,7 @@ export default class Video extends EventEmitter {
 
   setupConfig () {
     if (this.data.description) {
-      var desc = "asdfasfds" + this.data.description
+      var desc = 'asdfasfds' + this.data.description
       var match = desc.match(/(\{.*\})/g)
       if (match) {
         this.config = JSON.parse(match[0])
@@ -80,7 +78,7 @@ export default class Video extends EventEmitter {
   }
 
   isLoaded () {
-    return this.data && this.videoPlayer
+    return this.data && this.videoElement.getElement()
   }
 
   play () {
@@ -88,7 +86,7 @@ export default class Video extends EventEmitter {
       this.setupVideoElement()
     }
 
-    this.videoPlayer.play()
+    this.videoElement.play()
 
     this.emit('play')
   }
@@ -98,67 +96,42 @@ export default class Video extends EventEmitter {
       this.setupVideoElement()
     }
 
-    this.videoPlayer.pause()
+    this.videoElement.pause()
 
     this.emit('pause')
   }
 
+  setVolume (volume) {
+    if (volume == 0) {
+      this.muted = true
+      this.mute()
+    } else if (volume > 0) {
+      this.muted = false
+      this.videoElement.setVolume(volume)
+    }
+  }
+
   mute () {
     this.muted = true
-
-    if (this.videoElement) {
-      this.videoElement.muted = true
-    }
+    this.videoElement.setVolume(0.0)
   }
 
   unmute () {
     this.muted = false
-
-    if (this.videoElement) {
-      this.videoElement.muted = false
-    }
+    this.videoElement.setVolume(1.0)
   }
 
   setupVideoElement () {
-    this.videoElement = document.createElement('video')
-    this.videoElement.id = 'vimeo-webgl-player-' + this.id
-    this.videoElement.crossOrigin = 'anonymous'
-    this.videoElement.setAttribute('crossorigin', 'anonymous')
-    this.videoElement.muted = this.muted
-    this.videoElement.autoplay = this.autoplay
-    this.videoElement.loop = this.loop
-
-    // When the video is done loading, trigger the load event
-    this.videoElement.addEventListener('loadeddata', function () {
-      if (this.videoElement.readyState >= 2) {
-        if (this.autoplay) {
-          this.play()
-        }
-
-        this.emit('videoLoad')
-      }
-    }.bind(this))
-
-    if (this.isDashPlayback()) {
-      this.videoPlayer = dashjs.MediaPlayer().create()
-      this.videoPlayer.initialize(this.videoElement, this.getAdaptiveURL(), this.autoplay)
-    } else {
-      this.videoPlayer = this.videoElement
-
-      if (Util.isiOS()) {
-        this.videoPlayer.setAttribute('webkit-playsinline', 'webkit-playsinline')
-        this.videoPlayer.setAttribute('playsinline', 'playsinline')
-      }
-
-      this.videoPlayer.src = this.getFileURL()
-      this.videoPlayer.load()
-    }
+    this.videoElement = new VideoElement(this)
+    this.videoElement.on('videoLoad', () => {
+      this.emit('videoLoad')
+    })
 
     this.setupTexture()
   }
 
   setupTexture () {
-    this.texture = new THREE.VideoTexture(this.videoElement)
+    this.texture = new THREE.VideoTexture(this.videoElement.getElement())
     this.texture.minFilter = THREE.NearestFilter
     this.texture.magFilter = THREE.LinearFilter
     this.texture.format = THREE.RGBFormat
