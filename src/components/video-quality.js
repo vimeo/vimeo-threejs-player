@@ -1,5 +1,9 @@
+/**
+ * An enum that represents the video quality coming from Vimeo, 
+ * auto will default to adaptive an fallback to highest progressive file
+ */
 const VideoQuality = {
-  auto: 'auto', // auto will default to adaptive an fallback to highest progressive file
+  auto: 'auto',
   adaptive: 'adaptive',
   x4K: 2160,
   x2K: 1440,

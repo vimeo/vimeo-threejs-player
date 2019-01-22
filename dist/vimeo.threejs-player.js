@@ -25138,6 +25138,10 @@ var _dashjs = require('dashjs');
 
 var _dashjs2 = _interopRequireDefault(_dashjs);
 
+var _eventEmitterEs = require('event-emitter-es6');
+
+var _eventEmitterEs2 = _interopRequireDefault(_eventEmitterEs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25146,17 +25150,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = require('event-emitter-es6');
-
 /** Class representing a DOM video element */
-
 var VideoElement = function (_EventEmitter) {
   _inherits(VideoElement, _EventEmitter);
 
   /**
    * Create a DOM video element instace
    * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
-   * @returns {VideoElement}
    */
   function VideoElement(vimeoVideo) {
     _classCallCheck(this, VideoElement);
@@ -25274,7 +25274,6 @@ var VideoElement = function (_EventEmitter) {
   }, {
     key: 'createAdaptivePlayer',
     value: function createAdaptivePlayer(vimeoVideo) {
-
       var player = void 0;
 
       if (vimeoVideo.isDashPlayback()) {
@@ -25308,7 +25307,7 @@ var VideoElement = function (_EventEmitter) {
   }]);
 
   return VideoElement;
-}(EventEmitter);
+}(_eventEmitterEs2.default);
 
 exports.default = VideoElement;
 
@@ -25318,8 +25317,12 @@ exports.default = VideoElement;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+/**
+ * An enum that represents the video quality coming from Vimeo, 
+ * auto will default to adaptive an fallback to highest progressive file
+ */
 var VideoQuality = {
-  auto: 'auto', // auto will default to adaptive an fallback to highest progressive file
+  auto: 'auto',
   adaptive: 'adaptive',
   x4K: 2160,
   x2K: 1440,
@@ -25344,9 +25347,9 @@ var _videoQuality = require('./video-quality');
 
 var _videoQuality2 = _interopRequireDefault(_videoQuality);
 
-var _videoDomElement = require('./video-dom-element');
+var _videoElement = require('./video-element');
 
-var _videoDomElement2 = _interopRequireDefault(_videoDomElement);
+var _videoElement2 = _interopRequireDefault(_videoElement);
 
 var _util = require('./util');
 
@@ -25360,6 +25363,10 @@ var _canAutoplay = require('can-autoplay');
 
 var _canAutoplay2 = _interopRequireDefault(_canAutoplay);
 
+var _eventEmitterEs = require('event-emitter-es6');
+
+var _eventEmitterEs2 = _interopRequireDefault(_eventEmitterEs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25368,13 +25375,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = require('event-emitter-es6');
-
 /** Class representing a Vimeo video resource */
-
 var VimeoVideo = function (_EventEmitter) {
   _inherits(VimeoVideo, _EventEmitter);
 
+  /**
+   * @constructor Create a Vimeo video resource
+   * @param {number} videoId - A Vimeo video ID (e.g 296928206)
+   * @param {object} args - An object that holds the Vimeo video properties
+   * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
+   * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
+   * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
+   * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
+   */
   function VimeoVideo(videoId) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -25410,20 +25423,28 @@ var VimeoVideo = function (_EventEmitter) {
     return _this;
   }
 
+  /**
+   * An internal method that removes that hits play for autoplay fix event listener, should not be used from outside the class
+   */
+
+
   _createClass(VimeoVideo, [{
     key: 'onClickAutoplayFix',
     value: function onClickAutoplayFix() {
       this.play();
       window.removeEventListener('click', this.onClickAutoplayFix.bind(this));
     }
+
+    /** Load video from Vimeo */
+
   }, {
     key: 'load',
     value: function load() {
-      this.getVideoFromVimeo();
+      this.getVideoDataFromVimeo();
     }
   }, {
-    key: 'getVideoFromVimeo',
-    value: function getVideoFromVimeo() {
+    key: 'getVideoDataFromVimeo',
+    value: function getVideoDataFromVimeo() {
       var _this2 = this;
 
       if (!this.id) {
@@ -25464,6 +25485,9 @@ var VimeoVideo = function (_EventEmitter) {
     value: function isLoaded() {
       return this.data && this.videoElement.getElement();
     }
+
+    /** Play the video */
+
   }, {
     key: 'play',
     value: function play() {
@@ -25475,6 +25499,9 @@ var VimeoVideo = function (_EventEmitter) {
 
       this.emit('play');
     }
+
+    /** Pause the video */
+
   }, {
     key: 'pause',
     value: function pause() {
@@ -25486,6 +25513,26 @@ var VimeoVideo = function (_EventEmitter) {
 
       this.emit('pause');
     }
+
+    /** Stop the video */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      if (!this.isLoaded()) {
+        this.setupVideoElement();
+      }
+
+      this.videoElement.stop();
+
+      this.emit('stop');
+    }
+
+    /**
+     * Set the video volume
+     * @param {number} volume - A number for the new volume you would like to set between 0.0 and 1.0
+     */
+
   }, {
     key: 'setVolume',
     value: function setVolume(volume) {
@@ -25497,12 +25544,18 @@ var VimeoVideo = function (_EventEmitter) {
         this.videoElement.setVolume(volume);
       }
     }
+
+    /** Muted the video */
+
   }, {
     key: 'mute',
     value: function mute() {
       this.muted = true;
       this.videoElement.setVolume(0.0);
     }
+
+    /** Unmute the video */
+
   }, {
     key: 'unmute',
     value: function unmute() {
@@ -25514,7 +25567,7 @@ var VimeoVideo = function (_EventEmitter) {
     value: function setupVideoElement() {
       var _this3 = this;
 
-      this.videoElement = new _videoDomElement2.default(this);
+      this.videoElement = new _videoElement2.default(this);
       this.videoElement.on('videoLoad', function () {
         _this3.emit('videoLoad');
       });
@@ -25530,11 +25583,23 @@ var VimeoVideo = function (_EventEmitter) {
       this.texture.format = THREE.RGBFormat;
       this.texture.generateMipmaps = true;
     }
+
+    /**
+     * Get the video's width in pixels
+     * @returns {number}
+     */
+
   }, {
     key: 'getWidth',
     value: function getWidth() {
       return this.data.width;
     }
+
+    /**
+     * Get the video's height in pixels
+     * @returns {number}
+     */
+
   }, {
     key: 'getHeight',
     value: function getHeight() {
@@ -25605,11 +25670,11 @@ var VimeoVideo = function (_EventEmitter) {
   }]);
 
   return VimeoVideo;
-}(EventEmitter);
+}(_eventEmitterEs2.default);
 
 exports.default = VimeoVideo;
 
-},{"./api":245,"./util":247,"./video-dom-element":248,"./video-quality":249,"can-autoplay":4,"event-emitter-es6":208}],251:[function(require,module,exports){
+},{"./api":245,"./util":247,"./video-element":248,"./video-quality":249,"can-autoplay":4,"event-emitter-es6":208}],251:[function(require,module,exports){
 'use strict';
 
 var _player = require('./components/player');

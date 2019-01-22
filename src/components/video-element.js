@@ -1,15 +1,13 @@
 import VimeoVideo from './vimeo-video'
 import Util from './util'
 import dashjs from 'dashjs'
-
-const EventEmitter = require('event-emitter-es6')
+import EventEmitter from 'event-emitter-es6'
 
 /** Class representing a DOM video element */
 export default class VideoElement extends EventEmitter {
   /**
    * Create a DOM video element instace
    * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
-   * @returns {VideoElement}
    */
   constructor (vimeoVideo) {
     super()
