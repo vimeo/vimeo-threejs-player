@@ -24839,7 +24839,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/* global fetch */
+
 var ApiPath = '/vimeo/api';
+
+/** A static class that interfaces with the server-side Vimeo API */
 
 var API = function () {
   function API() {
@@ -24848,9 +24852,22 @@ var API = function () {
 
   _createClass(API, null, [{
     key: 'path',
+
+    /**
+     * A util method to modify the endpoint to and return a full API request url
+     * @param {string} endpoint - The endpoint you would like to add the full request URL (e.g /videos/video-id)
+     * @returns {string}
+     */
     value: function path(endpoint) {
       return ApiPath + '?path=' + endpoint + '?fields=uri,play,width,height,live,description,title';
     }
+
+    /**
+     * A method for requesting Vimeo videos by video id
+     * @param {number} videoId - The Vimeo video id you would like to query (e.g 296928206)
+     * @returns {Promise}
+     */
+
   }, {
     key: 'getVideo',
     value: function getVideo(videoId) {
@@ -24860,6 +24877,13 @@ var API = function () {
         });
       });
     }
+
+    /**
+     * A method for requesting Vimeo albums by album id
+     * @param {number} albumId - The Vimeo album id you would like to query (e.g 5528679)
+     * @returns {Promise}
+     */
+
   }, {
     key: 'getAlbumVideos',
     value: function getAlbumVideos(albumId) {
@@ -24869,6 +24893,14 @@ var API = function () {
         });
       });
     }
+
+    /**
+     * A utility method for unpacking and resolving the Vimeo API response from the server
+     * @param {Object} res - Vimeo API response
+     * @param {function(any)} resolve - Promise resolve method
+     * @param {function(any)} reject - Promise reject method
+     */
+
   }, {
     key: 'sendResponse',
     value: function sendResponse(res, resolve, reject) {
@@ -24895,10 +24927,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _videoQuality = require('./video-quality');
-
-var _videoQuality2 = _interopRequireDefault(_videoQuality);
 
 var _vimeoVideo = require('./vimeo-video');
 
@@ -24945,10 +24973,7 @@ var Player = function (_EventEmitter) {
     }
 
     _this.id = _this.parseVideoId(videoId);
-    _this.texture;
-
     _this.video = new _vimeoVideo2.default(_this.id, args);
-
     _this.bindEvents();
 
     if (args.autoload) {
@@ -25149,7 +25174,7 @@ var Player = function (_EventEmitter) {
 
 exports.default = Player;
 
-},{"./api":245,"./video-quality":249,"./vimeo-video":250,"event-emitter-es6":208}],247:[function(require,module,exports){
+},{"./api":245,"./vimeo-video":250,"event-emitter-es6":208}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25159,6 +25184,8 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* global Vimeo */
 
 /** A class for static utility methods */
 var Util = function () {
@@ -25201,7 +25228,7 @@ var Util = function () {
     value: function isMobile() {
       var check = false;
       (function (a) {
-        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
+        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; // eslint-disable-line
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     }
@@ -25249,10 +25276,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _vimeoVideo = require('./vimeo-video');
-
-var _vimeoVideo2 = _interopRequireDefault(_vimeoVideo);
 
 var _util = require('./util');
 
@@ -25435,7 +25458,7 @@ var VideoElement = function (_EventEmitter) {
 
 exports.default = VideoElement;
 
-},{"./util":247,"./vimeo-video":250,"dashjs":10,"event-emitter-es6":208}],249:[function(require,module,exports){
+},{"./util":247,"dashjs":10,"event-emitter-es6":208}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25497,7 +25520,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global THREE */
+
 
 /** Class representing a Vimeo video resource */
 var VimeoVideo = function (_EventEmitter) {
@@ -25524,12 +25548,6 @@ var VimeoVideo = function (_EventEmitter) {
     _this.muted = typeof args.muted !== 'undefined' ? args.muted : false;
     _this.autoplay = typeof args.autoplay !== 'undefined' ? args.autoplay : true;
     _this.loop = typeof args.loop !== 'undefined' ? args.loop : true;
-
-    _this.config = {};
-    _this.data;
-    _this.loaded;
-    _this.videoElement;
-    _this.texture;
 
     if (_this.autoplay) {
       _canAutoplay2.default.video({ muted: _this.muted, timeout: 1000 }).then(function (_ref) {
@@ -25559,50 +25577,62 @@ var VimeoVideo = function (_EventEmitter) {
       window.removeEventListener('click', this.onClickAutoplayFix.bind(this));
     }
 
-    /** Load video from Vimeo */
+    /**
+     * Load a specific video by providing a Vimeo video ID
+     * @param {number} videoId - A Vimeo video ID (e.g 296928206)
+     */
 
   }, {
-    key: 'load',
-    value: function load() {
-      this.getVideoDataFromVimeo();
-    }
-  }, {
-    key: 'getVideoDataFromVimeo',
-    value: function getVideoDataFromVimeo() {
+    key: 'loadFromVideoId',
+    value: function loadFromVideoId(videoId) {
       var _this2 = this;
 
-      if (!this.id) {
+      if (!videoId) {
         console.warn('[Vimeo] No video ID was specified');
         return;
       }
 
       if (!this.data) {
-        _api2.default.getVideo(this.id).then(function (response) {
-          _this2.setMetadata(response);
+        _api2.default.getVideo(videoId).then(function (response) {
+          _this2.data = response;
+          _this2.setupVideoElement();
+        }).catch(function (err) {
+          throw new Error(err);
         });
       } else {
-        this.setMetadata(this.data);
+        this.emit('metadataLoad');
       }
     }
-  }, {
-    key: 'setMetadata',
-    value: function setMetadata(metadata) {
-      this.data = metadata;
-      this.setupConfig();
-      this.emit('metadataLoad');
 
-      this.setupVideoElement();
-    }
+    /**
+     * Load a specific video based on the Vimeo video ID provided to the constructor, for internal class use
+     */
+
   }, {
-    key: 'setupConfig',
-    value: function setupConfig() {
+    key: 'load',
+    value: function load() {
+      this.loadFromVideoId(this.id);
+    }
+
+    /**
+     * Parses the Vimeo video description and returns a JSON object if it exists
+     * Useful for when storing metadata in video description (e.g volumetric video)
+     * @returns {Object}
+     */
+
+  }, {
+    key: 'getJSONFromVideoDescription',
+    value: function getJSONFromVideoDescription() {
       if (this.data.description) {
         var desc = 'asdfasfds' + this.data.description;
         var match = desc.match(/(\{.*\})/g);
         if (match) {
-          this.config = JSON.parse(match[0]);
+          return JSON.parse(match[0]);
         }
+      } else {
+        console.warn('[Vimeo] No video is loaded');
       }
+      return null;
     }
 
     /**
@@ -25666,7 +25696,7 @@ var VimeoVideo = function (_EventEmitter) {
   }, {
     key: 'setVolume',
     value: function setVolume(volume) {
-      if (volume == 0) {
+      if (volume === 0) {
         this.muted = true;
         this.mute();
       } else if (volume > 0) {
@@ -25787,22 +25817,22 @@ var VimeoVideo = function (_EventEmitter) {
           return a.height < b.height ? 1 : -1;
         });
 
-        var preferred_qualities = [];
+        var preferredQualities = [];
         for (var i = 0; i < this.data.play.progressive.length; i++) {
           if (quality > this.data.play.progressive[i].height) {
-            preferred_qualities.push(this.data.play.progressive[i]);
-          } else if (quality == this.data.play.progressive[i].height) {
+            preferredQualities.push(this.data.play.progressive[i]);
+          } else if (quality === this.data.play.progressive[i].height) {
             return this.data.play.progressive[i].link;
           }
         }
 
-        if (preferred_qualities.length == 0) {
+        if (preferredQualities.length === 0) {
           var file = this.data.play.progressive[this.data.play.progressive.length - 1];
           console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.');
           return file.link;
         } else {
-          console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferred_qualities[0].height + 'p.');
-          return preferred_qualities[0].link;
+          console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.');
+          return preferredQualities[0].link;
         }
       }
     }

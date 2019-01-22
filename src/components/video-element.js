@@ -1,4 +1,3 @@
-import VimeoVideo from './vimeo-video'
 import Util from './util'
 import dashjs from 'dashjs'
 import EventEmitter from 'event-emitter-es6'

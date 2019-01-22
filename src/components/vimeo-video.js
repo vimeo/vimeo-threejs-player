@@ -1,3 +1,4 @@
+/* global THREE */
 import VideoQuality from './video-quality'
 import VideoElement from './video-element'
 import Util from './util'
@@ -25,12 +26,6 @@ export default class VimeoVideo extends EventEmitter {
     this.autoplay = typeof args.autoplay !== 'undefined' ? args.autoplay : true
     this.loop = typeof args.loop !== 'undefined' ? args.loop : true
 
-    this.config = {}
-    this.data
-    this.loaded
-    this.videoElement
-    this.texture
-
     if (this.autoplay) {
       canAutoPlay.video({ muted: this.muted, timeout: 1000 }).then(({ result, error }) => {
         if (result === false) {
@@ -51,42 +46,51 @@ export default class VimeoVideo extends EventEmitter {
     window.removeEventListener('click', this.onClickAutoplayFix.bind(this))
   }
 
-  /** Load video from Vimeo */
-  load () {
-    this.getVideoDataFromVimeo()
-  }
-
-  getVideoDataFromVimeo () {
-    if (!this.id) {
+  /**
+   * Load a specific video by providing a Vimeo video ID
+   * @param {number} videoId - A Vimeo video ID (e.g 296928206)
+   */
+  loadFromVideoId (videoId) {
+    if (!videoId) {
       console.warn('[Vimeo] No video ID was specified')
       return
     }
 
     if (!this.data) {
-      API.getVideo(this.id).then(response => {
-        this.setMetadata(response)
+      API.getVideo(videoId).then(response => {
+        this.data = response
+        this.setupVideoElement()
+      }).catch(err => {
+        throw new Error(err)
       })
     } else {
-      this.setMetadata(this.data)
+      this.emit('metadataLoad')
     }
   }
 
-  setMetadata (metadata) {
-    this.data = metadata
-    this.setupConfig()
-    this.emit('metadataLoad')
-
-    this.setupVideoElement()
+  /**
+   * Load a specific video based on the Vimeo video ID provided to the constructor, for internal class use
+   */
+  load () {
+    this.loadFromVideoId(this.id)
   }
 
-  setupConfig () {
+  /**
+   * Parses the Vimeo video description and returns a JSON object if it exists
+   * Useful for when storing metadata in video description (e.g volumetric video)
+   * @returns {Object}
+   */
+  getJSONFromVideoDescription () {
     if (this.data.description) {
-      var desc = 'asdfasfds' + this.data.description
-      var match = desc.match(/(\{.*\})/g)
+      let desc = 'asdfasfds' + this.data.description
+      let match = desc.match(/(\{.*\})/g)
       if (match) {
-        this.config = JSON.parse(match[0])
+        return JSON.parse(match[0])
       }
+    } else {
+      console.warn('[Vimeo] No video is loaded')
     }
+    return null
   }
 
   /**
@@ -135,7 +139,7 @@ export default class VimeoVideo extends EventEmitter {
    * @param {number} volume - A number for the new volume you would like to set between 0.0 and 1.0
    */
   setVolume (volume) {
-    if (volume == 0) {
+    if (volume === 0) {
       this.muted = true
       this.mute()
     } else if (volume > 0) {
@@ -229,22 +233,22 @@ export default class VimeoVideo extends EventEmitter {
         return a.height < b.height ? 1 : -1
       })
 
-      var preferred_qualities = []
+      var preferredQualities = []
       for (var i = 0; i < this.data.play.progressive.length; i++) {
         if (quality > this.data.play.progressive[i].height) {
-          preferred_qualities.push(this.data.play.progressive[i])
-        } else if (quality == this.data.play.progressive[i].height) {
+          preferredQualities.push(this.data.play.progressive[i])
+        } else if (quality === this.data.play.progressive[i].height) {
           return this.data.play.progressive[i].link
         }
       }
 
-      if (preferred_qualities.length == 0) {
+      if (preferredQualities.length === 0) {
         var file = this.data.play.progressive[this.data.play.progressive.length - 1]
         console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
         return file.link
       } else {
-        console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferred_qualities[0].height + 'p.')
-        return preferred_qualities[0].link
+        console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
+        return preferredQualities[0].link
       }
     }
   }

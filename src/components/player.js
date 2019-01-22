@@ -1,4 +1,3 @@
-import VideoQuality from './video-quality'
 import VimeoVideo from './vimeo-video'
 import API from './api'
 import EventEmitter from 'event-emitter-es6'
@@ -22,10 +21,7 @@ export default class Player extends EventEmitter {
     }
 
     this.id = this.parseVideoId(videoId)
-    this.texture
-
     this.video = new VimeoVideo(this.id, args)
-
     this.bindEvents()
 
     if (args.autoload) {

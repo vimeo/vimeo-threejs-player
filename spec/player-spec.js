@@ -1,3 +1,4 @@
+/* global describe, beforeEach, it, beforeEach, expect */
 import Player from '../src/components/player'
 import VideoQuality from '../src/components/video-quality'
 
@@ -11,7 +12,7 @@ describe('Player', () => {
   describe('constructor', () => {
     it('throws error without video id parameter', () => {
       expect(() => {
-        new Player()
+        player = new Player()
       }).toThrow(new Error('[Vimeo] Video ID is required'))
     })
 
@@ -20,11 +21,11 @@ describe('Player', () => {
     })
 
     it('sets quality to 1080p', () => {
-      expect(new Player(155, VideoQuality.x1080).getQuality()).toBe(VideoQuality.x1080)
+      expect(player = new Player(155, VideoQuality.x1080).getQuality()).toBe(VideoQuality.x1080)
     })
 
     it('sets id', () => {
-      expect(new Player(155).id).toBe(155)
+      expect(player = new Player(155).id).toBe(155)
     })
 
     it('parses video id from string', () => {
