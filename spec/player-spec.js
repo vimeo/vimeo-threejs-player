@@ -21,8 +21,8 @@ describe('Player', () => {
     })
 
     it('sets quality to 1080p', () => {
-      expect(player = new Player(155, { 
-        quality: VideoQuality.x1080 
+      expect(player = new Player(155, {
+        quality: VideoQuality.x1080
       }).getQuality()).toBe(VideoQuality.x1080)
     })
 
@@ -31,7 +31,7 @@ describe('Player', () => {
     })
 
     it('sets autoplay to false when provided in argument object to constructor', () => {
-      expect(player = new Player(155, { 
+      expect(player = new Player(155, {
         autoplay: false
       }).video.autoplay).toBe(false)
     })
@@ -41,7 +41,7 @@ describe('Player', () => {
     })
 
     it('sets autoplay to true when provided in argument object to constructor', () => {
-      expect(player = new Player(155, { 
+      expect(player = new Player(155, {
         muted: true
       }).video.autoplay).toBe(true)
     })
@@ -59,7 +59,7 @@ describe('Player', () => {
     })
 
     it('sets loop to false when provided in argument object to constructor', () => {
-      expect(player = new Player(155, { 
+      expect(player = new Player(155, {
         loop: false
       }).video.loop).toBe(false)
     })

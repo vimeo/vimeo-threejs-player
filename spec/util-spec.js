@@ -1,4 +1,4 @@
-/* global describe, beforeEach, it, beforeEach, expect */
+/* global describe, it, expect */
 import Util from '../src/components/util'
 
 describe('Util', () => {

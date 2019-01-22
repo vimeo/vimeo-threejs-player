@@ -138,7 +138,7 @@ export default class Player extends EventEmitter {
   play () {
     if (this.video) {
       try {
-        this.video.play()  
+        this.video.play()
       } catch (error) {
         throw new Error('[Vimeo] Video provided is not correct, try changing the video id and running the code again')
       }
