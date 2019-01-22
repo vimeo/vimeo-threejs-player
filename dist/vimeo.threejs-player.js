@@ -24908,6 +24908,10 @@ var _api = require('./api');
 
 var _api2 = _interopRequireDefault(_api);
 
+var _eventEmitterEs = require('event-emitter-es6');
+
+var _eventEmitterEs2 = _interopRequireDefault(_eventEmitterEs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24916,32 +24920,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = require('event-emitter-es6');
-
+/** A class that represents a Vimeo video player */
 var Player = function (_EventEmitter) {
   _inherits(Player, _EventEmitter);
 
-  _createClass(Player, null, [{
-    key: 'loadPlayersByAlbum',
-    value: function loadPlayersByAlbum(albumId) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var players = [];
-
-      return new Promise(function (resolve, reject) {
-        _api2.default.getAlbumVideos(albumId).then(function (resp) {
-          for (var i = 0; i < resp.data.length; i++) {
-            var player = new Player(resp.data[i].uri, args);
-            player.video.data = resp.data[i];
-            players.push(player);
-          }
-
-          resolve(players);
-        });
-      });
-    }
-  }]);
-
+  /**
+   * @constructor Create a new Vimeo video player
+   * @param {number} videoId - A Vimeo video ID (e.g 296928206)
+   * @param {Object} args - An object that holds the Vimeo video properties
+   * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
+   * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
+   * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
+   * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
+   */
   function Player(videoId) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -24966,8 +24957,22 @@ var Player = function (_EventEmitter) {
     return _this;
   }
 
+  /**
+   * Load a Vimeo album and create multipule Vimeo Players
+   * @param {number} albumId - A Vimeo album ID (e.g 5528679)
+   * @param {Object} args - An object that holds the Vimeo video properties
+   * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
+   * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
+   * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
+   * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
+   */
+
+
   _createClass(Player, [{
     key: 'bindEvents',
+
+
+    /** Bind all player event emitters, used internally */
     value: function bindEvents() {
       this.video.on('metadataLoad', function () {
         this.emit('metadataLoad');
@@ -24982,51 +24987,100 @@ var Player = function (_EventEmitter) {
         this.emit('play');
       }.bind(this));
     }
+
+    /**
+     * Parse and clean a valid Vimeo video ID from string or integer
+     * @param {number} id - The Vimeo video ID
+     * @returns {number}
+     */
+
   }, {
     key: 'parseVideoId',
     value: function parseVideoId(id) {
       return parseInt(id.toString().match(/([0-9]+)/)[1]);
     }
+
+    /**
+     * Get the current player's Vimeo video ID
+     * @returns {number}
+     */
+
   }, {
     key: 'getVideoId',
     value: function getVideoId() {
       return this.id;
     }
+
+    /** Mute the video */
+
   }, {
     key: 'mute',
     value: function mute() {
       this.video.mute();
     }
+
+    /** Unmute the video */
+
   }, {
     key: 'unmute',
     value: function unmute() {
       this.video.unmute();
     }
+
+    /** Load the current video */
+
   }, {
     key: 'load',
     value: function load() {
       this.video.load();
     }
+
+    /**
+     * Set the video quality based on one of the options in the VideoQuality enum
+     * @param {VideoQuality} quality - The desired quality setting
+     */
+
   }, {
     key: 'setQuality',
     value: function setQuality(quality) {
       this.video.selectedQuality = quality;
     }
+
+    /**
+     * Get the current selected video quality
+     * @returns {number}
+     */
+
   }, {
     key: 'getQuality',
     value: function getQuality() {
       return this.video.selectedQuality;
     }
+
+    /**
+     * Get the current video's width in pixels
+     * @returns {number}
+     */
+
   }, {
     key: 'getWidth',
     value: function getWidth() {
       return this.video.getWidth();
     }
+
+    /**
+     * Get the current video's height in pixels
+     * @returns {number}
+     */
+
   }, {
     key: 'getHeight',
     value: function getHeight() {
       return this.video.getHeight();
     }
+
+    /** Play the video */
+
   }, {
     key: 'play',
     value: function play() {
@@ -25036,6 +25090,9 @@ var Player = function (_EventEmitter) {
         console.warn('[Vimeo Player] Video has not been loaded yet, try calling player.load()');
       }
     }
+
+    /** Pause the video */
+
   }, {
     key: 'pause',
     value: function pause() {
@@ -25043,10 +25100,52 @@ var Player = function (_EventEmitter) {
         this.video.pause();
       }
     }
+
+    /** Stop the video */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      if (this.video) {
+        this.video.stop();
+      }
+    }
+
+    /**
+     * Set the video volume
+     * @param {number} volume - A number for the new volume you would like to set between 0.0 and 1.0
+     */
+
+  }, {
+    key: 'setVolume',
+    value: function setVolume(volume) {
+      if (this.video) {
+        this.video.setVolume(volume);
+      }
+    }
+  }], [{
+    key: 'loadPlayersByAlbum',
+    value: function loadPlayersByAlbum(albumId) {
+      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      var players = [];
+
+      return new Promise(function (resolve, reject) {
+        _api2.default.getAlbumVideos(albumId).then(function (resp) {
+          for (var i = 0; i < resp.data.length; i++) {
+            var player = new Player(resp.data[i].uri, args);
+            player.video.data = resp.data[i];
+            players.push(player);
+          }
+
+          resolve(players);
+        });
+      });
+    }
   }]);
 
   return Player;
-}(EventEmitter);
+}(_eventEmitterEs2.default);
 
 exports.default = Player;
 
@@ -25061,6 +25160,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/** A class for static utility methods */
 var Util = function () {
   function Util() {
     _classCallCheck(this, Util);
@@ -25068,17 +25168,34 @@ var Util = function () {
 
   _createClass(Util, null, [{
     key: 'checkWebGL',
+
+    /**
+     * Check wheter WebGL is supported or not
+     * @returns {bool}
+     */
     value: function checkWebGL() {
       var hasWebGL = void 0;
       window.WebGLRenderingContext ? hasWebGL = true : hasWebGL = false;
       return hasWebGL;
     }
+
+    /**
+     * Check wheter the platform is iOS
+     * @returns {bool}
+     */
+
   }, {
     key: 'isiOS',
     value: function isiOS() {
       return (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
       );
     }
+
+    /**
+     * Check wheter the current device is a mobile device
+     * @returns {bool}
+     */
+
   }, {
     key: 'isMobile',
     value: function isMobile() {
@@ -25088,6 +25205,13 @@ var Util = function () {
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     }
+
+    /**
+     * Check wheter a JSON object is a valid JSON or not
+     * @param {Object} json - The JSON object you want to check
+     * @returns {bool}
+     */
+
   }, {
     key: 'isJSON',
     value: function isJSON(json) {
@@ -25318,7 +25442,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /**
- * An enum that represents the video quality coming from Vimeo, 
+ * An enum that represents the video quality coming from Vimeo,
  * auto will default to adaptive an fallback to highest progressive file
  */
 var VideoQuality = {
@@ -25382,7 +25506,7 @@ var VimeoVideo = function (_EventEmitter) {
   /**
    * @constructor Create a Vimeo video resource
    * @param {number} videoId - A Vimeo video ID (e.g 296928206)
-   * @param {object} args - An object that holds the Vimeo video properties
+   * @param {Object} args - An object that holds the Vimeo video properties
    * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
    * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
    * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
@@ -25480,6 +25604,12 @@ var VimeoVideo = function (_EventEmitter) {
         }
       }
     }
+
+    /**
+     * Query wheter the current video is loaded
+     * @returns {bool}
+     */
+
   }, {
     key: 'isLoaded',
     value: function isLoaded() {
@@ -25574,6 +25704,11 @@ var VimeoVideo = function (_EventEmitter) {
 
       this.setupTexture();
     }
+
+    /**
+     * Create a three.js video texture
+     */
+
   }, {
     key: 'setupTexture',
     value: function setupTexture() {
@@ -25605,6 +25740,12 @@ var VimeoVideo = function (_EventEmitter) {
     value: function getHeight() {
       return this.data.height;
     }
+
+    /**
+     * Get the current Vimeo video file URL
+     * @returns {string}
+     */
+
   }, {
     key: 'getFileURL',
     value: function getFileURL() {
@@ -25614,6 +25755,12 @@ var VimeoVideo = function (_EventEmitter) {
         return this.getProgressiveFileURL(this.selectedQuality);
       }
     }
+
+    /**
+     * Get the current Vimeo video adaptive stream manifrest file URL
+     * @returns {string}
+     */
+
   }, {
     key: 'getAdaptiveURL',
     value: function getAdaptiveURL() {
@@ -25623,6 +25770,13 @@ var VimeoVideo = function (_EventEmitter) {
         return this.data.play.hls.link;
       }
     }
+
+    /**
+     * Get the current Vimeo video progressive file URL by specific video quality
+     * @param {VideoQuality} quality - Specific quality to query the possible video resolutions
+     * @returns {string}
+     */
+
   }, {
     key: 'getProgressiveFileURL',
     value: function getProgressiveFileURL(quality) {
@@ -25652,16 +25806,34 @@ var VimeoVideo = function (_EventEmitter) {
         }
       }
     }
+
+    /**
+     * Query wheter the current video is a livestream
+     * @returns {bool}
+     */
+
   }, {
     key: 'isLive',
     value: function isLive() {
       return this.data.live && this.data.live.status === 'streaming';
     }
+
+    /**
+     * Query wheter the current video is playing back an adaptive stream
+     * @returns {bool}
+     */
+
   }, {
     key: 'isAdaptivePlayback',
     value: function isAdaptivePlayback() {
       return this.selectedQuality === _videoQuality2.default.auto || this.selectedQuality === _videoQuality2.default.adaptive;
     }
+
+    /**
+     * Query wheter the current video is playing back an adaptive DASH stream
+     * @returns {bool}
+     */
+
   }, {
     key: 'isDashPlayback',
     value: function isDashPlayback() {

@@ -1,14 +1,28 @@
+
+/** A class for static utility methods */
 export default class Util {
+  /**
+   * Check wheter WebGL is supported or not
+   * @returns {bool}
+   */
   static checkWebGL () {
     let hasWebGL
     window.WebGLRenderingContext ? hasWebGL = true : hasWebGL = false
     return hasWebGL
   }
 
+  /**
+   * Check wheter the platform is iOS
+   * @returns {bool}
+   */
   static isiOS () {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
   }
 
+  /**
+   * Check wheter the current device is a mobile device
+   * @returns {bool}
+   */
   static isMobile () {
     let check = false;
     (function (a) {
@@ -17,6 +31,11 @@ export default class Util {
     return check
   }
 
+  /**
+   * Check wheter a JSON object is a valid JSON or not
+   * @param {Object} json - The JSON object you want to check
+   * @returns {bool}
+   */
   static isJSON (json) {
     return json.description && json.description.match(/^{/)
   }

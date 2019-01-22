@@ -10,7 +10,7 @@ export default class VimeoVideo extends EventEmitter {
   /**
    * @constructor Create a Vimeo video resource
    * @param {number} videoId - A Vimeo video ID (e.g 296928206)
-   * @param {object} args - An object that holds the Vimeo video properties
+   * @param {Object} args - An object that holds the Vimeo video properties
    * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
    * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
    * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
@@ -89,6 +89,10 @@ export default class VimeoVideo extends EventEmitter {
     }
   }
 
+  /**
+   * Query wheter the current video is loaded
+   * @returns {bool}
+   */
   isLoaded () {
     return this.data && this.videoElement.getElement()
   }
@@ -161,6 +165,9 @@ export default class VimeoVideo extends EventEmitter {
     this.setupTexture()
   }
 
+  /**
+   * Create a three.js video texture
+   */
   setupTexture () {
     this.texture = new THREE.VideoTexture(this.videoElement.getElement())
     this.texture.minFilter = THREE.NearestFilter
@@ -185,6 +192,10 @@ export default class VimeoVideo extends EventEmitter {
     return this.data.height
   }
 
+  /**
+   * Get the current Vimeo video file URL
+   * @returns {string}
+   */
   getFileURL () {
     if (this.isAdaptivePlayback()) {
       return this.getAdaptiveURL()
@@ -193,6 +204,10 @@ export default class VimeoVideo extends EventEmitter {
     }
   }
 
+  /**
+   * Get the current Vimeo video adaptive stream manifrest file URL
+   * @returns {string}
+   */
   getAdaptiveURL () {
     if (this.isDashPlayback()) {
       return this.data.play.dash.link
@@ -201,6 +216,11 @@ export default class VimeoVideo extends EventEmitter {
     }
   }
 
+  /**
+   * Get the current Vimeo video progressive file URL by specific video quality
+   * @param {VideoQuality} quality - Specific quality to query the possible video resolutions
+   * @returns {string}
+   */
   getProgressiveFileURL (quality) {
     if (this.isLive()) {
       console.warn('[Vimeo] This is a live video! There are no progressive video files availale.')
@@ -229,14 +249,26 @@ export default class VimeoVideo extends EventEmitter {
     }
   }
 
+  /**
+   * Query wheter the current video is a livestream
+   * @returns {bool}
+   */
   isLive () {
     return this.data.live && this.data.live.status === 'streaming'
   }
 
+  /**
+   * Query wheter the current video is playing back an adaptive stream
+   * @returns {bool}
+   */
   isAdaptivePlayback () {
     return this.selectedQuality === VideoQuality.auto || this.selectedQuality === VideoQuality.adaptive
   }
 
+  /**
+   * Query wheter the current video is playing back an adaptive DASH stream
+   * @returns {bool}
+   */
   isDashPlayback () {
     return this.isAdaptivePlayback() && !Util.isiOS()
   }

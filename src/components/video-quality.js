@@ -1,5 +1,5 @@
 /**
- * An enum that represents the video quality coming from Vimeo, 
+ * An enum that represents the video quality coming from Vimeo,
  * auto will default to adaptive an fallback to highest progressive file
  */
 const VideoQuality = {

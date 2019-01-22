@@ -1,26 +1,19 @@
 import VideoQuality from './video-quality'
 import VimeoVideo from './vimeo-video'
 import API from './api'
+import EventEmitter from 'event-emitter-es6'
 
-const EventEmitter = require('event-emitter-es6')
-
+/** A class that represents a Vimeo video player */
 export default class Player extends EventEmitter {
-  static loadPlayersByAlbum (albumId, args = {}) {
-    var players = []
-
-    return new Promise((resolve, reject) => {
-      API.getAlbumVideos(albumId).then(resp => {
-        for (var i = 0; i < resp.data.length; i++) {
-          var player = new Player(resp.data[i].uri, args)
-          player.video.data = resp.data[i]
-          players.push(player)
-        }
-
-        resolve(players)
-      })
-    })
-  }
-
+  /**
+   * @constructor Create a new Vimeo video player
+   * @param {number} videoId - A Vimeo video ID (e.g 296928206)
+   * @param {Object} args - An object that holds the Vimeo video properties
+   * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
+   * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
+   * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
+   * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
+   */
   constructor (videoId, args = {}) {
     super()
 
@@ -40,6 +33,32 @@ export default class Player extends EventEmitter {
     }
   }
 
+  /**
+   * Load a Vimeo album and create multipule Vimeo Players
+   * @param {number} albumId - A Vimeo album ID (e.g 5528679)
+   * @param {Object} args - An object that holds the Vimeo video properties
+   * @param {number} [args.quality = VideoQuality.auto] - args.quality - The video quality represented by the VideoQuality enum
+   * @param {bool} [args.muted = false] - A boolean for loading a video and playing it back muted
+   * @param {bool} [args.autoplay = true] - A boolean for loading the video and automatically playing it once it has loaded
+   * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
+   */
+  static loadPlayersByAlbum (albumId, args = {}) {
+    var players = []
+
+    return new Promise((resolve, reject) => {
+      API.getAlbumVideos(albumId).then(resp => {
+        for (var i = 0; i < resp.data.length; i++) {
+          var player = new Player(resp.data[i].uri, args)
+          player.video.data = resp.data[i]
+          players.push(player)
+        }
+
+        resolve(players)
+      })
+    })
+  }
+
+  /** Bind all player event emitters, used internally */
   bindEvents () {
     this.video.on('metadataLoad', function () {
       this.emit('metadataLoad')
@@ -55,42 +74,71 @@ export default class Player extends EventEmitter {
     }.bind(this))
   }
 
+  /**
+   * Parse and clean a valid Vimeo video ID from string or integer
+   * @param {number} id - The Vimeo video ID
+   * @returns {number}
+   */
   parseVideoId (id) {
     return parseInt(id.toString().match(/([0-9]+)/)[1])
   }
 
+  /**
+   * Get the current player's Vimeo video ID
+   * @returns {number}
+   */
   getVideoId () {
     return this.id
   }
 
+  /** Mute the video */
   mute () {
     this.video.mute()
   }
 
+  /** Unmute the video */
   unmute () {
     this.video.unmute()
   }
 
+  /** Load the current video */
   load () {
     this.video.load()
   }
 
+  /**
+   * Set the video quality based on one of the options in the VideoQuality enum
+   * @param {VideoQuality} quality - The desired quality setting
+   */
   setQuality (quality) {
     this.video.selectedQuality = quality
   }
 
+  /**
+   * Get the current selected video quality
+   * @returns {number}
+   */
   getQuality () {
     return this.video.selectedQuality
   }
 
+  /**
+   * Get the current video's width in pixels
+   * @returns {number}
+   */
   getWidth () {
     return this.video.getWidth()
   }
 
+  /**
+   * Get the current video's height in pixels
+   * @returns {number}
+   */
   getHeight () {
     return this.video.getHeight()
   }
 
+  /** Play the video */
   play () {
     if (this.video) {
       this.video.play()
@@ -99,9 +147,27 @@ export default class Player extends EventEmitter {
     }
   }
 
+  /** Pause the video */
   pause () {
     if (this.video) {
       this.video.pause()
+    }
+  }
+
+  /** Stop the video */
+  stop () {
+    if (this.video) {
+      this.video.stop()
+    }
+  }
+
+  /**
+   * Set the video volume
+   * @param {number} volume - A number for the new volume you would like to set between 0.0 and 1.0
+   */
+  setVolume (volume) {
+    if (this.video) {
+      this.video.setVolume(volume)
     }
   }
 }
