@@ -32,15 +32,6 @@ export default class Util {
     return check
   }
 
-  /**
-   * Check wheter a JSON object is a valid JSON or not
-   * @param {Object} json - The JSON object you want to check
-   * @returns {bool}
-   */
-  static isJSON (json) {
-    return json.description && json.description.match(/^{/)
-  }
-
   static runDisplayHelpers () {
     if (Vimeo.Util.isiOS()) {
       var iosEls = document.querySelectorAll('[data-is-ios]')

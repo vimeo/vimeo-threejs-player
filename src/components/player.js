@@ -137,23 +137,35 @@ export default class Player extends EventEmitter {
   /** Play the video */
   play () {
     if (this.video) {
-      this.video.play()
+      try {
+        this.video.play()  
+      } catch (error) {
+        throw new Error('[Vimeo] Video provided is not correct, try changing the video id and running the code again')
+      }
     } else {
-      console.warn('[Vimeo Player] Video has not been loaded yet, try calling player.load()')
+      console.warn('[Vimeo] Video has not been loaded yet, try calling player.load()')
     }
   }
 
   /** Pause the video */
   pause () {
     if (this.video) {
-      this.video.pause()
+      try {
+        this.video.pause()
+      } catch (error) {
+        throw new Error('[Vimeo] Video provided is not correct, try changing the video id and running the code again')
+      }
     }
   }
 
   /** Stop the video */
   stop () {
     if (this.video) {
-      this.video.stop()
+      try {
+        this.video.stop()
+      } catch (error) {
+        throw new Error('[Vimeo] Video provided is not correct, try changing the video id and running the code again')
+      }
     }
   }
 
