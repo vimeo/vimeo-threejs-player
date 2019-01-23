@@ -52,16 +52,15 @@ export default class VimeoVideo extends EventEmitter {
    */
   loadFromVideoId (videoId) {
     if (!videoId) {
-      console.warn('[Vimeo] No video ID was specified')
-      return
+      throw new Error('[Vimeo] No video ID was specified')
     }
 
     if (!this.data) {
       API.getVideo(videoId).then(response => {
         this.data = response
         this.setupVideoElement()
-      }).catch(err => {
-        throw new Error(err)
+      }).catch(error => {
+        throw new Error(error)
       })
     } else {
       this.emit('metadataLoad')
@@ -98,7 +97,12 @@ export default class VimeoVideo extends EventEmitter {
    * @returns {bool}
    */
   isLoaded () {
-    return this.data && this.videoElement.getElement()
+    if (this.data && this.videoElement) {
+      if (this.videoElement.getElement()) {
+        return true
+      }
+    }
+    return false
   }
 
   /** Play the video */
@@ -141,7 +145,7 @@ export default class VimeoVideo extends EventEmitter {
   setVolume (volume) {
     if (volume === 0) {
       this.muted = true
-      this.mute()
+      this.videoElement.setVolume(volume)
     } else if (volume > 0) {
       this.muted = false
       this.videoElement.setVolume(volume)
@@ -150,14 +154,12 @@ export default class VimeoVideo extends EventEmitter {
 
   /** Muted the video */
   mute () {
-    this.muted = true
-    this.videoElement.setVolume(0.0)
+    this.setVolume(0.0)
   }
 
   /** Unmute the video */
   unmute () {
-    this.muted = false
-    this.videoElement.setVolume(1.0)
+    this.setVolume(1.0)
   }
 
   setupVideoElement () {
@@ -173,11 +175,15 @@ export default class VimeoVideo extends EventEmitter {
    * Create a three.js video texture
    */
   setupTexture () {
-    this.texture = new THREE.VideoTexture(this.videoElement.getElement())
-    this.texture.minFilter = THREE.NearestFilter
-    this.texture.magFilter = THREE.LinearFilter
-    this.texture.format = THREE.RGBFormat
-    this.texture.generateMipmaps = true
+    if (this.videoElement.getElement().src === '') {
+      throw new Error('[Vimeo] No video has been loaded yet')
+    } else {
+      this.texture = new THREE.VideoTexture(this.videoElement.getElement())
+      this.texture.minFilter = THREE.NearestFilter
+      this.texture.magFilter = THREE.LinearFilter
+      this.texture.format = THREE.RGBFormat
+      this.texture.generateMipmaps = true
+    }
   }
 
   /**
@@ -185,7 +191,10 @@ export default class VimeoVideo extends EventEmitter {
    * @returns {number}
    */
   getWidth () {
-    return this.data.width
+    if (this.data) {
+      return this.data.width
+    }
+    return null
   }
 
   /**
@@ -193,7 +202,10 @@ export default class VimeoVideo extends EventEmitter {
    * @returns {number}
    */
   getHeight () {
-    return this.data.height
+    if (this.data) {
+      return this.data.height
+    }
+    return null
   }
 
   /**
@@ -268,7 +280,10 @@ export default class VimeoVideo extends EventEmitter {
    * @returns {bool}
    */
   isLive () {
-    return this.data.live && this.data.live.status === 'streaming'
+    if (this.data) {
+      return this.data.live && this.data.live.status === 'streaming'
+    }
+    return false
   }
 
   /**

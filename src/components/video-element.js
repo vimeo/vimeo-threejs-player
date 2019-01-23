@@ -88,7 +88,7 @@ export default class VideoElement extends EventEmitter {
 
   /**
    * Gets the video volume
-   * @returns {number} 
+   * @returns {number}
    */
   getVolume () {
     if (this.player) {
