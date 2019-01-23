@@ -165,10 +165,9 @@ export default class VimeoVideo extends EventEmitter {
   setupVideoElement () {
     this.videoElement = new VideoElement(this)
     this.videoElement.on('videoLoad', () => {
-      this.emit('videoLoad')
+      this.setupTexture()
+      this.emit('videoLoad', this.texture)
     })
-
-    this.setupTexture()
   }
 
   /**

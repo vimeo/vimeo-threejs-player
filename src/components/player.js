@@ -60,9 +60,9 @@ export default class Player extends EventEmitter {
       this.emit('metadataLoad')
     }.bind(this))
 
-    this.video.on('videoLoad', function () {
+    this.video.on('videoLoad', function (videoTexture) {
       this.texture = this.video.texture
-      this.emit('videoLoad')
+      this.emit('videoLoad', videoTexture)
     }.bind(this))
 
     this.video.on('play', function () {

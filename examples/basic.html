@@ -45,24 +45,23 @@
 
     // Create a new Vimeo Player and set the video
     vimeoPlayer = new Vimeo.Player(310386334, { autoplay: false });
-
+    vimeoPlayer.load();
     // videoLoad is fired when ready to apply the video texture to a mesh 
-    vimeoPlayer.on('videoLoad', function() {
+    vimeoPlayer.on('videoLoad', function(videoTexture) {
       showPlayButton();
 
       var height = 30 * (vimeoPlayer.getHeight() / vimeoPlayer.getWidth())
       var geometry = new THREE.PlaneGeometry(30, height, 32 );
-      var material = new THREE.MeshBasicMaterial( { map: vimeoPlayer.texture, side: THREE.DoubleSide} );
+      var material = new THREE.MeshBasicMaterial( { map: videoTexture, side: THREE.DoubleSide} );
       var plane = new THREE.Mesh( geometry, material );
       plane.position.y = height / 2;
       scene.add( plane );
 
       videoScreenLight = new THREE.RectAreaLight(0xffffff, 5.0,  30, height);
       scene.add(videoScreenLight)
-      
     });
 
-    vimeoPlayer.load();
+    
 
     var floorGeo = new THREE.PlaneGeometry( 1000, 1000, 1 );
     var floorMaterial = new THREE.MeshPhysicalMaterial({ color: 0x333333, side: THREE.DoubleSide });
