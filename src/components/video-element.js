@@ -37,14 +37,24 @@ export default class VideoElement extends EventEmitter {
   /** Play the video */
   play () {
     if (this.player) {
-      this.player.play()
+      try {
+        this.player.play()
+      } catch (error) {
+        this.emit('error', error)
+        throw new Error('[Vimeo] Failed triggering playback, try initializing the element with a valid video before hitting play')
+      }
     }
   }
 
   /** Pause the video */
   pause () {
     if (this.player) {
-      this.player.pause()
+      try {
+        this.player.pause()
+      } catch (error) {
+        this.emit('error', error)
+        throw new Error('[Vimeo] Failed triggering playback, try initializing the element with a valid video before hitting pause')
+      }
     }
   }
 
@@ -72,6 +82,20 @@ export default class VideoElement extends EventEmitter {
         } else {
           this.player.volume = volume
         }
+      }
+    }
+  }
+
+  /**
+   * Gets the video volume
+   * @returns {number} 
+   */
+  getVolume () {
+    if (this.player) {
+      if (this._isDashPlayback) {
+        return this.player.getVolume()
+      } else {
+        return this.player.volume
       }
     }
   }

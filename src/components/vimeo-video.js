@@ -214,9 +214,17 @@ export default class VimeoVideo extends EventEmitter {
    */
   getAdaptiveURL () {
     if (this.isDashPlayback()) {
-      return this.data.play.dash.link
+      if (this.data) {
+        return this.data.play.dash.link
+      } else {
+        console.warn('[Vimeo] There was a problem loading your video, did you provide a valid Vimeo video ID?')
+      }
     } else {
-      return this.data.play.hls.link
+      if (this.data) {
+        return this.data.play.hls.link
+      } else {
+        console.warn('[Vimeo] There was a problem loading your video, did you provide a valid Vimeo video ID?')
+      }
     }
   }
 
@@ -229,26 +237,28 @@ export default class VimeoVideo extends EventEmitter {
     if (this.isLive()) {
       console.warn('[Vimeo] This is a live video! There are no progressive video files availale.')
     } else {
-      this.data.play.progressive.sort(function (a, b) {
-        return a.height < b.height ? 1 : -1
-      })
+      if (this.data) {
+        this.data.play.progressive.sort(function (a, b) {
+          return a.height < b.height ? 1 : -1
+        })
 
-      var preferredQualities = []
-      for (var i = 0; i < this.data.play.progressive.length; i++) {
-        if (quality > this.data.play.progressive[i].height) {
-          preferredQualities.push(this.data.play.progressive[i])
-        } else if (quality === this.data.play.progressive[i].height) {
-          return this.data.play.progressive[i].link
+        var preferredQualities = []
+        for (var i = 0; i < this.data.play.progressive.length; i++) {
+          if (quality > this.data.play.progressive[i].height) {
+            preferredQualities.push(this.data.play.progressive[i])
+          } else if (quality === this.data.play.progressive[i].height) {
+            return this.data.play.progressive[i].link
+          }
         }
-      }
 
-      if (preferredQualities.length === 0) {
-        var file = this.data.play.progressive[this.data.play.progressive.length - 1]
-        console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
-        return file.link
-      } else {
-        console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
-        return preferredQualities[0].link
+        if (preferredQualities.length === 0) {
+          var file = this.data.play.progressive[this.data.play.progressive.length - 1]
+          console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
+          return file.link
+        } else {
+          console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
+          return preferredQualities[0].link
+        }
       }
     }
   }
