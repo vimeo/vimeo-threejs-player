@@ -33,7 +33,7 @@ describe('VideoElement', () => {
 
     it('creats adaptive DASH player on supported platform', () => {
       expect(videoElement.player.setBufferAheadToKeep.toString()).toBe(
-        'function setBufferAheadToKeep(value){mediaPlayerModel.setBufferAheadToKeep(value);}'
+        'function setBufferAheadToKeep(value){mediaPlayerModel.setBufferAheadToKeep(value)}'
       )
     })
   })
@@ -95,7 +95,7 @@ describe('VideoElement', () => {
     it('creats and returns a DASH.js player element on supported platforms', () => {
       const adaptivePlayer = videoElement.createAdaptivePlayer(vimeoVideo)
       expect(adaptivePlayer.setBufferAheadToKeep.toString()).toBe(
-        'function setBufferAheadToKeep(value){mediaPlayerModel.setBufferAheadToKeep(value);}'
+        'function setBufferAheadToKeep(value){mediaPlayerModel.setBufferAheadToKeep(value)}'
       )
     })
   })
