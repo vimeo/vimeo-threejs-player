@@ -49,6 +49,10 @@ app.get('/basic', (request, response) => {
   response.render('basic.html');
 });
 
+app.get('/shapes', (request, response) => {
+  response.render('shapes.html');
+});
+
 app.get('/album', (request, response) => {
   response.render('album.html');
 });
