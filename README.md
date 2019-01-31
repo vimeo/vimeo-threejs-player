@@ -1,1 +1,1 @@
-# vimeo-threejs-player
+# Vimeo three.js player
