@@ -18,7 +18,8 @@
     "test": "mocha --require babel-register --colors ./spec/*-spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./spec/*-spec.js",
     "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors spec/*.js",
-    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\""
+    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\"",
+    "deploy:glitch": "sync-glitch"
   },
   "license": "MIT",
   "dependencies": {
