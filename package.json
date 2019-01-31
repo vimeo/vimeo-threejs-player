@@ -2,7 +2,7 @@
   "name": "vimeo_threejs_player",
   "version": "0.0.1",
   "description": "A video player for rendering Vimeo videos in three.js",
-  "main": "lib/webpack-library-starter.js",
+  "main": "dist/vimeo_threejs_player.js",
   "engines": {
     "node": ">=0.12"
   },
