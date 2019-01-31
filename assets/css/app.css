@@ -12,7 +12,7 @@ body {
 	left: 0;
 	width: 250px;
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 	padding: 20px;
 }
 
@@ -20,11 +20,21 @@ body {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+	padding-left: 20px;
 }
 
 #nav a {
 	color: #08C;
 	font-size: 12px;
+}
+
+#examples {
+	padding-left: 5px;
+}
+
+#logo {
+	height: 30px;
+	width: 100px;
 }
 
 #container {
@@ -33,10 +43,14 @@ body {
 	left: 250px;
 	width: calc(100% - 250px);
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 }
 
 /* Vimeo branding */
+#logo {
+	height: 30px;
+}
+
 .VimeoBrand_ColorRibbon{
 	position: absolute;
 	top: 0; left: 0;

@@ -25,12 +25,12 @@
     "can-autoplay": "^3.0.0",
     "dashjs": "^2.9.2",
     "ejs": "^2.6.1",
+    "event-emitter-es6": "^1.1.5",
     "express": "^4.16.2",
     "host-validation": "^2.0.1",
     "sync-request": "^6.0.0",
     "three": "^0.89.0",
-    "vimeo": "^2.1.1",
-    "event-emitter-es6": "^1.1.5"
+    "vimeo": "^2.1.1"
   },
   "homepage": "https://labs.vimeo.com",
   "devDependencies": {
@@ -45,17 +45,18 @@
     "babel-register": "^7.0.0-beta.3",
     "chai": "^4.1.2",
     "cross-env": "^5.2.0",
+    "dotenv": "^6.2.0",
     "jsdom": "11.11.0",
     "jsdom-global": "3.0.2",
     "mocha": "^4.0.1",
+    "nodemon": "^1.18.9",
+    "nyc": "^13.1.0",
+    "standard": "*",
+    "sync-glitch-cli": "^2.0.1",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.12.2",
     "webpack-cli": "^3.0.8",
-    "yargs": "^10.0.3",
-    "nyc": "^13.1.0",
-    "nodemon": "^1.18.9",
-    "standard": "*",
-    "dotenv": "^6.2.0"
+    "yargs": "^10.0.3"
   },
   "nyc": {
     "sourceMap": false,
