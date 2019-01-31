@@ -67,10 +67,11 @@
 
     });
 
-    var floorGeo = new THREE.PlaneGeometry(1000, 1000, 1);
+    var floorGeo = new THREE.PlaneGeometry(100, 100, 1);
     var floorMaterial = new THREE.MeshStandardMaterial({ color: 0x333333, side: THREE.DoubleSide });
     floor = new THREE.Mesh(floorGeo, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
+    floor.position.x = -5
     scene.add(floor);
 
     setupEvents();

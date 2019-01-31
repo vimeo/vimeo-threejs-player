@@ -49,6 +49,10 @@ app.get('/basic', (request, response) => {
   response.render('basic.html');
 });
 
+app.get('/webvr-video', (request, response) => {
+  response.render('webvr-video.html');
+});
+
 app.get('/shapes', (request, response) => {
   response.render('shapes.html');
 });
