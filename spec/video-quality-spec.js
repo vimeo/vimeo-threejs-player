@@ -1,7 +1,7 @@
 /* global describe, it, expect */
 import VideoQuality from '../src/components/video-quality'
 
-var expect = require('chai').expect
+var expect = require('chai').expect // eslint-disable-line
 
 describe('VideoQuality', () => {
   it('has all resolutions', () => {

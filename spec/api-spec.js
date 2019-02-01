@@ -1,7 +1,7 @@
 /* global describe, it, expect */
 import API from '../src/components/api'
 
-var expect = require('chai').expect
+var expect = require('chai').expect // eslint-disable-line
 
 describe('API', () => {
   it('returns correct path for video request', () => {

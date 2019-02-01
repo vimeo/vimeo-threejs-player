@@ -1,7 +1,7 @@
 /* global describe, it, expect */
 import Util from '../src/components/util'
 
-var expect = require('chai').expect
+var expect = require('chai').expect // eslint-disable-line
 
 describe('Util', () => {
   it('returns true for checkWebGL when window.WebGLRenderingContext is not null', () => {

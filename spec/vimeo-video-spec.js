@@ -172,7 +172,7 @@ describe('VimeoVideo', () => {
   describe('setupVideoElement', () => {
     it('creates a VideoElement', () => {
       vimeoVideo.setupVideoElement()
-      expect(vimeoVideo.videoElement).to.not.be.undefined;
+      expect(vimeoVideo.videoElement).to.not.be.undefined
     })
   })
 

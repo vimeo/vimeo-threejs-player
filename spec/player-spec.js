@@ -2,7 +2,7 @@
 import Player from '../src/components/player'
 import VideoQuality from '../src/components/video-quality'
 
-var expect = require('chai').expect
+var expect = require('chai').expect // eslint-disable-line
 
 describe('Player', () => {
   let player
