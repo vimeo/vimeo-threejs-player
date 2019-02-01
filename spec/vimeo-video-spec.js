@@ -3,6 +3,8 @@ import VimeoVideo from '../src/components/vimeo-video'
 import VideoElement from '../src/components/video-element'
 import VideoQuality from '../src/components/video-quality'
 
+var expect = require('chai').expect
+
 describe('VimeoVideo', () => {
   let vimeoVideo
   let sampleVideoDescriptionWithJSONObject = 'This is an awesome video of Moose. Moose is the first volumetric space dog to ever land in the Vimeo HQ. We are really excited about that! { "_versionMajor": 0, "_versionMinor": 2, "boundsCenter": { "x": 0, "y": 0, "z": 1.23337292671204 }, "boundsSize": { "x": 2.9721360206604, "y": 1.66969299316406, "z": 0.505130290985107 }, "crop": { "w": 0.282333821058273, "x": 0.210362240672112, "y": 0.328365355730057, "z": 0.231896802783012 }, "depthFocalLength": { "x": 1919.83203125, "y": 1922.28527832031 }, "depthImageSize": { "x": 3840.0, "y": 2160.0 }, "depthPrincipalPoint": { "x": 1875.52282714844, "y": 1030.56298828125 }, "extrinsics": { "e00": 1, "e01": 0, "e02": 0, "e03": 0, "e10": 0, "e11": 1, "e12": 0, "e13": 0, "e20": 0, "e21": 0, "e22": 1, "e23": 0, "e30": 0, "e31": 0, "e32": 0, "e33": 1 }, "farClip": 1.48593807220459, "format": "perpixel", "nearClip": 0.980807781219482, "numAngles": 1, "textureHeight": 4096, "textureWidth": 2048 } Let us know what you think, Vimeo Creator Labs Team'
@@ -13,38 +15,38 @@ describe('VimeoVideo', () => {
 
   describe('constructor', () => {
     it('sets the id', () => {
-      expect(vimeoVideo.id).toBe(123)
+      expect(vimeoVideo.id).to.equal(123)
     })
 
     it('sets the selected quality to auto by default', () => {
-      expect(vimeoVideo.selectedQuality).toBe(VideoQuality.auto)
+      expect(vimeoVideo.selectedQuality).to.equal(VideoQuality.auto)
     })
 
     it('sets muted to false by default', () => {
-      expect(vimeoVideo.muted).toBe(false)
+      expect(vimeoVideo.muted).to.equal(false)
     })
 
     it('sets muted to true when provided as an arugment', () => {
       vimeoVideo = new VimeoVideo(123, { muted: true })
-      expect(vimeoVideo.muted).toBe(true)
+      expect(vimeoVideo.muted).to.equal(true)
     })
 
     it('sets autoplay to false by default', () => {
-      expect(vimeoVideo.autoplay).toBe(true)
+      expect(vimeoVideo.autoplay).to.equal(true)
     })
 
     it('sets autoplay to false when provided as an arugment', () => {
       vimeoVideo = new VimeoVideo(123, { autoplay: false })
-      expect(vimeoVideo.autoplay).toBe(false)
+      expect(vimeoVideo.autoplay).to.equal(false)
     })
 
     it('sets loop to true by default', () => {
-      expect(vimeoVideo.loop).toBe(true)
+      expect(vimeoVideo.loop).to.equal(true)
     })
 
     it('sets loop to false when provided as an arugment', () => {
       vimeoVideo = new VimeoVideo(123, { loop: false })
-      expect(vimeoVideo.loop).toBe(false)
+      expect(vimeoVideo.loop).to.equal(false)
     })
   })
 
@@ -52,7 +54,7 @@ describe('VimeoVideo', () => {
     for (let i = 0; i < Object.keys(VideoQuality).length; i++) {
       it('sets the resolution to ' + Object.keys(VideoQuality)[i] + ' when provided as an argument', () => {
         vimeoVideo = new VimeoVideo(123, { quality: Object.keys(VideoQuality)[i] })
-        expect(vimeoVideo.selectedQuality).toBe(Object.keys(VideoQuality)[i])
+        expect(vimeoVideo.selectedQuality).to.equal(Object.keys(VideoQuality)[i])
       })
     }
   })
@@ -61,7 +63,7 @@ describe('VimeoVideo', () => {
     it('throws an error when no video id is provided', () => {
       expect(() => {
         vimeoVideo.loadFromVideoId()
-      }).toThrow(new Error('[Vimeo] No video ID was specified'))
+      }).to.throw('[Vimeo] No video ID was specified')
     })
   })
 
@@ -72,7 +74,7 @@ describe('VimeoVideo', () => {
         description: sampleVideoDescriptionWithJSONObject
       }
       const jsonObject = vimeoVideo.getJSONFromVideoDescription()
-      expect(jsonObject.nearClip).toBe(0.980807781219482)
+      expect(jsonObject.nearClip).to.equal(0.980807781219482)
     })
 
     it('returns null if a valid JSON object was not found in the description', () => {
@@ -81,20 +83,20 @@ describe('VimeoVideo', () => {
         description: 'Hello, we love the web, we also love 3D, we love the 3D web { test: { sample: 5'
       }
       const jsonObject = vimeoVideo.getJSONFromVideoDescription()
-      expect(jsonObject).toBe(null)
+      expect(jsonObject).to.equal(null)
     })
   })
 
   describe('isLoaded', () => {
     it('returns false when vimeoVideo is instaced but there is no Vimeo API response in vimeoVideo.data', () => {
-      expect(vimeoVideo.isLoaded()).toBe(false)
+      expect(vimeoVideo.isLoaded()).to.equal(false)
     })
 
     it('returns false when vimeoVideo is instanced and there is a Vimeo API response in vimeoVideo.data but the VideoElement is not setup', () => {
       vimeoVideo.data = {
         description: 'Hello, we love the web, we also love 3D, we love the 3D web { test: { sample: 5'
       }
-      expect(vimeoVideo.isLoaded()).toBe(false)
+      expect(vimeoVideo.isLoaded()).to.equal(false)
     })
 
     it('returns true when vimeoVideo is instanced and there is a Vimeo API response in vimeoVideo.data but the VideoElement is setup', () => {
@@ -105,7 +107,7 @@ describe('VimeoVideo', () => {
       vimeoVideo.videoElement.getElement = () => {
         return vimeoVideo.videoElement
       }
-      expect(vimeoVideo.isLoaded()).toBe(true)
+      expect(vimeoVideo.isLoaded()).to.equal(true)
     })
   })
 
@@ -113,7 +115,7 @@ describe('VimeoVideo', () => {
     it('throws an error if play it triggered but no video source is present in the video element', () => {
       expect(() => {
         vimeoVideo.play()
-      }).toThrow(new Error('[Vimeo] No video has been loaded yet'))
+      }).to.throw('[Vimeo] Failed triggering playback, try initializing the element with a valid video before hitting play')
     })
   })
 
@@ -121,7 +123,7 @@ describe('VimeoVideo', () => {
     it('throws an error if pause it triggered but no video source is present in the video element', () => {
       expect(() => {
         vimeoVideo.pause()
-      }).toThrow(new Error('[Vimeo] No video has been loaded yet'))
+      }).to.throw('[Vimeo] Failed triggering playback, try initializing the element with a valid video before hitting pause')
     })
   })
 
@@ -129,7 +131,7 @@ describe('VimeoVideo', () => {
     it('throws an error if stop it triggered but no video source is present in the video element', () => {
       expect(() => {
         vimeoVideo.pause()
-      }).toThrow(new Error('[Vimeo] No video has been loaded yet'))
+      }).to.throw('[Vimeo] Failed triggering playback, try initializing the element with a valid video before hitting pause')
     })
   })
 
@@ -138,14 +140,14 @@ describe('VimeoVideo', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
       vimeoVideo.setVolume(0)
-      expect(vimeoVideo.muted).toBe(true)
+      expect(vimeoVideo.muted).to.equal(true)
     })
 
     it('sets muted state false when called with non-zero volume', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
       vimeoVideo.setVolume(0.2)
-      expect(vimeoVideo.muted).toBe(false)
+      expect(vimeoVideo.muted).to.equal(false)
     })
   })
 
@@ -154,7 +156,7 @@ describe('VimeoVideo', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
       vimeoVideo.mute()
-      expect(vimeoVideo.muted).toBe(true)
+      expect(vimeoVideo.muted).to.equal(true)
     })
   })
 
@@ -163,16 +165,14 @@ describe('VimeoVideo', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
       vimeoVideo.unmute()
-      expect(vimeoVideo.muted).toBe(false)
+      expect(vimeoVideo.muted).to.equal(false)
     })
   })
 
   describe('setupVideoElement', () => {
     it('creates a VideoElement', () => {
-      expect(() => {
-        vimeoVideo.setupVideoElement()
-        expect(vimeoVideo.videoElement).toBe(new VideoElement(vimeoVideo))
-      }).toThrow(new Error('[Vimeo] No video has been loaded yet'))
+      vimeoVideo.setupVideoElement()
+      expect(vimeoVideo.videoElement).to.not.be.undefined;
     })
   })
 
@@ -182,7 +182,7 @@ describe('VimeoVideo', () => {
         vimeoVideo = new VimeoVideo(123)
         vimeoVideo.videoElement = new VideoElement(vimeoVideo)
         vimeoVideo.setupTexture()
-      }).toThrow(new Error('[Vimeo] No video has been loaded yet'))
+      }).to.throw('[Vimeo] No video has been loaded yet')
     })
   })
 
@@ -190,7 +190,7 @@ describe('VimeoVideo', () => {
     it('returns null when no Vimeo API response is present', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
-      expect(vimeoVideo.getWidth()).toEqual(null)
+      expect(vimeoVideo.getWidth()).to.equal(null)
     })
   })
 
@@ -198,37 +198,37 @@ describe('VimeoVideo', () => {
     it('returns null when no Vimeo API response is present', () => {
       vimeoVideo = new VimeoVideo(123)
       vimeoVideo.videoElement = new VideoElement(vimeoVideo)
-      expect(vimeoVideo.getHeight()).toEqual(null)
+      expect(vimeoVideo.getHeight()).to.equal(null)
     })
   })
 
   describe('getFileURL', () => {
     it('returns undefined when no video URL has been set', () => {
-      expect(vimeoVideo.getFileURL()).toEqual(undefined)
+      expect(vimeoVideo.getFileURL()).to.equal(undefined)
     })
   })
 
   describe('getFileURL', () => {
     it('returns undefined when no video URL has been set', () => {
-      expect(vimeoVideo.getFileURL()).toEqual(undefined)
+      expect(vimeoVideo.getFileURL()).to.equal(undefined)
     })
   })
 
   describe('getAdaptiveURL', () => {
     it('returns undefined when no video URL has been set', () => {
-      expect(vimeoVideo.getAdaptiveURL()).toEqual(undefined)
+      expect(vimeoVideo.getAdaptiveURL()).to.equal(undefined)
     })
   })
 
   describe('getProgressiveURL', () => {
     it('returns undefined when no video URL has been set', () => {
-      expect(vimeoVideo.getProgressiveFileURL(VideoQuality.x1080)).toEqual(undefined)
+      expect(vimeoVideo.getProgressiveFileURL(VideoQuality.x1080)).to.equal(undefined)
     })
   })
 
   describe('isLive', () => {
     it('returns false when no video has been loaded', () => {
-      expect(vimeoVideo.isLive()).toEqual(false)
+      expect(vimeoVideo.isLive()).to.equal(false)
     })
 
     it('returns true when API response suggests that the video is live', () => {
@@ -237,29 +237,29 @@ describe('VimeoVideo', () => {
           status: 'streaming'
         }
       }
-      expect(vimeoVideo.isLive()).toEqual(true)
+      expect(vimeoVideo.isLive()).to.equal(true)
     })
   })
 
   describe('isAdaptivePlayback', () => {
     it('returns true when selected adaptive quality', () => {
-      expect(vimeoVideo.isAdaptivePlayback()).toEqual(true)
+      expect(vimeoVideo.isAdaptivePlayback()).to.equal(true)
     })
 
     it('returns false when not selected adaptive quality', () => {
       vimeoVideo.selectedQuality = VideoQuality.x1080
-      expect(vimeoVideo.isAdaptivePlayback()).toEqual(false)
+      expect(vimeoVideo.isAdaptivePlayback()).to.equal(false)
     })
   })
 
   describe('isDashPlayback', () => {
     it('returns true when selected adaptive quality and device is not iOS', () => {
-      expect(vimeoVideo.isDashPlayback()).toEqual(true)
+      expect(vimeoVideo.isDashPlayback()).to.equal(true)
     })
 
     it('returns false when not selected adaptive quality', () => {
       vimeoVideo.selectedQuality = VideoQuality.x1080
-      expect(vimeoVideo.isDashPlayback()).toEqual(false)
+      expect(vimeoVideo.isDashPlayback()).to.equal(false)
     })
   })
 })
