@@ -142,6 +142,38 @@ export default class Player extends EventEmitter {
     return this.video.isPlaying()
   }
 
+  /**
+   * Query wheter a video is paused
+   * @returns {bool}
+   */
+  isPaused () {
+    return this.video.isPaused()
+  }
+
+  /**
+   * Query wheter a video is stopped
+   * @returns {bool}
+   */
+  isStopped () {
+    return this.video.isStopped()
+  }
+
+  /**
+   * Query the video current time
+   * @returns {number}
+   */
+  getTime () {
+    return this.video.getTime()
+  }
+
+  /**
+   * Set the video current time
+   * @param {number} time - the time to set the current video to
+   */
+  setTime (time) {
+    this.video.setTime(time)
+  }
+
   /** Play the video */
   play () {
     if (this.video) {

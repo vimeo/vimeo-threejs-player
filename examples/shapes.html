@@ -51,6 +51,7 @@
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function (videoTexture) {
       showPlayButton();
+      
       videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
       var material = new THREE.MeshStandardMaterial({ 
         side: THREE.DoubleSide,

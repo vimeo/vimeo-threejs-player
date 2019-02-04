@@ -110,7 +110,59 @@ export default class VimeoVideo extends EventEmitter {
    * @returns {bool}
    */
   isPlaying () {
-    return this.videoElement.isPlaying()
+    if (this.videoElement) {
+      return this.videoElement.isPlaying()
+    } else {
+      throw new Error('[Vimeo] A video has not been created, yet you are trying to check if it is playing')
+    }
+  }
+
+  /**
+   * Query wheter a video is paused
+   * @returns {bool}
+   */
+  isPaused () {
+    if (this.videoElement) {
+      return this.videoElement.isPaused()
+    } else {
+      throw new Error('[Vimeo] A video has not been created, yet you are trying to check if it is paused')
+    }
+  }
+
+  /**
+   * Query wheter a video is stopped
+   * @returns {bool}
+   */
+  isStopped () {
+    if (this.videoElement) {
+      return this.videoElement.isStopped()
+    } else {
+      throw new Error('[Vimeo] A video has not been created, yet you are trying to check if it is stopped')
+    }
+  }
+
+  /**
+   * Query the video current time
+   * @returns {number}
+   */
+  getTime () {
+    if (this.videoElement) {
+      return this.videoElement.getTime()
+    } else {
+      throw new Error('[Vimeo] A video has not been created, yet you are trying to get the time for it')
+    }
+  }
+
+  /**
+   * Set the video current time
+   * @param {number} time - the time to set the current video to
+   */
+  setTime (time) {
+    if (this.videoElement) {
+      this.videoElement.setTime(time)
+    } else {
+      throw new Error('[Vimeo] A video has not been created, yet you are trying to set the time for it')
+    }
   }
 
   /** Play the video */
@@ -256,28 +308,30 @@ export default class VimeoVideo extends EventEmitter {
     if (this.isLive()) {
       console.warn('[Vimeo] This is a live video! There are no progressive video files availale.')
     } else {
-      if (this.data.play.progressive) {
-        this.data.play.progressive.sort(function (a, b) {
-          return a.height < b.height ? 1 : -1
-        })
+      if (this.data) {
+        if (this.data.play.progressive) {
+          this.data.play.progressive.sort(function (a, b) {
+            return a.height < b.height ? 1 : -1
+          })
 
-        var preferredQualities = []
-        for (var i = 0; i < this.data.play.progressive.length; i++) {
-          if (quality > this.data.play.progressive[i].height) {
-            preferredQualities.push(this.data.play.progressive[i])
-          } else if (quality === this.data.play.progressive[i].height) {
-            return this.data.play.progressive[i].link
+          var preferredQualities = []
+          for (var i = 0; i < this.data.play.progressive.length; i++) {
+            if (quality > this.data.play.progressive[i].height) {
+              preferredQualities.push(this.data.play.progressive[i])
+            } else if (quality === this.data.play.progressive[i].height) {
+              return this.data.play.progressive[i].link
+            }
           }
-        }
 
-        if (preferredQualities.length === 0) {
-          var file = this.data.play.progressive[this.data.play.progressive.length - 1]
-          console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
-          return file.link
-        } else {
-          console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
-          return preferredQualities[0].link
-        }
+          if (preferredQualities.length === 0) {
+            var file = this.data.play.progressive[this.data.play.progressive.length - 1]
+            console.log('[Vimeo] This video does not have a ' + quality + 'p resolution. Defaulting to ' + file.height + 'p.')
+            return file.link
+          } else {
+            console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
+            return preferredQualities[0].link
+          }
+        } 
       } else {
         console.error('[Vimeo] No video available');
       }

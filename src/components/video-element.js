@@ -105,13 +105,66 @@ export default class VideoElement extends EventEmitter {
    * @returns {bool}
    */
   isPlaying () {
-    if (this._isDashPlayback) {
-      return !this.player.isPaused();
-    } else {
-      if (!this.player.paused) {
-        return true
+    if (this.player) {
+      if (this._isDashPlayback) {
+        return !this.player.isPaused()
+      } else {
+        return !this.player.paused
       }
-      return false
+    } else {
+      throw new Error('[Vimeo] A video has not been loaded yet')
+    }
+  }
+
+  /**
+   * Query wheter a video is paused
+   * @returns {bool}
+   */
+  isPaused () {
+    if (this.player) {
+      if (this._isDashPlayback) {
+        return this.player.isPaused()
+      } else {
+        return this.player.paused
+      }
+    }
+  }
+
+  /**
+   * Query wheter a video is stopped
+   * @returns {bool}
+   */
+  isStopped () {
+    if (this.player) {
+      return this.isPaused() && this.getTime() === 0
+    }
+  }
+
+  /**
+   * Set the current video time
+   * @param {number} time - The time to set the video
+   */
+  setTime (time) {
+    if (this.player) {
+      if (this._isDashPlayback) {
+        this.player.seek(time)
+      } else {
+        this.player.currentTime = time
+      }
+    }
+  }
+
+  /**
+   * Query the current video time
+   * @returns {number}
+   */
+  getTime () {
+    if (this.player) {
+      if (this._isDashPlayback) {
+        return this.player.time()
+      } else {
+        this.player.currentTime
+      }
     }
   }
 

@@ -94,4 +94,45 @@ describe('Player', () => {
       }).to.throw('[Vimeo] Video provided is not correct, try changing the video id and running the code again')
     })
   })
+
+  describe('isPlaying', () => {
+    it('to throw error if a video was not loaded and you are calling player.isPlaying()', () => {
+      expect(() => {
+        player.isPlaying()
+      }).to.throw('[Vimeo] A video has not been created, yet you are trying to check if it is playing')
+    })
+  })
+
+  describe('isPaused', () => {
+    it('to throw error if a video was not loaded and you are calling player.isPaused()', () => {
+      expect(() => {
+        player.isPaused()
+      }).to.throw('[Vimeo] A video has not been created, yet you are trying to check if it is paused')
+    })
+  })
+
+  describe('isStopped', () => {
+    it('to throw error if a video was not loaded and you are calling player.isStopped()', () => {
+      expect(() => {
+        player.isStopped()
+      }).to.throw('[Vimeo] A video has not been created, yet you are trying to check if it is stopped')
+    })
+  })
+
+  describe('getTime', () => {
+    it('to throw error if a video was not loaded and you are calling player.getTime()', () => {
+      expect(() => {
+        player.getTime()
+      }).to.throw('[Vimeo] A video has not been created, yet you are trying to get the time for it')
+    })
+  })
+
+  describe('setTime', () => {
+    it('to throw error if a video was not loaded and you are calling player.setTime()', () => {
+      expect(() => {
+        player.setTime(0.5)
+      }).to.throw('[Vimeo] A video has not been created, yet you are trying to set the time for it')
+    })
+  })
+
 })
