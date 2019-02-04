@@ -10,13 +10,15 @@
 </p>
 
 <div align="center">
-  <a href="#">Getting Started</a>
+  <a href="#">Getting started</a>
   &mdash;
   <a href="#">API</a>
   &mdash;
-  <a href="#">Examples</a>
+  <a href="#stay-in-touch">Stay in touch</a>
 </div>
 
+## Examples
+[A collection of nice example images]
 
 ## Features
 📼 **Streaming video made simple**: The plugin let's you stream video hosted on Vimeo directly to your WebGL app
