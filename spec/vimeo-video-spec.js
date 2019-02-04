@@ -3,7 +3,7 @@ import VimeoVideo from '../src/components/vimeo-video'
 import VideoElement from '../src/components/video-element'
 import VideoQuality from '../src/components/video-quality'
 
-var expect = require('chai').expect
+var expect = require('chai').expect // eslint-disable-line
 
 describe('VimeoVideo', () => {
   let vimeoVideo
