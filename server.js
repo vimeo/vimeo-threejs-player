@@ -61,8 +61,8 @@ app.get('/album', (request, response) => {
   response.render('album.html');
 });
 
-app.get('/looking-glass', (request, response) => {
-  response.render('looking-glass.html');
+app.get('/two-and-a-half-d.html', (request, response) => {
+  response.render('two-and-a-half-d.html');
 });
 
 // The route for getting videos from the vimeo API

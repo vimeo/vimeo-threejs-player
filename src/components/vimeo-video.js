@@ -248,7 +248,7 @@ export default class VimeoVideo extends EventEmitter {
     if (this.isLive()) {
       console.warn('[Vimeo] This is a live video! There are no progressive video files availale.')
     } else {
-      if (this.data) {
+      if (this.data.play.progressive) {
         this.data.play.progressive.sort(function (a, b) {
           return a.height < b.height ? 1 : -1
         })
@@ -270,6 +270,8 @@ export default class VimeoVideo extends EventEmitter {
           console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
           return preferredQualities[0].link
         }
+      } else {
+        console.error('[Vimeo] No video available');
       }
     }
   }
