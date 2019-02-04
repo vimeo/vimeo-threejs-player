@@ -10,7 +10,9 @@
 </p>
 
 <div align="center">
-  <a href="#">Docs</a>
+  <a href="#">Getting Started</a>
+  &mdash;
+  <a href="#">API</a>
   &mdash;
   <a href="#">Examples</a>
 </div>
