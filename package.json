@@ -15,6 +15,7 @@
     "build:production": "webpack --env build",
     "build:development": "webpack --env dev",
     "build:watch": "webpack --progress --colors --watch --env dev",
+    "test": "yarn run test:unit",
     "test:unit": "webpack-dev-server --config webpack.tests.config.js",
     "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors spec/*.js",
     "deploy:glitch": "sync-glitch"
