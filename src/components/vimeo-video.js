@@ -105,6 +105,14 @@ export default class VimeoVideo extends EventEmitter {
     return false
   }
 
+  /**
+   * Query wheter the current video is playing
+   * @returns {bool}
+   */
+  isPlaying () {
+    return this.videoElement.isPlaying()
+  }
+
   /** Play the video */
   play () {
     if (!this.isLoaded()) {

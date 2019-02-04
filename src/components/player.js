@@ -134,6 +134,14 @@ export default class Player extends EventEmitter {
     return this.video.getHeight()
   }
 
+  /**
+   * Query wheter the current video is playing
+   * @returns {bool}
+   */
+  isPlaying () {
+    return this.video.isPlaying()
+  }
+
   /** Play the video */
   play () {
     if (this.video) {

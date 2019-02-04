@@ -42,6 +42,7 @@
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1.0, -1.0);
+    controls.autoRotate = true;
     controls.update();
 
     // Create a new Vimeo Player and set the video
@@ -50,15 +51,22 @@
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function (videoTexture) {
       showPlayButton();
-
       videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
       var material = new THREE.MeshStandardMaterial({ 
         side: THREE.DoubleSide,
         map: videoTexture
       });
       
-      for(var i = 0; i < 11; i ++) {
-        var shapeInstanceGeo = new THREE.SphereBufferGeometry( 5, 32, 32 );
+      for(var i = 0; i < 50; i ++) {
+        var shapeInstanceGeo;
+        if (i % 3 === 0) {
+          shapeInstanceGeo = new THREE.SphereBufferGeometry( 5, 32, 32 );
+        } else if (i % 2 === 0) {
+          shapeInstanceGeo = new THREE.BoxBufferGeometry( 5, 5, 5 );
+        } else {
+          shapeInstanceGeo = new THREE.IcosahedronBufferGeometry( 5, 0 );
+        }
+         
         shapes.push(new THREE.Mesh(shapeInstanceGeo, material));
         shapes[i].position.set(Math.random() * 50 - 25, Math.random() * 50 - 25, Math.random() * 50 - 25);
         scene.add(shapes[i]);
@@ -72,10 +80,10 @@
 
   function animate() {
     renderer.setAnimationLoop(render);
-    controls.update();
   }
 
   function render() {
+    controls.update();
     renderer.render(scene, camera);
   }
 

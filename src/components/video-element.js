@@ -101,6 +101,21 @@ export default class VideoElement extends EventEmitter {
   }
 
   /**
+   * Query wheter a video is playing
+   * @returns {bool}
+   */
+  isPlaying () {
+    if (this._isDashPlayback) {
+      return !this.player.isPaused();
+    } else {
+      if (!this.player.paused) {
+        return true
+      }
+      return false
+    }
+  }
+
+  /**
    * Create the <video> element based on the properties provided in the VimeoVideo
    * @param {VimeoVideo} vimeoVideo - A VimeoVideo object representing the video resource
    * @returns {HTMLElement}
