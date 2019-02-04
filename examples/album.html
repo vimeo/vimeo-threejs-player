@@ -53,15 +53,16 @@
     scene.add(plane);
 
     // Create a new Vimeo Player and set the video
-    Vimeo.Player.loadPlayersByAlbum(5188897, { 
+    Vimeo.Player.loadPlayersByAlbum(5528679, { 
       quality: Vimeo.VideoQuality.x360, 
       autoplay: true,
+      autoload: true,
       muted: true
     }).then(players => {
+      var row = 0;
 
-      var row = 0
       for (var i = 0; i < players.length; i++) {
-
+        players[i].load()
         players[i].on('videoLoad', function(i, row) {
           var geometry = new THREE.BoxGeometry(10, 10, 10);
           var material = new THREE.MeshBasicMaterial( { map: this.texture } );
@@ -74,7 +75,7 @@
           row++
         }
 
-        players[i].load()
+        
       }
     });
 

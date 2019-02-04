@@ -39,12 +39,12 @@ export default class Player extends EventEmitter {
    * @param {bool} [args.loop = true] - A boolean for looping the video playback when it reaches the end
    */
   static loadPlayersByAlbum (albumId, args = {}) {
-    var players = []
+    let players = []
 
     return new Promise((resolve, reject) => {
       API.getAlbumVideos(albumId).then(resp => {
-        for (var i = 0; i < resp.data.length; i++) {
-          var player = new Player(resp.data[i].uri, args)
+        for (let i = 0; i < resp.data.length; i++) {
+          let player = new Player(resp.data[i].uri, args)
           player.video.data = resp.data[i]
           players.push(player)
         }
