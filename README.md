@@ -18,7 +18,23 @@
 </div>
 
 ## Examples
-[A collection of nice example images]
+
+<a href="#">
+  <img alt="Basic" target="_blank" src="https://i.imgur.com/NWaaljL.gif" height="190" width="32%">
+</a>
+<a href="#">
+  <img alt="Shapes" target="_blank" src="https://i.imgur.com/7bF8yKW.gif" height="190" width="32%">
+</a>
+<a href="#">
+  <img alt="360 WebVR" target="_blank" src="https://i.imgur.com/p4Yftwf.gif" height="190" width="32%">
+</a>
+<a href="#">
+  <img alt="Play an album" target="_blank" src="https://i.imgur.com/MSlXbju.gif" height="190" width="32%">
+</a>
+<a href="#">
+  <img alt="2.5D" target="_blank" src="https://i.imgur.com/iMnEFOf.gif" height="190" width="32%">
+</a>
+
 
 ## Features
 📼 **Streaming video made simple**: The plugin let's you stream video hosted on Vimeo directly to your WebGL app
@@ -75,4 +91,4 @@ For questions and support, ask on [StackOverflow](https://stackoverflow.com/ques
 Get involved! Check out the [Contributing Guide](CONTRIBUTING.md) for how to get started.
 
 ## License
-This software is free software and is distributed under an MIT License.
+This software is free software and is distributed under an [MIT License](LICENSE).
