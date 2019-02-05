@@ -36,9 +36,9 @@
 
 
 ## Features
-📼 **Streaming video made simple**: The plugin let's you stream video hosted on Vimeo directly to your WebGL app
+📼 **Streaming video made simple**: The plugin lets you stream video hosted on Vimeo directly to your WebGL app
 
-🏋🏿‍ **Let us do the heavy lifting**: stream multipule resolutions including adaptive video on supported platforms for best performance and video quality
+🏋🏿‍ **Let us do the heavy lifting**: stream multiple resolutions including adaptive video on supported platforms for best performance and video quality
 
 📱 **Works everywhere**: works on phones, tablets, laptops, computers, VR headsets and even underwater
 
@@ -65,7 +65,7 @@ For questions and support, ask on [StackOverflow](https://stackoverflow.com/ques
 [Join our newsletter](https://vimeo.us6.list-manage.com/subscribe?u=a3cca16f9d09cecb87db4be05&id=28000dad3e) for more updates, or visit the [Creator Labs website](https://labs.vimeo.com) to learn more.
 
 ## Contributing
-Get involved! Check out the [Setting up the development enviorment guide](https://github.com/vimeo/vimeo-threejs-player/wiki/Setting-up-the-development-enviorment-%F0%9F%91%B7%F0%9F%8F%BD%E2%80%8D) for how to get started.
+Get involved! Check out the [Setting up the development environment guide](https://github.com/vimeo/vimeo-threejs-player/wiki/Setting-up-the-development-environment-%F0%9F%91%B7%F0%9F%8F%BD%E2%80%8D) for how to get started.
 
 ## License
 This software is free software and is distributed under an [MIT License](LICENSE).
