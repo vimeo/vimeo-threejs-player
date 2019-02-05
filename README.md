@@ -1,7 +1,7 @@
 <h1 align="center">Vimeo three.js player</h1>
 
-<p align="center">[super nice banner image]</p>
-<p align="center"><b>A plugin for streaming video to WebGL/VR/AR apps</b></p>
+<p align="center"><img width="500" src="https://i.imgur.com/9WMVpaF.jpg" /></p>
+<p align="center"><b>A plugin for streaming video from Vimeo to WebGL/VR/AR apps</b></p>
 
 <p align="center">
   <a href="https://app.codeship.com/projects/325924"><img src="https://app.codeship.com/projects/dc6de560-07c0-0137-30da-5e4580378d6f/status?branch=master" alt="Build Status"></a>
