@@ -34,11 +34,11 @@ THREE.Sky.prototype = Object.create( THREE.Mesh.prototype );
 THREE.Sky.SkyShader = {
 
 	uniforms: {
-		luminance: { value: 1 },
+		luminance: { value: 0.001 },
 		turbidity: { value: 2 },
 		rayleigh: { value: 1 },
 		mieCoefficient: { value: 0.005 },
-		mieDirectionalG: { value: 0.8 },
+		mieDirectionalG: { value: 0.4 },
 		sunPosition: { value: new THREE.Vector3() }
 	},
 
