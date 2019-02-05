@@ -9,7 +9,7 @@
 </p>
 
 <div align="center">
-  <a href="#">Getting started</a>
+  <a href="https://github.com/vimeo/vimeo-threejs-player/wiki/Getting-Started-%F0%9F%9A%80">Getting started</a>
   &mdash;
   <a href="API.md">API</a>
   &mdash;
@@ -54,7 +54,8 @@ Almost done, go to the basic example under `examples/basic.html`
  ```js
      vimeoPlayer = new Vimeo.Player(vimeo_video_id, { autoplay: false });
  ```
-Try our other examples or head to our getting started guide to learn more
+Try our other examples or head to our [getting started guide](https://github.com/vimeo/vimeo-threejs-player/wiki/Getting-Started-%F0%9F%9A%80) to learn more
+
 > Streaming Vimeo videos requires video file access via the Vimeo API. Accessing video files is limited to [Vimeo Pro and Business](https://vimeo.com/upgrade) customers.
 
 ## Questions
@@ -64,7 +65,7 @@ For questions and support, ask on [StackOverflow](https://stackoverflow.com/ques
 [Join our newsletter](https://vimeo.us6.list-manage.com/subscribe?u=a3cca16f9d09cecb87db4be05&id=28000dad3e) for more updates, or visit the [Creator Labs website](https://labs.vimeo.com) to learn more.
 
 ## Contributing
-Get involved! Check out the [Contributing Guide](#) for how to get started.
+Get involved! Check out the [Setting up the development enviorment guide](https://github.com/vimeo/vimeo-threejs-player/wiki/Setting-up-the-development-enviorment-%F0%9F%91%B7%F0%9F%8F%BD%E2%80%8D) for how to get started.
 
 ## License
 This software is free software and is distributed under an [MIT License](LICENSE).
