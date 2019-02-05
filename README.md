@@ -47,6 +47,14 @@ To start playing and streaming video now, remix the Glitch example:
 
 [Glitch badge]
 
+The first step is to generate your own Vimeo API token. [Generate the token](https://vimeo-authy.herokuapp.com/auth/vimeo/webgl), and then copy it and paste it into the *.env* in Glitch.
+
+Almost done, go to the basic example under `examples/basic.html`
+ and change the [video id in line 77](https://github.com/vimeo/vimeo-threejs-player/blob/master/examples/basic.html#L77) to your Vimeo video id. It should look like
+ ```js
+     vimeoPlayer = new Vimeo.Player(vimeo_video_id, { autoplay: false });
+ ```
+Try our other examples or head to our getting started guide to learn more
 > Streaming Vimeo videos requires video file access via the Vimeo API. Accessing video files is limited to [Vimeo Pro and Business](https://vimeo.com/upgrade) customers.
 
 ## Questions
