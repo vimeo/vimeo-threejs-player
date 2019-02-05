@@ -10,15 +10,20 @@
 
 <div id="play" class="play-button"></div>
 
+<canvas id="dominent-color"></canvas>
+
 <script type="text/javascript">
   var renderer,
-      scene,
-      camera,
-      controls;
+    scene,
+    camera,
+    controls,
+    light;
 
   var vimeoPlayer;
 
   var shapes = [];
+
+  var cubemap = new THREE.CubeTextureLoader();
 
   function init() {
     scene = new THREE.Scene();
@@ -28,9 +33,12 @@
     camera.position.set(0, 10, 50);
 
     // Setup light
-    var light = new THREE.PointLight( 0x1ab7ea, 5, 100 );
+    light = new THREE.PointLight(0x1ab7ea, 5, 100);
     light.position.set(0, 15, 0);
     scene.add(light);
+
+    var ambientLight = new THREE.AmbientLight()
+    scene.add(ambientLight);
 
     // Setup renderer
     renderer = new THREE.WebGLRenderer();
@@ -42,8 +50,17 @@
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1.0, -1.0);
-    controls.autoRotate = true;
     controls.update();
+
+    // Load the ground enviorment map
+    envMap = cubemap.setPath('/images/env_cubemap/').load([
+      'face-b.jpg',
+      'face-d.jpg',
+      'face-l.jpg',
+      'face-f.jpg',
+      'face-r.jpg',
+      'face-t.jpg'
+    ]);
 
     // Create a new Vimeo Player and set the video
     vimeoPlayer = new Vimeo.Player(296928206, { autoplay: false });
@@ -51,25 +68,27 @@
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function (videoTexture) {
       showPlayButton();
-      
+
       videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
-      var material = new THREE.MeshStandardMaterial({ 
+      var material = new THREE.MeshStandardMaterial({
         side: THREE.DoubleSide,
-        map: videoTexture
+        map: videoTexture,
+        envMap: envMap,
+        envMapIntensity: 5.0
       });
-      
-      for(var i = 0; i < 50; i ++) {
+
+      for (var i = 0; i < 50; i++) {
         var shapeInstanceGeo;
         if (i % 3 === 0) {
-          shapeInstanceGeo = new THREE.SphereBufferGeometry( 5, 32, 32 );
+          shapeInstanceGeo = new THREE.SphereBufferGeometry(5, 32, 32);
         } else if (i % 2 === 0) {
-          shapeInstanceGeo = new THREE.BoxBufferGeometry( 5, 5, 5 );
+          shapeInstanceGeo = new THREE.BoxBufferGeometry(5, 5, 5);
         } else {
-          shapeInstanceGeo = new THREE.IcosahedronBufferGeometry( 5, 0 );
+          shapeInstanceGeo = new THREE.IcosahedronBufferGeometry(5, 0);
         }
-         
+
         shapes.push(new THREE.Mesh(shapeInstanceGeo, material));
-        shapes[i].position.set(Math.random() * 50 - 25, Math.random() * 50 - 25, Math.random() * 50 - 25);
+        shapes[i].position.set(Math.random() * 100 - 50, Math.random() * 100 - 50, Math.random() * 50 - 25);
         scene.add(shapes[i]);
       }
 
@@ -85,6 +104,9 @@
 
   function render() {
     controls.update();
+    if (vimeoPlayer.texture) {
+      light.color = getFloorColor(vimeoPlayer.texture.image)
+    }
     renderer.render(scene, camera);
   }
 
@@ -106,6 +128,7 @@
 
   function playVideo() {
     vimeoPlayer.play();
+    controls.autoRotate = true;
     document.getElementById('play').style.display = 'none';
   }
 

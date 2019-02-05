@@ -14,15 +14,14 @@
 
 <script type="text/javascript">
   var renderer,
-      scene,
-      camera,
-      controls;
+    scene,
+    camera,
+    controls,
+    light;
 
-  var vimeoPlayer,
-      floor,
-      light;
+  var vimeoPlayer;
 
-  var cubemap = new THREE.CubeTextureLoader()
+  var cubemap = new THREE.CubeTextureLoader();
 
   function init() {
     scene = new THREE.Scene();
@@ -32,7 +31,7 @@
     camera.position.set(0, 1, 20);
 
     // Setup light
-    light = new THREE.PointLight( 0x000000, 1.0, 100 );
+    light = new THREE.PointLight(0x000000, 1.0, 100);
     light.position.set(0, 2, 0);
     scene.add(light);
 
@@ -50,7 +49,7 @@
 
 
     // Load the ground enviorment map
-    envMap = cubemap.setPath( '/images/env_cubemap/' ).load([
+    envMap = cubemap.setPath('/images/env_cubemap/').load([
       'face-b.jpg',
       'face-d.jpg',
       'face-l.jpg',
@@ -91,7 +90,7 @@
   }
 
   function render() {
-    
+
     if (vimeoPlayer.texture) {
       light.color = getFloorColor(vimeoPlayer.texture.image)
     }
