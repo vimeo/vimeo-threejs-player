@@ -8,6 +8,8 @@
   </div>
 </div>
 
+<canvas id="dominent-color"></canvas>
+
 <div id="play" class="play-button"></div>
 
 <script type="text/javascript">
@@ -17,18 +19,21 @@
       controls;
 
   var vimeoPlayer,
-      floor;
+      floor,
+      light;
+
+  var cubemap = new THREE.CubeTextureLoader()
 
   function init() {
     scene = new THREE.Scene();
 
     // Setup camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(10, 1, 20);
+    camera.position.set(0, 1, 20);
 
     // Setup light
-    var light = new THREE.PointLight( 0x1ab7ea, 0.2, 100 );
-    light.position.set(0, 15, 0);
+    light = new THREE.PointLight( 0x000000, 1.0, 100 );
+    light.position.set(0, 2, 0);
     scene.add(light);
 
     // Setup renderer
@@ -36,12 +41,31 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.LinearToneMapping;
-
     document.getElementById('container').appendChild(renderer.domElement);
 
+    // Setup controls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 5.0, -1.0);
+    controls.target.set(0, 1, -1.0);
     controls.update();
+
+
+    // Load the ground enviorment map
+    envMap = cubemap.setPath( '/images/env_cubemap/' ).load([
+      'face-b.jpg',
+      'face-d.jpg',
+      'face-l.jpg',
+      'face-f.jpg',
+      'face-r.jpg',
+      'face-t.jpg'
+    ]);
+    // Load the ground model
+    var loader = new THREE.GLTFLoader();
+    loader.load('/models/terrain.gltf', function (model) {
+      model.scene.children[2].material.metalness = 1.0;
+      model.scene.children[2].material.envMap = envMap;
+      model.scene.children[2].material.envMapIntensity = 5.0;
+      scene.add(model.scene);
+    })
 
     // Create a new Vimeo Player and set the video
     vimeoPlayer = new Vimeo.Player(296928206, { autoplay: false });
@@ -49,31 +73,15 @@
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function (videoTexture) {
       showPlayButton();
-
-      var height = 30 * (vimeoPlayer.getHeight() / vimeoPlayer.getWidth())
-      var geometry = new THREE.PlaneGeometry(30, height, 32);
+      console.log(videoTexture);
+      var screenScaler = 10;
+      var height = screenScaler * (vimeoPlayer.getHeight() / vimeoPlayer.getWidth())
+      var geometry = new THREE.PlaneGeometry(screenScaler, height, 1);
       var material = new THREE.MeshBasicMaterial({ map: videoTexture, side: THREE.DoubleSide });
       var plane = new THREE.Mesh(geometry, material);
-      plane.position.set(-7, height / 2, 0);
+      plane.position.set(-2, height / 2 - 0.5, 10);
       scene.add(plane);
-
-      var floorMaterial = new THREE.MeshStandardMaterial({ 
-        side: THREE.DoubleSide,
-        lightMap: videoTexture,
-        lightMapIntensity: 0.4
-      });
-      floor.material = floorMaterial;
-      // floor.material.lightInt
-
     });
-
-    var floorGeo = new THREE.PlaneGeometry(100, 100, 1);
-    var floorMaterial = new THREE.MeshStandardMaterial({ color: 0x333333, side: THREE.DoubleSide });
-    floor = new THREE.Mesh(floorGeo, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.x = -5
-    scene.add(floor);
-
     setupEvents();
     animate();
   }
@@ -83,6 +91,10 @@
   }
 
   function render() {
+    
+    if (vimeoPlayer.texture) {
+      light.color = getFloorColor(vimeoPlayer.texture.image)
+    }
     renderer.render(scene, camera);
   }
 
@@ -101,6 +113,8 @@
     document.getElementById('play').addEventListener('click', playVideo, false);
     window.addEventListener('resize', onWindowResize, false);
   }
+
+
 
   function playVideo() {
     vimeoPlayer.play();

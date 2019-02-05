@@ -12,7 +12,7 @@
 <div align="center">
   <a href="#">Getting started</a>
   &mdash;
-  <a href="#">API</a>
+  <a href="API.md">API</a>
   &mdash;
   <a href="#stay-in-touch">Stay in touch</a>
 </div>

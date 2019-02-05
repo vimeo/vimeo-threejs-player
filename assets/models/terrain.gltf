@@ -1,0 +1,193 @@
+{
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5123,
+            "count" : 5766,
+            "max" : [
+                3843
+            ],
+            "min" : [
+                0
+            ],
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 3844,
+            "max" : [
+                10.0,
+                0.3377476930618286,
+                10.0
+            ],
+            "min" : [
+                -10.0,
+                -0.3428341746330261,
+                -10.0
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 3844,
+            "max" : [
+                0.48949897289276123,
+                0.9999685883522034,
+                0.43783536553382874
+            ],
+            "min" : [
+                -0.4415658116340637,
+                0.8394242525100708,
+                -0.45709797739982605
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 3844,
+            "max" : [
+                0.9999999403953552,
+                0.4456324279308319,
+                0.005833540111780167,
+                1.0
+            ],
+            "min" : [
+                0.8719640374183655,
+                -0.48956984281539917,
+                -0.005125250201672316,
+                1.0
+            ],
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5126,
+            "count" : 3844,
+            "max" : [
+                1.0322575569152832,
+                1.0
+            ],
+            "min" : [
+                0.0,
+                4.76837158203125e-07
+            ],
+            "type" : "VEC2"
+        }
+    ],
+    "asset" : {
+        "generator" : "Khronos Blender glTF 2.0 exporter",
+        "version" : "2.0"
+    },
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 11532,
+            "byteOffset" : 0,
+            "target" : 34963
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 46128,
+            "byteOffset" : 11532,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 46128,
+            "byteOffset" : 57660,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 61504,
+            "byteOffset" : 103788,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 30752,
+            "byteOffset" : 165292,
+            "target" : 34962
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 196044,
+            "uri" : "terrain.bin"
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Grid",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "NORMAL" : 2,
+                        "POSITION" : 1,
+                        "TANGENT" : 3,
+                        "TEXCOORD_0" : 4
+                    },
+                    "indices" : 0
+                }
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "name" : "Camera",
+            "rotation" : [
+                0.483536034822464,
+                0.33687159419059753,
+                -0.20870360732078552,
+                0.7804827094078064
+            ],
+            "translation" : [
+                7.481131553649902,
+                5.34366512298584,
+                6.5076398849487305
+            ]
+        },
+        {
+            "name" : "Lamp",
+            "rotation" : [
+                0.16907575726509094,
+                0.7558802962303162,
+                -0.27217137813568115,
+                0.570947527885437
+            ],
+            "scale" : [
+                1.0,
+                1.0,
+                0.9999999403953552
+            ],
+            "translation" : [
+                4.076245307922363,
+                5.903861999511719,
+                -1.0054539442062378
+            ]
+        },
+        {
+            "mesh" : 0,
+            "name" : "Terrain",
+            "scale" : [
+                1.7770811319351196,
+                1.7770811319351196,
+                1.7770811319351196
+            ]
+        }
+    ],
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                2,
+                1,
+                0
+            ]
+        }
+    ]
+}

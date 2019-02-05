@@ -163,7 +163,7 @@ export default class VideoElement extends EventEmitter {
       if (this._isDashPlayback) {
         return this.player.time()
       } else {
-        this.player.currentTime
+        return this.player.currentTime
       }
     }
   }

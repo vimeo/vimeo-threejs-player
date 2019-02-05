@@ -331,9 +331,9 @@ export default class VimeoVideo extends EventEmitter {
             console.log('[Vimeo] This video does not have a ' + quality + ' resolution. Defaulting to ' + preferredQualities[0].height + 'p.')
             return preferredQualities[0].link
           }
-        } 
+        }
       } else {
-        console.error('[Vimeo] No video available');
+        console.error('[Vimeo] No video available')
       }
     }
   }
