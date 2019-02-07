@@ -25,7 +25,7 @@
   <img alt="Shapes" target="_blank" src="https://i.imgur.com/7bF8yKW.gif" height="190" width="32%">
 </a>
 <a href="#">
-  <img alt="360 WebVR" target="_blank" src="https://i.imgur.com/p4Yftwf.gif" height="190" width="32%">
+  <img alt="360 WebVR" target="_blank" src="https://i.imgur.com/orN8ZQL.gif" height="190" width="32%">
 </a>
 <a href="#">
   <img alt="Play an album" target="_blank" src="https://i.imgur.com/MSlXbju.gif" height="190" width="32%">
