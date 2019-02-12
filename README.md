@@ -46,7 +46,9 @@
 ## Usage
 To start playing and streaming video now, remix the Glitch example:
 
-[![Glitch remix badge](https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix-button.svg?1504724691606)](https://glitch.com/edit/#!/remix/vimeo-threejs-player)
+<a href="https://glitch.com/edit/#!/remix/vimeo-threejs-player">
+<img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix-button.svg?1504724691606" alt="Glitch remix badge" aria-label="remix" width="124" />
+</a>
 
 The first step is to generate your own Vimeo API token. [Generate the token](https://vimeo-authy.herokuapp.com/auth/vimeo/webgl), and then copy it and paste it into the *.env* in Glitch.
 
