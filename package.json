@@ -7,7 +7,7 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node assets/js/readme-glitch-fix.js && node server.js",
     "server": "nodemon server.js",
     "format": "standard src/**/*.js --fix",
     "docs": "documentation build src/**/*.js -f md -o API.md",
