@@ -19,19 +19,19 @@
 
 ## Examples
 
-<a href="#">
+<a href="https://vimeo-threejs-player.glitch.me/basic">
   <img alt="Basic" target="_blank" src="https://i.imgur.com/NWaaljL.gif" height="190" width="32%">
 </a>
-<a href="#">
+<a href="https://vimeo-threejs-player.glitch.me/shapes">
   <img alt="Shapes" target="_blank" src="https://i.imgur.com/7bF8yKW.gif" height="190" width="32%">
 </a>
-<a href="#">
+<a href="https://vimeo-threejs-player.glitch.me/webvr-video">
   <img alt="360 WebVR" target="_blank" src="https://i.imgur.com/orN8ZQL.gif" height="190" width="32%">
 </a>
-<a href="#">
+<a href="https://vimeo-threejs-player.glitch.me/album">
   <img alt="Play an album" target="_blank" src="https://i.imgur.com/MSlXbju.gif" height="190" width="32%">
 </a>
-<a href="#">
+<a href="https://vimeo-threejs-player.glitch.me/two-and-a-half-d.html">
   <img alt="2.5D" target="_blank" src="https://i.imgur.com/iMnEFOf.gif" height="190" width="32%">
 </a>
 
