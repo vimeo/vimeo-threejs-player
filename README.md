@@ -3,9 +3,10 @@
 <p align="center"><b>A plugin for streaming video from Vimeo to WebGL/VR/AR apps</b></p>
 
 <p align="center">
-  <a href="https://app.codeship.com/projects/325924"><img src="https://app.codeship.com/projects/dc6de560-07c0-0137-30da-5e4580378d6f/status?branch=master" alt="Build Status"></a>
-    <img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Code Style">
-    <img src="https://img.shields.io/npm/l/aframe.svg?style=flat-square" alt="License"></a>
+  <a href="https://app.codeship.com/projects/325924"><img src="https://app.codeship.com/projects/dc6de560-07c0-0137-30da-5e4580378d6f/status?branch=master" alt="Build Status" /></a>
+    <img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Code Style" />
+    <img src="https://badge.glitch.me/vimeo-threejs-player" alt="Glitch Examples status" />
+    <img src="https://img.shields.io/npm/l/aframe.svg?style=flat-square" alt="License" />
 </p>
 
 <div align="center">
