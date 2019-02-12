@@ -5,7 +5,7 @@ var glitchReadMeText = "### Hello and welcome to the Vimeo three.js player examp
 
 if (process.env.ENV === 'Glitch') {
   console.log('[Ops] Changing the README in Glitch to point to Github documentation');
-  fs.writeFile('./README.md', glitchReadMeText, function(err) {
-    console.log(err);
+  fs.writeFile('./README.md', glitchReadMeText, 'utf8', function (err) {
+     if (err) return console.log(err); 
   });
 }
