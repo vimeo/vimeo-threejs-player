@@ -17,84 +17,86 @@
     -   [parseVideoId][13]
         -   [Parameters][14]
     -   [getVideoId][15]
-    -   [mute][16]
-    -   [unmute][17]
-    -   [load][18]
-    -   [setQuality][19]
-        -   [Parameters][20]
-    -   [getQuality][21]
-    -   [getWidth][22]
-    -   [getHeight][23]
-    -   [isPlaying][24]
-    -   [isPaused][25]
-    -   [isStopped][26]
-    -   [getTime][27]
-    -   [setTime][28]
-        -   [Parameters][29]
-    -   [play][30]
-    -   [pause][31]
-    -   [stop][32]
-    -   [setVolume][33]
-        -   [Parameters][34]
-    -   [loadPlayersByAlbum][35]
+    -   [getMetadata][16]
+    -   [getDescription][17]
+    -   [mute][18]
+    -   [unmute][19]
+    -   [load][20]
+    -   [setQuality][21]
+        -   [Parameters][22]
+    -   [getQuality][23]
+    -   [getWidth][24]
+    -   [getHeight][25]
+    -   [isPlaying][26]
+    -   [isPaused][27]
+    -   [isStopped][28]
+    -   [getTime][29]
+    -   [setTime][30]
+        -   [Parameters][31]
+    -   [play][32]
+    -   [pause][33]
+    -   [stop][34]
+    -   [setVolume][35]
         -   [Parameters][36]
--   [Util][37]
-    -   [checkWebGL][38]
-    -   [isiOS][39]
-    -   [isMobile][40]
--   [VideoElement][41]
-    -   [Parameters][42]
-    -   [getElement][43]
-    -   [play][44]
-    -   [pause][45]
-    -   [stop][46]
-    -   [setVolume][47]
-        -   [Parameters][48]
-    -   [getVolume][49]
-    -   [isPlaying][50]
-    -   [isPaused][51]
-    -   [isStopped][52]
-    -   [setTime][53]
-        -   [Parameters][54]
-    -   [getTime][55]
-    -   [createElement][56]
-        -   [Parameters][57]
-    -   [createAdaptivePlayer][58]
+    -   [loadPlayersByAlbum][37]
+        -   [Parameters][38]
+-   [Util][39]
+    -   [checkWebGL][40]
+    -   [isiOS][41]
+    -   [isMobile][42]
+-   [VideoElement][43]
+    -   [Parameters][44]
+    -   [getElement][45]
+    -   [play][46]
+    -   [pause][47]
+    -   [stop][48]
+    -   [setVolume][49]
+        -   [Parameters][50]
+    -   [getVolume][51]
+    -   [isPlaying][52]
+    -   [isPaused][53]
+    -   [isStopped][54]
+    -   [setTime][55]
+        -   [Parameters][56]
+    -   [getTime][57]
+    -   [createElement][58]
         -   [Parameters][59]
-    -   [setiOSPlayerAttributes][60]
+    -   [createAdaptivePlayer][60]
         -   [Parameters][61]
--   [VideoQuality][62]
--   [VimeoVideo][63]
-    -   [Parameters][64]
-    -   [onClickAutoplayFix][65]
-    -   [loadFromVideoId][66]
-        -   [Parameters][67]
-    -   [load][68]
-    -   [getJSONFromVideoDescription][69]
-    -   [isLoaded][70]
-    -   [isPlaying][71]
-    -   [isPaused][72]
-    -   [isStopped][73]
-    -   [getTime][74]
-    -   [setTime][75]
-        -   [Parameters][76]
-    -   [play][77]
-    -   [pause][78]
-    -   [stop][79]
-    -   [setVolume][80]
-        -   [Parameters][81]
-    -   [mute][82]
-    -   [unmute][83]
-    -   [setupTexture][84]
-    -   [getWidth][85]
-    -   [getHeight][86]
-    -   [getFileURL][87]
-    -   [getAdaptiveURL][88]
-    -   [getProgressiveFileURL][89]
-        -   [Parameters][90]
-    -   [isLive][91]
-    -   [isAdaptivePlayback][92]
-    -   [isDashPlayback][93]
+    -   [setiOSPlayerAttributes][62]
+        -   [Parameters][63]
+-   [VideoQuality][64]
+-   [VimeoVideo][65]
+    -   [Parameters][66]
+    -   [onClickAutoplayFix][67]
+    -   [loadFromVideoId][68]
+        -   [Parameters][69]
+    -   [load][70]
+    -   [getJSONFromVideoDescription][71]
+    -   [isLoaded][72]
+    -   [isPlaying][73]
+    -   [isPaused][74]
+    -   [isStopped][75]
+    -   [getTime][76]
+    -   [setTime][77]
+        -   [Parameters][78]
+    -   [play][79]
+    -   [pause][80]
+    -   [stop][81]
+    -   [setVolume][82]
+        -   [Parameters][83]
+    -   [mute][84]
+    -   [unmute][85]
+    -   [setupTexture][86]
+    -   [getWidth][87]
+    -   [getHeight][88]
+    -   [getFileURL][89]
+    -   [getAdaptiveURL][90]
+    -   [getProgressiveFileURL][91]
+        -   [Parameters][92]
+    -   [isLive][93]
+    -   [isAdaptivePlayback][94]
+    -   [isDashPlayback][95]
 
 ## API
 
@@ -106,9 +108,9 @@ A util method to modify the endpoint to and return a full API request url
 
 #### Parameters
 
--   `endpoint` **[string][94]** The endpoint you would like to add the full request URL (e.g /videos/video-id)
+-   `endpoint` **[string][96]** The endpoint you would like to add the full request URL (e.g /videos/video-id)
 
-Returns **[string][94]** 
+Returns **[string][96]** 
 
 ### getVideo
 
@@ -116,9 +118,9 @@ A method for requesting Vimeo videos by video id
 
 #### Parameters
 
--   `videoId` **[number][95]** The Vimeo video id you would like to query (e.g 296928206)
+-   `videoId` **[number][97]** The Vimeo video id you would like to query (e.g 296928206)
 
-Returns **[Promise][96]** 
+Returns **[Promise][98]** 
 
 ### getAlbumVideos
 
@@ -126,9 +128,9 @@ A method for requesting Vimeo albums by album id
 
 #### Parameters
 
--   `albumId` **[number][95]** The Vimeo album id you would like to query (e.g 5528679)
+-   `albumId` **[number][97]** The Vimeo album id you would like to query (e.g 5528679)
 
-Returns **[Promise][96]** 
+Returns **[Promise][98]** 
 
 ### sendResponse
 
@@ -136,7 +138,7 @@ A utility method for unpacking and resolving the Vimeo API response from the ser
 
 #### Parameters
 
--   `res` **[Object][97]** Vimeo API response
+-   `res` **[Object][99]** Vimeo API response
 -   `resolve` **function (any)** Promise resolve method
 -   `reject` **function (any)** Promise reject method
 
@@ -148,8 +150,8 @@ A class that represents a Vimeo video player
 
 ### Parameters
 
--   `videoId` **[number][95]** A Vimeo video ID (e.g 296928206)
--   `args` **[Object][97]** An object that holds the Vimeo video properties (optional, default `{}`)
+-   `videoId` **[number][97]** A Vimeo video ID (e.g 296928206)
+-   `args` **[Object][99]** An object that holds the Vimeo video properties (optional, default `{}`)
 
 ### bindEvents
 
@@ -161,15 +163,27 @@ Parse and clean a valid Vimeo video ID from string or integer
 
 #### Parameters
 
--   `id` **[number][95]** The Vimeo video ID
+-   `id` **[number][97]** The Vimeo video ID
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### getVideoId
 
 Get the current player's Vimeo video ID
 
-Returns **[number][95]** 
+Returns **[number][97]** 
+
+### getMetadata
+
+Get the JSON metadata object stored in the Vimeo video description
+
+Returns **[object][99]** The metadata JSON object parsed from the Vimeo video description
+
+### getDescription
+
+Get the Vimeo video description
+
+Returns **[string][96]** The video description
 
 ### mute
 
@@ -189,25 +203,25 @@ Set the video quality based on one of the options in the VideoQuality enum
 
 #### Parameters
 
--   `quality` **[VideoQuality][98]** The desired quality setting
+-   `quality` **[VideoQuality][100]** The desired quality setting
 
 ### getQuality
 
 Get the current selected video quality
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### getWidth
 
 Get the current video's width in pixels
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### getHeight
 
 Get the current video's height in pixels
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### isPlaying
 
@@ -231,7 +245,7 @@ Returns **bool**
 
 Query the video current time
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### setTime
 
@@ -239,7 +253,7 @@ Set the video current time
 
 #### Parameters
 
--   `time` **[number][95]** the time to set the current video to
+-   `time` **[number][97]** the time to set the current video to
 
 ### play
 
@@ -259,7 +273,7 @@ Set the video volume
 
 #### Parameters
 
--   `volume` **[number][95]** A number for the new volume you would like to set between 0.0 and 1.0
+-   `volume` **[number][97]** A number for the new volume you would like to set between 0.0 and 1.0
 
 ### loadPlayersByAlbum
 
@@ -267,9 +281,9 @@ Load a Vimeo album and create multipule Vimeo Players
 
 #### Parameters
 
--   `albumId` **[number][95]** A Vimeo album ID (e.g 5528679)
--   `args` **[Object][97]** An object that holds the Vimeo video properties (optional, default `{}`)
-    -   `args.quality` **[number][95]** args.quality - The video quality represented by the VideoQuality enum (optional, default `VideoQuality.auto`)
+-   `albumId` **[number][97]** A Vimeo album ID (e.g 5528679)
+-   `args` **[Object][99]** An object that holds the Vimeo video properties (optional, default `{}`)
+    -   `args.quality` **[number][97]** args.quality - The video quality represented by the VideoQuality enum (optional, default `VideoQuality.auto`)
     -   `args.muted` **bool** A boolean for loading a video and playing it back muted (optional, default `false`)
     -   `args.autoplay` **bool** A boolean for loading the video and automatically playing it once it has loaded (optional, default `true`)
     -   `args.loop` **bool** A boolean for looping the video playback when it reaches the end (optional, default `true`)
@@ -304,13 +318,13 @@ Class representing a DOM video element
 
 ### Parameters
 
--   `vimeoVideo` **[VimeoVideo][99]** A VimeoVideo object representing the video resource
+-   `vimeoVideo` **[VimeoVideo][101]** A VimeoVideo object representing the video resource
 
 ### getElement
 
 Get the <video> element
 
-Returns **[HTMLElement][100]** 
+Returns **[HTMLElement][102]** 
 
 ### play
 
@@ -330,13 +344,13 @@ Set the video volume
 
 #### Parameters
 
--   `volume` **[number][95]** A number for the new volume you would like to set between 0.0 and 1.0
+-   `volume` **[number][97]** A number for the new volume you would like to set between 0.0 and 1.0
 
 ### getVolume
 
 Gets the video volume
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### isPlaying
 
@@ -362,13 +376,13 @@ Set the current video time
 
 #### Parameters
 
--   `time` **[number][95]** The time to set the video
+-   `time` **[number][97]** The time to set the video
 
 ### getTime
 
 Query the current video time
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### createElement
 
@@ -376,9 +390,9 @@ Create the <video> element based on the properties provided in the VimeoVideo
 
 #### Parameters
 
--   `vimeoVideo` **[VimeoVideo][99]** A VimeoVideo object representing the video resource
+-   `vimeoVideo` **[VimeoVideo][101]** A VimeoVideo object representing the video resource
 
-Returns **[HTMLElement][100]** 
+Returns **[HTMLElement][102]** 
 
 ### createAdaptivePlayer
 
@@ -386,9 +400,9 @@ Creates a new DOM element with either Dash, HLS or progressive video playback ba
 
 #### Parameters
 
--   `vimeoVideo` **[VimeoVideo][99]** A VimeoVideo object representing the video resource
+-   `vimeoVideo` **[VimeoVideo][101]** A VimeoVideo object representing the video resource
 
-Returns **[HTMLElement][100]** 
+Returns **[HTMLElement][102]** 
 
 ### setiOSPlayerAttributes
 
@@ -397,7 +411,7 @@ Adds iOS attributes to be able to play <video> tag inline
 #### Parameters
 
 -   `videoElement`  
--   `vimeoVideo` **[HTMLElement][100]** A <video> element that needs to be configured to play on iOS
+-   `vimeoVideo` **[HTMLElement][102]** A <video> element that needs to be configured to play on iOS
 
 ## VideoQuality
 
@@ -412,8 +426,8 @@ Class representing a Vimeo video resource
 
 ### Parameters
 
--   `videoId` **[number][95]** A Vimeo video ID (e.g 296928206)
--   `args` **[Object][97]** An object that holds the Vimeo video properties (optional, default `{}`)
+-   `videoId` **[number][97]** A Vimeo video ID (e.g 296928206)
+-   `args` **[Object][99]** An object that holds the Vimeo video properties (optional, default `{}`)
 
 ### onClickAutoplayFix
 
@@ -425,7 +439,7 @@ Load a specific video by providing a Vimeo video ID
 
 #### Parameters
 
--   `videoId` **[number][95]** A Vimeo video ID (e.g 296928206)
+-   `videoId` **[number][97]** A Vimeo video ID (e.g 296928206)
 
 ### load
 
@@ -436,7 +450,7 @@ Load a specific video based on the Vimeo video ID provided to the constructor, f
 Parses the Vimeo video description and returns a JSON object if it exists
 Useful for when storing metadata in video description (e.g volumetric video)
 
-Returns **[Object][97]** 
+Returns **[Object][99]** 
 
 ### isLoaded
 
@@ -466,7 +480,7 @@ Returns **bool**
 
 Query the video current time
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### setTime
 
@@ -474,7 +488,7 @@ Set the video current time
 
 #### Parameters
 
--   `time` **[number][95]** the time to set the current video to
+-   `time` **[number][97]** the time to set the current video to
 
 ### play
 
@@ -494,7 +508,7 @@ Set the video volume
 
 #### Parameters
 
--   `volume` **[number][95]** A number for the new volume you would like to set between 0.0 and 1.0
+-   `volume` **[number][97]** A number for the new volume you would like to set between 0.0 and 1.0
 
 ### mute
 
@@ -512,25 +526,25 @@ Create a three.js video texture
 
 Get the video's width in pixels
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### getHeight
 
 Get the video's height in pixels
 
-Returns **[number][95]** 
+Returns **[number][97]** 
 
 ### getFileURL
 
 Get the current Vimeo video file URL
 
-Returns **[string][94]** 
+Returns **[string][96]** 
 
 ### getAdaptiveURL
 
 Get the current Vimeo video adaptive stream manifrest file URL
 
-Returns **[string][94]** 
+Returns **[string][96]** 
 
 ### getProgressiveFileURL
 
@@ -538,9 +552,9 @@ Get the current Vimeo video progressive file URL by specific video quality
 
 #### Parameters
 
--   `quality` **[VideoQuality][98]** Specific quality to query the possible video resolutions
+-   `quality` **[VideoQuality][100]** Specific quality to query the possible video resolutions
 
-Returns **[string][94]** 
+Returns **[string][96]** 
 
 ### isLive
 
@@ -590,172 +604,176 @@ Returns **bool**
 
 [15]: #getvideoid
 
-[16]: #mute
+[16]: #getmetadata
 
-[17]: #unmute
+[17]: #getdescription
 
-[18]: #load
+[18]: #mute
 
-[19]: #setquality
+[19]: #unmute
 
-[20]: #parameters-6
+[20]: #load
 
-[21]: #getquality
+[21]: #setquality
 
-[22]: #getwidth
+[22]: #parameters-6
 
-[23]: #getheight
+[23]: #getquality
 
-[24]: #isplaying
+[24]: #getwidth
 
-[25]: #ispaused
+[25]: #getheight
 
-[26]: #isstopped
+[26]: #isplaying
 
-[27]: #gettime
+[27]: #ispaused
 
-[28]: #settime
+[28]: #isstopped
 
-[29]: #parameters-7
+[29]: #gettime
 
-[30]: #play
+[30]: #settime
 
-[31]: #pause
+[31]: #parameters-7
 
-[32]: #stop
+[32]: #play
 
-[33]: #setvolume
+[33]: #pause
 
-[34]: #parameters-8
+[34]: #stop
 
-[35]: #loadplayersbyalbum
+[35]: #setvolume
 
-[36]: #parameters-9
+[36]: #parameters-8
 
-[37]: #util
+[37]: #loadplayersbyalbum
 
-[38]: #checkwebgl
+[38]: #parameters-9
 
-[39]: #isios
+[39]: #util
 
-[40]: #ismobile
+[40]: #checkwebgl
 
-[41]: #videoelement
+[41]: #isios
 
-[42]: #parameters-10
+[42]: #ismobile
 
-[43]: #getelement
+[43]: #videoelement
 
-[44]: #play-1
+[44]: #parameters-10
 
-[45]: #pause-1
+[45]: #getelement
 
-[46]: #stop-1
+[46]: #play-1
 
-[47]: #setvolume-1
+[47]: #pause-1
 
-[48]: #parameters-11
+[48]: #stop-1
 
-[49]: #getvolume
+[49]: #setvolume-1
 
-[50]: #isplaying-1
+[50]: #parameters-11
 
-[51]: #ispaused-1
+[51]: #getvolume
 
-[52]: #isstopped-1
+[52]: #isplaying-1
 
-[53]: #settime-1
+[53]: #ispaused-1
 
-[54]: #parameters-12
+[54]: #isstopped-1
 
-[55]: #gettime-1
+[55]: #settime-1
 
-[56]: #createelement
+[56]: #parameters-12
 
-[57]: #parameters-13
+[57]: #gettime-1
 
-[58]: #createadaptiveplayer
+[58]: #createelement
 
-[59]: #parameters-14
+[59]: #parameters-13
 
-[60]: #setiosplayerattributes
+[60]: #createadaptiveplayer
 
-[61]: #parameters-15
+[61]: #parameters-14
 
-[62]: #videoquality
+[62]: #setiosplayerattributes
 
-[63]: #vimeovideo
+[63]: #parameters-15
 
-[64]: #parameters-16
+[64]: #videoquality
 
-[65]: #onclickautoplayfix
+[65]: #vimeovideo
 
-[66]: #loadfromvideoid
+[66]: #parameters-16
 
-[67]: #parameters-17
+[67]: #onclickautoplayfix
 
-[68]: #load-1
+[68]: #loadfromvideoid
 
-[69]: #getjsonfromvideodescription
+[69]: #parameters-17
 
-[70]: #isloaded
+[70]: #load-1
 
-[71]: #isplaying-2
+[71]: #getjsonfromvideodescription
 
-[72]: #ispaused-2
+[72]: #isloaded
 
-[73]: #isstopped-2
+[73]: #isplaying-2
 
-[74]: #gettime-2
+[74]: #ispaused-2
 
-[75]: #settime-2
+[75]: #isstopped-2
 
-[76]: #parameters-18
+[76]: #gettime-2
 
-[77]: #play-2
+[77]: #settime-2
 
-[78]: #pause-2
+[78]: #parameters-18
 
-[79]: #stop-2
+[79]: #play-2
 
-[80]: #setvolume-2
+[80]: #pause-2
 
-[81]: #parameters-19
+[81]: #stop-2
 
-[82]: #mute-1
+[82]: #setvolume-2
 
-[83]: #unmute-1
+[83]: #parameters-19
 
-[84]: #setuptexture
+[84]: #mute-1
 
-[85]: #getwidth-1
+[85]: #unmute-1
 
-[86]: #getheight-1
+[86]: #setuptexture
 
-[87]: #getfileurl
+[87]: #getwidth-1
 
-[88]: #getadaptiveurl
+[88]: #getheight-1
 
-[89]: #getprogressivefileurl
+[89]: #getfileurl
 
-[90]: #parameters-20
+[90]: #getadaptiveurl
 
-[91]: #islive
+[91]: #getprogressivefileurl
 
-[92]: #isadaptiveplayback
+[92]: #parameters-20
 
-[93]: #isdashplayback
+[93]: #islive
 
-[94]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[94]: #isadaptiveplayback
 
-[95]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[95]: #isdashplayback
 
-[96]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[96]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[97]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[97]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[98]: #videoquality
+[98]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[99]: #vimeovideo
+[99]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[100]: https://developer.mozilla.org/docs/Web/HTML/Element
+[100]: #videoquality
+
+[101]: #vimeovideo
+
+[102]: https://developer.mozilla.org/docs/Web/HTML/Element

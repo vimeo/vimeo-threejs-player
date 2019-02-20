@@ -80,7 +80,6 @@
     // videoLoad is fired when ready to apply the video texture to a mesh 
     vimeoPlayer.on('videoLoad', function (videoTexture) {
       showPlayButton();
-      console.log(videoTexture);
       var screenScaler = 10;
       var height = screenScaler * (vimeoPlayer.getHeight() / vimeoPlayer.getWidth())
       var geometry = new THREE.PlaneGeometry(screenScaler, height, 1);

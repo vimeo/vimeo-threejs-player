@@ -87,6 +87,30 @@ export default class Player extends EventEmitter {
     return this.id
   }
 
+  /**
+   * Get the JSON metadata object stored in the Vimeo video description
+   * @returns {object} - The metadata JSON object parsed from the Vimeo video description
+   */
+  getMetadata () {
+    if (this.video) {
+      return this.video.getJSONFromVideoDescription()
+    } else {
+      console.warn('[Vimeo] No video is loaded but you are trying to get the metadata')
+    }
+  }
+
+  /**
+   * Get the Vimeo video description
+   * @returns {string} - The video description
+   */
+  getDescription () {
+    if (this.video) {
+      return this.video.data.description
+    } else {
+      console.warn('[Vimeo] No video is loaded but you are trying to get the description')
+    }
+  }
+
   /** Mute the video */
   mute () {
     this.video.mute()

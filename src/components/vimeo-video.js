@@ -82,7 +82,8 @@ export default class VimeoVideo extends EventEmitter {
   getJSONFromVideoDescription () {
     if (this.data.description) {
       let desc = 'asdfasfds' + this.data.description
-      let match = desc.match(/(\{.*\})/g)
+      let cleanDesc = desc.replace(/\r?\n|\r/g, "")
+      let match = cleanDesc.match(/(\{.*\})/g)
       if (match) {
         return JSON.parse(match[0])
       }
