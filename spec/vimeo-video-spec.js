@@ -8,6 +8,64 @@ var expect = require('chai').expect // eslint-disable-line
 describe('VimeoVideo', () => {
   let vimeoVideo
   let sampleVideoDescriptionWithJSONObject = 'This is an awesome video of Moose. Moose is the first volumetric space dog to ever land in the Vimeo HQ. We are really excited about that! { "_versionMajor": 0, "_versionMinor": 2, "boundsCenter": { "x": 0, "y": 0, "z": 1.23337292671204 }, "boundsSize": { "x": 2.9721360206604, "y": 1.66969299316406, "z": 0.505130290985107 }, "crop": { "w": 0.282333821058273, "x": 0.210362240672112, "y": 0.328365355730057, "z": 0.231896802783012 }, "depthFocalLength": { "x": 1919.83203125, "y": 1922.28527832031 }, "depthImageSize": { "x": 3840.0, "y": 2160.0 }, "depthPrincipalPoint": { "x": 1875.52282714844, "y": 1030.56298828125 }, "extrinsics": { "e00": 1, "e01": 0, "e02": 0, "e03": 0, "e10": 0, "e11": 1, "e12": 0, "e13": 0, "e20": 0, "e21": 0, "e22": 1, "e23": 0, "e30": 0, "e31": 0, "e32": 0, "e33": 1 }, "farClip": 1.48593807220459, "format": "perpixel", "nearClip": 0.980807781219482, "numAngles": 1, "textureHeight": 4096, "textureWidth": 2048 } Let us know what you think, Vimeo Creator Labs Team'
+  let sampleDepthKitDescriptionWithJSONObject = `
+    {
+      "_versionMajor": 0,
+      "_versionMinor": 2,
+      "boundsCenter": {
+          "x": 0,
+          "y": 0,
+          "z": 1.11511695384979
+      },
+      "boundsSize": {
+          "x": 2.99391436576843,
+          "y": 1.68192756175995,
+          "z": 0.76341849565506
+      },
+      "crop": {
+          "w": 0.776298642158508,
+          "x": 0.147486850619316,
+          "y": 0.187442049384117,
+          "z": 0.537553906440735
+      },
+      "depthFocalLength": {
+          "x": 1919.83203125,
+          "y": 1922.28527832031
+      },
+      "depthImageSize": {
+          "x": 3840.0,
+          "y": 2160.0
+      },
+      "depthPrincipalPoint": {
+          "x": 1875.52282714844,
+          "y": 1030.56298828125
+      },
+      "extrinsics": {
+          "e00": 1,
+          "e01": 0,
+          "e02": 0,
+          "e03": 0,
+          "e10": 0,
+          "e11": 1,
+          "e12": 0,
+          "e13": 0,
+          "e20": 0,
+          "e21": 0,
+          "e22": 1,
+          "e23": 0,
+          "e30": 0,
+          "e31": 0,
+          "e32": 0,
+          "e33": 1
+      },
+      "farClip": 1.496826171875,
+      "format": "perpixel",
+      "nearClip": 0.73340767621994,
+      "numAngles": 1,
+      "textureHeight": 4096,
+      "textureWidth": 2048
+  }
+  `
 
   beforeEach(() => {
     vimeoVideo = new VimeoVideo(123)
@@ -84,6 +142,15 @@ describe('VimeoVideo', () => {
       }
       const jsonObject = vimeoVideo.getJSONFromVideoDescription()
       expect(jsonObject).to.equal(null)
+    })
+
+    it('parses Depthkit metadata format and cleans up new lines and return characters', () => {
+      vimeoVideo.data = {
+        description: sampleDepthKitDescriptionWithJSONObject
+      }
+      const jsonObject = vimeoVideo.getJSONFromVideoDescription()
+      console.log(jsonObject)
+      expect(jsonObject.nearClip).to.equal(0.73340767621994)
     })
   })
 
