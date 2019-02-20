@@ -1,79 +1,82 @@
 <%- include('header.html'); -%>
+<div id="loader" class="loading">
+  <div class="spinner">
+    <div class="mask">
+      <div class="maskedCircle"></div>
+    </div>
+  </div>
+</div>
 
-<script type="text/javascript" src="/js/depthkit.js"></script>
+<div id="play" class="play-button"></div>
+<script type="text/javascript" src="/js/vimeo.depth-player.min.js"></script>
 <script type="text/javascript">
   var renderer,
     scene,
     camera,
     controls;
 
-  var videoScreen, videoScreenLight;
+  var vimeoPlayer,
+    depthRenderer;
 
-  var vimeoPlayer;
-
-  function init() 
-  {
+  function init() {
     scene = new THREE.Scene();
 
     // Setup camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .01, 100);
-    camera.position.set(0, 1, 30);
+    camera.position.set(0, 1, 0);
 
     // Setup renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.LinearToneMapping;
-    
     document.body.appendChild(renderer.domElement);
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 0.9, -1.0);
+    controls = new THREE.OrbitControls(camera);
+    controls.target.set(0, 1, -1.0);
     controls.update();
 
-
-    vimeoPlayer = new Vimeo.Player(244123293);
-    vimeoPlayer.on('videoLoad', function() {
-      var character = new DepthKit("mesh", "meta.txt", "take.mp4");
-      scene.add(character);      
+    vimeoPlayer = new Vimeo.Player(318536310, {
+      autoplay: false,
+      autoload: true
     });
-    vimeoPlayer.load();
-    
+
+    vimeoPlayer.on('videoLoad', function (videoTexture) {
+      showPlayButton();
+      depthRenderer = Vimeo.DepthRenderer.fromPlayer(vimeoPlayer);
+      depthRenderer.rotation.set(Math.PI, 0, - Math.PI / 2)
+      depthRenderer.position.set(0.2, 1.25, 0);
+      scene.add(depthRenderer)
+    });
+
     setupEvents();
     animate();
   }
 
-  function animate() 
-  {
+  function animate() {
     renderer.setAnimationLoop(render);
   }
 
-  function render() 
-  {
+  function render() {
     renderer.render(scene, camera);
   }
 
-  function onWindowResize() 
-  {
+  function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  function showPlayButton() 
-  {
+  function showPlayButton() {
     document.getElementById('loader').style.display = 'none';
     document.getElementById('play').style.display = 'block';
   }
 
-  function setupEvents()
-  {
+  function setupEvents() {
     document.getElementById('play').addEventListener('click', playVideo, false);
     window.addEventListener('resize', onWindowResize, false);
   }
 
-  function playVideo() 
-  {
+  function playVideo() {
     vimeoPlayer.play();
     document.getElementById('play').style.display = 'none';
   }
