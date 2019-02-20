@@ -22,7 +22,7 @@ var filesToDelete = [
   './spec/util-spec.js',
   './spec/video-element-spec.js',
   './spec/video-quality-spec.js',
-  'vimeo-video-spec.js'
+  './spec/vimeo-video-spec.js'
   ];
 
 var glitchReadMeText = "### Hello and welcome to the Vimeo three.js player examples 👋🏼 \n Have a look at our [Getting Started guide](https://github.com/vimeo/vimeo-threejs-player/wiki/Getting-Started-%F0%9F%9A%80), or check out the [full documentation in Github](https://github.com/vimeo/vimeo-threejs-player). \n For questions and support, ask on [StackOverflow](https://stackoverflow.com/questions/ask/?tags=vimeo)";
