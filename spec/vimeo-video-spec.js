@@ -7,8 +7,10 @@ var expect = require('chai').expect // eslint-disable-line
 
 describe('VimeoVideo', () => {
   let vimeoVideo
-  let sampleVideoDescriptionWithJSONObject = 'This is an awesome video of Moose. Moose is the first volumetric space dog to ever land in the Vimeo HQ. We are really excited about that! { "_versionMajor": 0, "_versionMinor": 2, "boundsCenter": { "x": 0, "y": 0, "z": 1.23337292671204 }, "boundsSize": { "x": 2.9721360206604, "y": 1.66969299316406, "z": 0.505130290985107 }, "crop": { "w": 0.282333821058273, "x": 0.210362240672112, "y": 0.328365355730057, "z": 0.231896802783012 }, "depthFocalLength": { "x": 1919.83203125, "y": 1922.28527832031 }, "depthImageSize": { "x": 3840.0, "y": 2160.0 }, "depthPrincipalPoint": { "x": 1875.52282714844, "y": 1030.56298828125 }, "extrinsics": { "e00": 1, "e01": 0, "e02": 0, "e03": 0, "e10": 0, "e11": 1, "e12": 0, "e13": 0, "e20": 0, "e21": 0, "e22": 1, "e23": 0, "e30": 0, "e31": 0, "e32": 0, "e33": 1 }, "farClip": 1.48593807220459, "format": "perpixel", "nearClip": 0.980807781219482, "numAngles": 1, "textureHeight": 4096, "textureWidth": 2048 } Let us know what you think, Vimeo Creator Labs Team'
-  let sampleDepthKitDescriptionWithJSONObject = `
+
+  let sampleRegularText = 'Hello from Vimeo Creator Labs. Moose is the first ever volumetric dog and we are really excited about it'
+  let sampleDepthKitDescriptionWithJSONObjectSingleline = '{ "_versionMajor": 0, "_versionMinor": 2, "boundsCenter": { "x": 0, "y": 0, "z": 1.23337292671204 }, "boundsSize": { "x": 2.9721360206604, "y": 1.66969299316406, "z": 0.505130290985107 }, "crop": { "w": 0.282333821058273, "x": 0.210362240672112, "y": 0.328365355730057, "z": 0.231896802783012 }, "depthFocalLength": { "x": 1919.83203125, "y": 1922.28527832031 }, "depthImageSize": { "x": 3840.0, "y": 2160.0 }, "depthPrincipalPoint": { "x": 1875.52282714844, "y": 1030.56298828125 }, "extrinsics": { "e00": 1, "e01": 0, "e02": 0, "e03": 0, "e10": 0, "e11": 1, "e12": 0, "e13": 0, "e20": 0, "e21": 0, "e22": 1, "e23": 0, "e30": 0, "e31": 0, "e32": 0, "e33": 1 }, "farClip": 1.48593807220459, "format": "perpixel", "nearClip": 0.980807781219482, "numAngles": 1, "textureHeight": 4096, "textureWidth": 2048 }'
+  let sampleDepthKitDescriptionWithJSONObjectMultiline = `
     {
       "_versionMajor": 0,
       "_versionMinor": 2,
@@ -126,13 +128,40 @@ describe('VimeoVideo', () => {
   })
 
   describe('getJSONFromVideoDescription', () => {
-    it('parses and returns a JSON from valid object inside video description', () => {
+    it('parses and returns a metadata JSON from valid single line object inside video description', () => {
       // Stub the video description as if the API would respond us
       vimeoVideo.data = {
-        description: sampleVideoDescriptionWithJSONObject
+        description: sampleDepthKitDescriptionWithJSONObjectSingleline
       }
       const jsonObject = vimeoVideo.getJSONFromVideoDescription()
       expect(jsonObject.nearClip).to.equal(0.980807781219482)
+    })
+
+    it('parses and returns a metadata JSON from valid multi line object inside video description', () => {
+      vimeoVideo.data = {
+        description: sampleDepthKitDescriptionWithJSONObjectMultiline
+      }
+      const jsonObject = vimeoVideo.getJSONFromVideoDescription()
+      console.log(jsonObject)
+      expect(jsonObject.nearClip).to.equal(0.73340767621994)
+    })
+
+    it('parses and returns a metadata JSON from valid single line object inside video description that has regular text too', () => {
+      // Stub the video description as if the API would respond us
+      vimeoVideo.data = {
+        description: sampleRegularText + sampleDepthKitDescriptionWithJSONObjectSingleline + sampleRegularText
+      }
+      const jsonObject = vimeoVideo.getJSONFromVideoDescription()
+      expect(jsonObject.nearClip).to.equal(0.980807781219482)
+    })
+
+    it('parses and returns a metadata JSON from valid multi line object inside video description that has regular text too', () => {
+      vimeoVideo.data = {
+        description: sampleRegularText + sampleDepthKitDescriptionWithJSONObjectMultiline + sampleRegularText
+      }
+      const jsonObject = vimeoVideo.getJSONFromVideoDescription()
+      console.log(jsonObject)
+      expect(jsonObject.nearClip).to.equal(0.73340767621994)
     })
 
     it('returns null if a valid JSON object was not found in the description', () => {
@@ -142,15 +171,6 @@ describe('VimeoVideo', () => {
       }
       const jsonObject = vimeoVideo.getJSONFromVideoDescription()
       expect(jsonObject).to.equal(null)
-    })
-
-    it('parses Depthkit metadata format and cleans up new lines and return characters', () => {
-      vimeoVideo.data = {
-        description: sampleDepthKitDescriptionWithJSONObject
-      }
-      const jsonObject = vimeoVideo.getJSONFromVideoDescription()
-      console.log(jsonObject)
-      expect(jsonObject.nearClip).to.equal(0.73340767621994)
     })
   })
 
