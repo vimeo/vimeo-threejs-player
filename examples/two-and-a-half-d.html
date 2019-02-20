@@ -34,7 +34,6 @@
 
     player = new Vimeo.Player(288252372, { quality: Vimeo.VideoQuality.x4K })
     player.on('videoLoad', function() {
-      console.log(player.getMetadata())
       if (player.video.config && player.video.config.quilt) {
         quilt.x = player.video.config.quilt.tilesX;
         quilt.y = player.video.config.quilt.tilesY;
