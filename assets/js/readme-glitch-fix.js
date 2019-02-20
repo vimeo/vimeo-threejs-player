@@ -9,12 +9,10 @@ var filesToDelete = [
   './src/components/video-element.js',
   './src/components/video-quality.js',
   './src/components/vimeo-video.js',
-
   './.babelrc',
   './.npmignore',
   './API.md',
   './webpack.tests.config.js',
-
   './spec/api-spec.js',
   './spec/index.html',
   './spec/index.js',
