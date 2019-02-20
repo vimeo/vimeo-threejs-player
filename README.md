@@ -34,6 +34,9 @@
 <a href="https://vimeo-threejs-player.glitch.me/two-and-a-half-d.html">
   <img alt="2.5D" target="_blank" src="https://i.imgur.com/iMnEFOf.gif" height="190" width="32%">
 </a>
+<a href="https://vimeo-threejs-player.glitch.me/depthkit">
+  <img alt="Play volumetric video" target="_blank" src="https://i.imgur.com/B7S57Kl.gif" height="190" width="32%">
+</a>
 
 
 ## Features
