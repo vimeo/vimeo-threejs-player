@@ -6,7 +6,7 @@ module.exports = {
   output: {
       filename: 'test.build.js',
       path: '/spec/',
-      publicPath: 'http://localhost:' + process.env.TESTS_PORT + '/spec'
+      publicPath: 'http://localhost:' + process.env.TEST_PORT + '/spec'
   },
   module: {
     rules: [
@@ -19,6 +19,6 @@ module.exports = {
   },
   devServer: {
       host: 'localhost',
-      port: process.env.TESTS_PORT
+      port: process.env.TEST_PORT
   }
 };
