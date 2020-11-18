@@ -27,7 +27,7 @@ export default class VimeoVideo extends EventEmitter {
     this.loop = typeof args.loop !== 'undefined' ? args.loop : true
 
     if (this.autoplay) {
-      canAutoPlay.video({ muted: this.muted, timeout: 1000 }).then(({ result, error }) => {
+      canAutoPlay.video({ muted: this.muted, timeout: 1000, inline: true }).then(({ result, error }) => {
         if (result === false) {
           console.warn('[Vimeo] Autoplay not available on this browser', error)
           this.autoplay = false
