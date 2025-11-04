@@ -1,3 +1,9 @@
+**ARCHIVED REPOSITORY:** This project is no longer actively maintained or supported by Vimeo.
+
+We recommend forking this repository if you wish to continue development or make modifications. No further updates or bug fixes will be provided here.
+
+<hr>
+
 <h1 align="center">Vimeo three.js player</h1>
 
 <p align="center"><b>A plugin for streaming video from Vimeo to WebGL/VR/AR apps</b></p>
